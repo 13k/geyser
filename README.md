@@ -1,4 +1,4 @@
-# geyser
+# geyser [![GoDoc](https://godoc.org/github.com/13k/geyser?status.svg)](https://godoc.org/github.com/13k/geyser)
 
 Steam Web API client for Go.
 
