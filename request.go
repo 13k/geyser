@@ -7,6 +7,7 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
+// RequestOptions wrap options to pass to a request.
 type RequestOptions struct {
 	Context  context.Context
 	Headers  map[string]string
@@ -17,6 +18,7 @@ type RequestOptions struct {
 	Lang     string
 }
 
+// Request represents a "bound" request with client, interface and method.
 type Request struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -25,16 +27,23 @@ type Request struct {
 	Result    interface{}
 }
 
+// SetOptions sets request options.
+//
+// The options provided here override the "global" client options.
 func (req *Request) SetOptions(options RequestOptions) *Request {
 	req.Options = options
 	return req
 }
 
+// SetResult sets the result object where the response will be deserialized into.
+//
+// It expects a JSON "unmarshable" object.
 func (req *Request) SetResult(result interface{}) *Request {
 	req.Result = result
 	return req
 }
 
+// Execute executes the request.
 func (req *Request) Execute() (*resty.Response, error) {
 	return req.Client.Request(ClientRequest{
 		Interface: req.Interface,

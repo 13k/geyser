@@ -13,14 +13,17 @@ const (
 	pathTemplate = "/{interface}/{method}/{version}"
 )
 
+// Logger is the interface type accepted by the Client.
 type Logger interface {
 	Errorf(format string, v ...interface{})
 	Warnf(format string, v ...interface{})
 	Debugf(format string, v ...interface{})
 }
 
+// ClientOption functions set options in the Client.
 type ClientOption func(*Client) error
 
+// WithLogger sets the Logger instance on the Client.
 func WithLogger(logger Logger) ClientOption {
 	return func(c *Client) error {
 		c.client.SetLogger(logger)
@@ -28,6 +31,7 @@ func WithLogger(logger Logger) ClientOption {
 	}
 }
 
+// WithDebug enables debug logging on the Client.
 func WithDebug() ClientOption {
 	return func(c *Client) error {
 		c.client.SetDebug(true)
@@ -35,6 +39,7 @@ func WithDebug() ClientOption {
 	}
 }
 
+// WithProxy sets the proxy on the Client.
 func WithProxy(proxy string) ClientOption {
 	return func(c *Client) error {
 		c.client.SetProxy(proxy)
@@ -42,6 +47,7 @@ func WithProxy(proxy string) ClientOption {
 	}
 }
 
+// WithUserAgent sets the "User-Agent" HTTP header for all outgoing requests.
 func WithUserAgent(userAgent string) ClientOption {
 	return func(c *Client) error {
 		c.client.SetHeader("User-Agent", userAgent)
@@ -49,6 +55,8 @@ func WithUserAgent(userAgent string) ClientOption {
 	}
 }
 
+// WithRetryCount enables request retrying and allows to set the number of tries, using a backoff
+// mechanism. Setting to 0 disables retrying.
 func WithRetryCount(retryCount int) ClientOption {
 	return func(c *Client) error {
 		c.client.SetRetryCount(retryCount)
@@ -56,6 +64,9 @@ func WithRetryCount(retryCount int) ClientOption {
 	}
 }
 
+// WithRetryMaxWaitTime sets the max wait time to sleep before retrying request.
+//
+// Default is 2s.
 func WithRetryMaxWaitTime(retryMaxWaitTime time.Duration) ClientOption {
 	return func(c *Client) error {
 		c.client.SetRetryMaxWaitTime(retryMaxWaitTime)
@@ -63,6 +74,9 @@ func WithRetryMaxWaitTime(retryMaxWaitTime time.Duration) ClientOption {
 	}
 }
 
+// WithRetryWaitTime sets the default wait time to sleep before retrying request.
+//
+// Default is 100ms.
 func WithRetryWaitTime(retryWaitTime time.Duration) ClientOption {
 	return func(c *Client) error {
 		c.client.SetRetryWaitTime(retryWaitTime)
@@ -70,6 +84,7 @@ func WithRetryWaitTime(retryWaitTime time.Duration) ClientOption {
 	}
 }
 
+// WithTimeout sets the timeout duration for each request.
 func WithTimeout(timeout time.Duration) ClientOption {
 	return func(c *Client) error {
 		c.client.SetTimeout(timeout)
@@ -77,6 +92,7 @@ func WithTimeout(timeout time.Duration) ClientOption {
 	}
 }
 
+// WithTransport sets the HTTP transport.
 func WithTransport(transport http.RoundTripper) ClientOption {
 	return func(c *Client) error {
 		c.client.SetTransport(transport)
@@ -84,6 +100,7 @@ func WithTransport(transport http.RoundTripper) ClientOption {
 	}
 }
 
+// WithKey sets the Steam API key ("key" parameter) for all requests.
 func WithKey(key string) ClientOption {
 	return func(c *Client) error {
 		c.client.SetQueryParam("key", key)
@@ -91,6 +108,7 @@ func WithKey(key string) ClientOption {
 	}
 }
 
+// WithLanguage sets the language ("language" parameter) for all requests.
 func WithLanguage(lang string) ClientOption {
 	return func(c *Client) error {
 		c.client.SetQueryParam("language", lang)
@@ -98,10 +116,16 @@ func WithLanguage(lang string) ClientOption {
 	}
 }
 
+// Client is the API entry-point.
 type Client struct {
 	client *resty.Client
 }
 
+/*
+New creates a new Client.
+
+It uses the option functions approach to pass multiple options.
+*/
 func New(options ...ClientOption) (*Client, error) {
 	rclient := resty.New().
 		SetHostURL(baseURL).
@@ -118,6 +142,7 @@ func New(options ...ClientOption) (*Client, error) {
 	return client, nil
 }
 
+// ClientRequest wraps request arguments.
 type ClientRequest struct {
 	Interface *SchemaInterface
 	Method    *SchemaMethod
@@ -125,6 +150,8 @@ type ClientRequest struct {
 	Result    interface{}
 }
 
+// Request performs an API request to the given interface and method with given options and stores
+// the result in the given result.
 func (c *Client) Request(creq ClientRequest) (*resty.Response, error) {
 	var params url.Values
 
@@ -148,8 +175,9 @@ func (c *Client) Request(creq ClientRequest) (*resty.Response, error) {
 	}
 
 	req := c.client.R().
-		SetContext(creq.Options.Context).
 		SetPathParams(pathParams).
+		SetContext(creq.Options.Context).
+		SetHeaders(creq.Options.Headers).
 		SetQueryParamsFromValues(creq.Options.Params).
 		SetFormDataFromValues(creq.Options.FormData).
 		SetBody(creq.Options.Body)
