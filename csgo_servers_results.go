@@ -2,8 +2,8 @@
 
 package geyser
 
-// CSGOServersGetGameMapsPlaytime holds the result of the method ICSGOServers/GetGameMapsPlaytime
+// CSGOServersGetGameMapsPlaytime holds the result of the method ICSGOServers/GetGameMapsPlaytime.
 type CSGOServersGetGameMapsPlaytime struct{}
 
-// CSGOServersGetGameServersStatus holds the result of the method ICSGOServers/GetGameServersStatus
+// CSGOServersGetGameServersStatus holds the result of the method ICSGOServers/GetGameServersStatus.
 type CSGOServersGetGameServersStatus struct{}

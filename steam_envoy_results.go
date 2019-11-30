@@ -2,5 +2,5 @@
 
 package geyser
 
-// SteamEnvoyPaymentOutReversalNotification holds the result of the method ISteamEnvoy/PaymentOutReversalNotification
+// SteamEnvoyPaymentOutReversalNotification holds the result of the method ISteamEnvoy/PaymentOutReversalNotification.
 type SteamEnvoyPaymentOutReversalNotification struct{}

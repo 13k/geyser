@@ -2,5 +2,5 @@
 
 package geyser
 
-// SteamBroadcastViewerHeartbeat holds the result of the method ISteamBroadcast/ViewerHeartbeat
+// SteamBroadcastViewerHeartbeat holds the result of the method ISteamBroadcast/ViewerHeartbeat.
 type SteamBroadcastViewerHeartbeat struct{}

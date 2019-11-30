@@ -2,23 +2,23 @@
 
 package geyser
 
-// PlayerServiceGetSteamLevel holds the result of the method IPlayerService/GetSteamLevel
-type PlayerServiceGetSteamLevel struct{}
-
-// PlayerServiceGetBadges holds the result of the method IPlayerService/GetBadges
+// PlayerServiceGetBadges holds the result of the method IPlayerService/GetBadges.
 type PlayerServiceGetBadges struct{}
 
-// PlayerServiceGetCommunityBadgeProgress holds the result of the method IPlayerService/GetCommunityBadgeProgress
+// PlayerServiceGetCommunityBadgeProgress holds the result of the method IPlayerService/GetCommunityBadgeProgress.
 type PlayerServiceGetCommunityBadgeProgress struct{}
 
-// PlayerServiceIsPlayingSharedGame holds the result of the method IPlayerService/IsPlayingSharedGame
+// PlayerServiceIsPlayingSharedGame holds the result of the method IPlayerService/IsPlayingSharedGame.
 type PlayerServiceIsPlayingSharedGame struct{}
 
-// PlayerServiceRecordOfflinePlaytime holds the result of the method IPlayerService/RecordOfflinePlaytime
+// PlayerServiceRecordOfflinePlaytime holds the result of the method IPlayerService/RecordOfflinePlaytime.
 type PlayerServiceRecordOfflinePlaytime struct{}
 
-// PlayerServiceGetRecentlyPlayedGames holds the result of the method IPlayerService/GetRecentlyPlayedGames
+// PlayerServiceGetRecentlyPlayedGames holds the result of the method IPlayerService/GetRecentlyPlayedGames.
 type PlayerServiceGetRecentlyPlayedGames struct{}
 
-// PlayerServiceGetOwnedGames holds the result of the method IPlayerService/GetOwnedGames
+// PlayerServiceGetOwnedGames holds the result of the method IPlayerService/GetOwnedGames.
 type PlayerServiceGetOwnedGames struct{}
+
+// PlayerServiceGetSteamLevel holds the result of the method IPlayerService/GetSteamLevel.
+type PlayerServiceGetSteamLevel struct{}

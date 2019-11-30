@@ -2,8 +2,8 @@
 
 package geyser
 
-// SteamEconomyGetAssetClassInfo holds the result of the method ISteamEconomy/GetAssetClassInfo
+// SteamEconomyGetAssetClassInfo holds the result of the method ISteamEconomy/GetAssetClassInfo.
 type SteamEconomyGetAssetClassInfo struct{}
 
-// SteamEconomyGetAssetPrices holds the result of the method ISteamEconomy/GetAssetPrices
+// SteamEconomyGetAssetPrices holds the result of the method ISteamEconomy/GetAssetPrices.
 type SteamEconomyGetAssetPrices struct{}

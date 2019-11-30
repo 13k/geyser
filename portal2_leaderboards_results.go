@@ -2,5 +2,5 @@
 
 package geyser
 
-// Portal2LeaderboardsGetBucketizedData holds the result of the method IPortal2Leaderboards/GetBucketizedData
+// Portal2LeaderboardsGetBucketizedData holds the result of the method IPortal2Leaderboards/GetBucketizedData.
 type Portal2LeaderboardsGetBucketizedData struct{}

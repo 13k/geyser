@@ -2,5 +2,5 @@
 
 package geyser
 
-// SteamWebUserPresenceOAuthPollStatus holds the result of the method ISteamWebUserPresenceOAuth/PollStatus
+// SteamWebUserPresenceOAuthPollStatus holds the result of the method ISteamWebUserPresenceOAuth/PollStatus.
 type SteamWebUserPresenceOAuthPollStatus struct{}

@@ -2,14 +2,14 @@
 
 package geyser
 
-// DOTA2TicketClaimBadgeReward holds the result of the method IDOTA2Ticket/ClaimBadgeReward
+// DOTA2TicketSteamAccountValidForBadgeType holds the result of the method IDOTA2Ticket/SteamAccountValidForBadgeType.
+type DOTA2TicketSteamAccountValidForBadgeType struct{}
+
+// DOTA2TicketClaimBadgeReward holds the result of the method IDOTA2Ticket/ClaimBadgeReward.
 type DOTA2TicketClaimBadgeReward struct{}
 
-// DOTA2TicketGetSteamIDForBadgeID holds the result of the method IDOTA2Ticket/GetSteamIDForBadgeID
+// DOTA2TicketGetSteamIDForBadgeID holds the result of the method IDOTA2Ticket/GetSteamIDForBadgeID.
 type DOTA2TicketGetSteamIDForBadgeID struct{}
 
-// DOTA2TicketSetSteamAccountPurchased holds the result of the method IDOTA2Ticket/SetSteamAccountPurchased
+// DOTA2TicketSetSteamAccountPurchased holds the result of the method IDOTA2Ticket/SetSteamAccountPurchased.
 type DOTA2TicketSetSteamAccountPurchased struct{}
-
-// DOTA2TicketSteamAccountValidForBadgeType holds the result of the method IDOTA2Ticket/SteamAccountValidForBadgeType
-type DOTA2TicketSteamAccountValidForBadgeType struct{}

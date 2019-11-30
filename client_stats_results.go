@@ -2,5 +2,5 @@
 
 package geyser
 
-// ClientStatsReportEvent holds the result of the method IClientStats/ReportEvent
+// ClientStatsReportEvent holds the result of the method IClientStats/ReportEvent.
 type ClientStatsReportEvent struct{}

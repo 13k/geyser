@@ -2,5 +2,5 @@
 
 package geyser
 
-// BroadcastServicePostGameDataFrameRTMP holds the result of the method IBroadcastService/PostGameDataFrameRTMP
+// BroadcastServicePostGameDataFrameRTMP holds the result of the method IBroadcastService/PostGameDataFrameRTMP.
 type BroadcastServicePostGameDataFrameRTMP struct{}

@@ -2,5 +2,5 @@
 
 package geyser
 
-// CSGOPlayersGetNextMatchSharingCode holds the result of the method ICSGOPlayers/GetNextMatchSharingCode
+// CSGOPlayersGetNextMatchSharingCode holds the result of the method ICSGOPlayers/GetNextMatchSharingCode.
 type CSGOPlayersGetNextMatchSharingCode struct{}

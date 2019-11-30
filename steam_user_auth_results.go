@@ -1,6 +1,6 @@
 package geyser
 
-// SteamUserAuthAuthenticateUser holds the result of the method ISteamUserAuth/AuthenticateUser
+// SteamUserAuthAuthenticateUser holds the result of the method ISteamUserAuth/AuthenticateUser.
 type SteamUserAuthAuthenticateUser struct {
 	AuthenticateUser SteamUserAuthAuthenticateUserAuthenticateUser `json:"authenticateuser"`
 }
@@ -10,5 +10,5 @@ type SteamUserAuthAuthenticateUserAuthenticateUser struct {
 	TokenSecure string `json:"token_secure"`
 }
 
-// SteamUserAuthAuthenticateUserTicket holds the result of the method ISteamUserAuth/AuthenticateUserTicket
+// SteamUserAuthAuthenticateUserTicket holds the result of the method ISteamUserAuth/AuthenticateUserTicket.
 type SteamUserAuthAuthenticateUserTicket struct{}

@@ -2,8 +2,8 @@
 
 package geyser
 
-// TFPromosGrantItem holds the result of the method ITFPromos/GrantItem
-type TFPromosGrantItem struct{}
-
-// TFPromosGetItemID holds the result of the method ITFPromos/GetItemID
+// TFPromosGetItemID holds the result of the method ITFPromos/GetItemID.
 type TFPromosGetItemID struct{}
+
+// TFPromosGrantItem holds the result of the method ITFPromos/GrantItem.
+type TFPromosGrantItem struct{}

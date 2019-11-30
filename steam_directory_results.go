@@ -2,11 +2,11 @@
 
 package geyser
 
-// SteamDirectoryGetSteamPipeDomains holds the result of the method ISteamDirectory/GetSteamPipeDomains
+// SteamDirectoryGetCSList holds the result of the method ISteamDirectory/GetCSList.
+type SteamDirectoryGetCSList struct{}
+
+// SteamDirectoryGetSteamPipeDomains holds the result of the method ISteamDirectory/GetSteamPipeDomains.
 type SteamDirectoryGetSteamPipeDomains struct{}
 
-// SteamDirectoryGetCMList holds the result of the method ISteamDirectory/GetCMList
+// SteamDirectoryGetCMList holds the result of the method ISteamDirectory/GetCMList.
 type SteamDirectoryGetCMList struct{}
-
-// SteamDirectoryGetCSList holds the result of the method ISteamDirectory/GetCSList
-type SteamDirectoryGetCSList struct{}

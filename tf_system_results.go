@@ -2,5 +2,5 @@
 
 package geyser
 
-// TFSystemGetWorldStatus holds the result of the method ITFSystem/GetWorldStatus
+// TFSystemGetWorldStatus holds the result of the method ITFSystem/GetWorldStatus.
 type TFSystemGetWorldStatus struct{}

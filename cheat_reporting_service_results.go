@@ -2,5 +2,5 @@
 
 package geyser
 
-// CheatReportingServiceReportCheatData holds the result of the method ICheatReportingService/ReportCheatData
+// CheatReportingServiceReportCheatData holds the result of the method ICheatReportingService/ReportCheatData.
 type CheatReportingServiceReportCheatData struct{}

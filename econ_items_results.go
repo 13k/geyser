@@ -2,26 +2,26 @@
 
 package geyser
 
-// EconItemsGetStoreStatus holds the result of the method IEconItems/GetStoreStatus
-type EconItemsGetStoreStatus struct{}
-
-// EconItemsGetSchemaURL holds the result of the method IEconItems/GetSchemaURL
+// EconItemsGetSchemaURL holds the result of the method IEconItems/GetSchemaURL.
 type EconItemsGetSchemaURL struct{}
 
-// EconItemsGetStoreMetaData holds the result of the method IEconItems/GetStoreMetaData
+// EconItemsGetStoreMetaData holds the result of the method IEconItems/GetStoreMetaData.
 type EconItemsGetStoreMetaData struct{}
 
-// EconItemsGetEquippedPlayerItems holds the result of the method IEconItems/GetEquippedPlayerItems
-type EconItemsGetEquippedPlayerItems struct{}
-
-// EconItemsGetPlayerItems holds the result of the method IEconItems/GetPlayerItems
-type EconItemsGetPlayerItems struct{}
-
-// EconItemsGetSchema holds the result of the method IEconItems/GetSchema
+// EconItemsGetSchema holds the result of the method IEconItems/GetSchema.
 type EconItemsGetSchema struct{}
 
-// EconItemsGetSchemaItems holds the result of the method IEconItems/GetSchemaItems
+// EconItemsGetSchemaItems holds the result of the method IEconItems/GetSchemaItems.
 type EconItemsGetSchemaItems struct{}
 
-// EconItemsGetSchemaOverview holds the result of the method IEconItems/GetSchemaOverview
+// EconItemsGetSchemaOverview holds the result of the method IEconItems/GetSchemaOverview.
 type EconItemsGetSchemaOverview struct{}
+
+// EconItemsGetStoreStatus holds the result of the method IEconItems/GetStoreStatus.
+type EconItemsGetStoreStatus struct{}
+
+// EconItemsGetEquippedPlayerItems holds the result of the method IEconItems/GetEquippedPlayerItems.
+type EconItemsGetEquippedPlayerItems struct{}
+
+// EconItemsGetPlayerItems holds the result of the method IEconItems/GetPlayerItems.
+type EconItemsGetPlayerItems struct{}

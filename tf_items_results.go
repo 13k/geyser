@@ -2,5 +2,5 @@
 
 package geyser
 
-// TFItemsGetGoldenWrenches holds the result of the method ITFItems/GetGoldenWrenches
+// TFItemsGetGoldenWrenches holds the result of the method ITFItems/GetGoldenWrenches.
 type TFItemsGetGoldenWrenches struct{}

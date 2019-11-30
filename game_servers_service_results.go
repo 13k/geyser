@@ -2,29 +2,29 @@
 
 package geyser
 
-// GameServersServiceGetServerSteamIDsByIP holds the result of the method IGameServersService/GetServerSteamIDsByIP
-type GameServersServiceGetServerSteamIDsByIP struct{}
-
-// GameServersServiceQueryLoginToken holds the result of the method IGameServersService/QueryLoginToken
-type GameServersServiceQueryLoginToken struct{}
-
-// GameServersServiceResetLoginToken holds the result of the method IGameServersService/ResetLoginToken
-type GameServersServiceResetLoginToken struct{}
-
-// GameServersServiceCreateAccount holds the result of the method IGameServersService/CreateAccount
-type GameServersServiceCreateAccount struct{}
-
-// GameServersServiceDeleteAccount holds the result of the method IGameServersService/DeleteAccount
-type GameServersServiceDeleteAccount struct{}
-
-// GameServersServiceGetServerIPsBySteamID holds the result of the method IGameServersService/GetServerIPsBySteamID
+// GameServersServiceGetServerIPsBySteamID holds the result of the method IGameServersService/GetServerIPsBySteamID.
 type GameServersServiceGetServerIPsBySteamID struct{}
 
-// GameServersServiceGetAccountPublicInfo holds the result of the method IGameServersService/GetAccountPublicInfo
-type GameServersServiceGetAccountPublicInfo struct{}
+// GameServersServiceResetLoginToken holds the result of the method IGameServersService/ResetLoginToken.
+type GameServersServiceResetLoginToken struct{}
 
-// GameServersServiceGetAccountList holds the result of the method IGameServersService/GetAccountList
+// GameServersServiceCreateAccount holds the result of the method IGameServersService/CreateAccount.
+type GameServersServiceCreateAccount struct{}
+
+// GameServersServiceDeleteAccount holds the result of the method IGameServersService/DeleteAccount.
+type GameServersServiceDeleteAccount struct{}
+
+// GameServersServiceGetAccountList holds the result of the method IGameServersService/GetAccountList.
 type GameServersServiceGetAccountList struct{}
 
-// GameServersServiceSetMemo holds the result of the method IGameServersService/SetMemo
+// GameServersServiceSetMemo holds the result of the method IGameServersService/SetMemo.
 type GameServersServiceSetMemo struct{}
+
+// GameServersServiceGetAccountPublicInfo holds the result of the method IGameServersService/GetAccountPublicInfo.
+type GameServersServiceGetAccountPublicInfo struct{}
+
+// GameServersServiceGetServerSteamIDsByIP holds the result of the method IGameServersService/GetServerSteamIDsByIP.
+type GameServersServiceGetServerSteamIDsByIP struct{}
+
+// GameServersServiceQueryLoginToken holds the result of the method IGameServersService/QueryLoginToken.
+type GameServersServiceQueryLoginToken struct{}

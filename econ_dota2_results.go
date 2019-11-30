@@ -2,23 +2,23 @@
 
 package geyser
 
-// EconDOTA2GetEventStatsForAccount holds the result of the method IEconDOTA2/GetEventStatsForAccount
-type EconDOTA2GetEventStatsForAccount struct{}
-
-// EconDOTA2GetGameItems holds the result of the method IEconDOTA2/GetGameItems
-type EconDOTA2GetGameItems struct{}
-
-// EconDOTA2GetHeroes holds the result of the method IEconDOTA2/GetHeroes
-type EconDOTA2GetHeroes struct{}
-
-// EconDOTA2GetItemCreators holds the result of the method IEconDOTA2/GetItemCreators
+// EconDOTA2GetItemCreators holds the result of the method IEconDOTA2/GetItemCreators.
 type EconDOTA2GetItemCreators struct{}
 
-// EconDOTA2GetItemIconPath holds the result of the method IEconDOTA2/GetItemIconPath
+// EconDOTA2GetEventStatsForAccount holds the result of the method IEconDOTA2/GetEventStatsForAccount.
+type EconDOTA2GetEventStatsForAccount struct{}
+
+// EconDOTA2GetGameItems holds the result of the method IEconDOTA2/GetGameItems.
+type EconDOTA2GetGameItems struct{}
+
+// EconDOTA2GetHeroes holds the result of the method IEconDOTA2/GetHeroes.
+type EconDOTA2GetHeroes struct{}
+
+// EconDOTA2GetItemIconPath holds the result of the method IEconDOTA2/GetItemIconPath.
 type EconDOTA2GetItemIconPath struct{}
 
-// EconDOTA2GetRarities holds the result of the method IEconDOTA2/GetRarities
+// EconDOTA2GetRarities holds the result of the method IEconDOTA2/GetRarities.
 type EconDOTA2GetRarities struct{}
 
-// EconDOTA2GetTournamentPrizePool holds the result of the method IEconDOTA2/GetTournamentPrizePool
+// EconDOTA2GetTournamentPrizePool holds the result of the method IEconDOTA2/GetTournamentPrizePool.
 type EconDOTA2GetTournamentPrizePool struct{}

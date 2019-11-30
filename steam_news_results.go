@@ -2,5 +2,5 @@
 
 package geyser
 
-// SteamNewsGetNewsForApp holds the result of the method ISteamNews/GetNewsForApp
+// SteamNewsGetNewsForApp holds the result of the method ISteamNews/GetNewsForApp.
 type SteamNewsGetNewsForApp struct{}

@@ -2,5 +2,5 @@
 
 package geyser
 
-// SteamUserOAuthGetTokenDetails holds the result of the method ISteamUserOAuth/GetTokenDetails
+// SteamUserOAuthGetTokenDetails holds the result of the method ISteamUserOAuth/GetTokenDetails.
 type SteamUserOAuthGetTokenDetails struct{}

@@ -2,8 +2,8 @@
 
 package geyser
 
-// ContentServerDirectoryServiceGetServersForSteamPipe holds the result of the method IContentServerDirectoryService/GetServersForSteamPipe
+// ContentServerDirectoryServiceGetServersForSteamPipe holds the result of the method IContentServerDirectoryService/GetServersForSteamPipe.
 type ContentServerDirectoryServiceGetServersForSteamPipe struct{}
 
-// ContentServerDirectoryServiceGetDepotPatchInfo holds the result of the method IContentServerDirectoryService/GetDepotPatchInfo
+// ContentServerDirectoryServiceGetDepotPatchInfo holds the result of the method IContentServerDirectoryService/GetDepotPatchInfo.
 type ContentServerDirectoryServiceGetDepotPatchInfo struct{}

@@ -2,8 +2,8 @@
 
 package geyser
 
-// SteamCDNSetClientFilters holds the result of the method ISteamCDN/SetClientFilters
-type SteamCDNSetClientFilters struct{}
-
-// SteamCDNSetPerformanceStats holds the result of the method ISteamCDN/SetPerformanceStats
+// SteamCDNSetPerformanceStats holds the result of the method ISteamCDN/SetPerformanceStats.
 type SteamCDNSetPerformanceStats struct{}
+
+// SteamCDNSetClientFilters holds the result of the method ISteamCDN/SetClientFilters.
+type SteamCDNSetClientFilters struct{}

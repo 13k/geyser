@@ -2,11 +2,11 @@
 
 package geyser
 
-// PublishedFileServiceQueryFiles holds the result of the method IPublishedFileService/QueryFiles
-type PublishedFileServiceQueryFiles struct{}
-
-// PublishedFileServiceGetDetails holds the result of the method IPublishedFileService/GetDetails
+// PublishedFileServiceGetDetails holds the result of the method IPublishedFileService/GetDetails.
 type PublishedFileServiceGetDetails struct{}
 
-// PublishedFileServiceGetUserFiles holds the result of the method IPublishedFileService/GetUserFiles
+// PublishedFileServiceGetUserFiles holds the result of the method IPublishedFileService/GetUserFiles.
 type PublishedFileServiceGetUserFiles struct{}
+
+// PublishedFileServiceQueryFiles holds the result of the method IPublishedFileService/QueryFiles.
+type PublishedFileServiceQueryFiles struct{}

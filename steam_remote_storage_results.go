@@ -2,11 +2,11 @@
 
 package geyser
 
-// SteamRemoteStorageGetCollectionDetails holds the result of the method ISteamRemoteStorage/GetCollectionDetails
+// SteamRemoteStorageGetCollectionDetails holds the result of the method ISteamRemoteStorage/GetCollectionDetails.
 type SteamRemoteStorageGetCollectionDetails struct{}
 
-// SteamRemoteStorageGetPublishedFileDetails holds the result of the method ISteamRemoteStorage/GetPublishedFileDetails
+// SteamRemoteStorageGetPublishedFileDetails holds the result of the method ISteamRemoteStorage/GetPublishedFileDetails.
 type SteamRemoteStorageGetPublishedFileDetails struct{}
 
-// SteamRemoteStorageGetUGCFileDetails holds the result of the method ISteamRemoteStorage/GetUGCFileDetails
+// SteamRemoteStorageGetUGCFileDetails holds the result of the method ISteamRemoteStorage/GetUGCFileDetails.
 type SteamRemoteStorageGetUGCFileDetails struct{}

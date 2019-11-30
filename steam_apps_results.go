@@ -2,14 +2,14 @@
 
 package geyser
 
-// SteamAppsGetAppList holds the result of the method ISteamApps/GetAppList
+// SteamAppsUpToDateCheck holds the result of the method ISteamApps/UpToDateCheck.
+type SteamAppsUpToDateCheck struct{}
+
+// SteamAppsGetAppList holds the result of the method ISteamApps/GetAppList.
 type SteamAppsGetAppList struct{}
 
-// SteamAppsGetSDRConfig holds the result of the method ISteamApps/GetSDRConfig
+// SteamAppsGetSDRConfig holds the result of the method ISteamApps/GetSDRConfig.
 type SteamAppsGetSDRConfig struct{}
 
-// SteamAppsGetServersAtAddress holds the result of the method ISteamApps/GetServersAtAddress
+// SteamAppsGetServersAtAddress holds the result of the method ISteamApps/GetServersAtAddress.
 type SteamAppsGetServersAtAddress struct{}
-
-// SteamAppsUpToDateCheck holds the result of the method ISteamApps/UpToDateCheck
-type SteamAppsUpToDateCheck struct{}

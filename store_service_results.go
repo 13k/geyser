@@ -2,5 +2,5 @@
 
 package geyser
 
-// StoreServiceGetAppList holds the result of the method IStoreService/GetAppList
+// StoreServiceGetAppList holds the result of the method IStoreService/GetAppList.
 type StoreServiceGetAppList struct{}

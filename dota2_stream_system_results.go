@@ -2,5 +2,5 @@
 
 package geyser
 
-// DOTA2StreamSystemGetBroadcasterInfo holds the result of the method IDOTA2StreamSystem/GetBroadcasterInfo
+// DOTA2StreamSystemGetBroadcasterInfo holds the result of the method IDOTA2StreamSystem/GetBroadcasterInfo.
 type DOTA2StreamSystemGetBroadcasterInfo struct{}

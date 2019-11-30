@@ -2,20 +2,20 @@
 
 package geyser
 
-// CSGOTournamentsGetTournamentFantasyLineup holds the result of the method ICSGOTournaments/GetTournamentFantasyLineup
+// CSGOTournamentsGetTournamentFantasyLineup holds the result of the method ICSGOTournaments/GetTournamentFantasyLineup.
 type CSGOTournamentsGetTournamentFantasyLineup struct{}
 
-// CSGOTournamentsGetTournamentItems holds the result of the method ICSGOTournaments/GetTournamentItems
+// CSGOTournamentsGetTournamentItems holds the result of the method ICSGOTournaments/GetTournamentItems.
 type CSGOTournamentsGetTournamentItems struct{}
 
-// CSGOTournamentsGetTournamentLayout holds the result of the method ICSGOTournaments/GetTournamentLayout
+// CSGOTournamentsGetTournamentLayout holds the result of the method ICSGOTournaments/GetTournamentLayout.
 type CSGOTournamentsGetTournamentLayout struct{}
 
-// CSGOTournamentsGetTournamentPredictions holds the result of the method ICSGOTournaments/GetTournamentPredictions
+// CSGOTournamentsGetTournamentPredictions holds the result of the method ICSGOTournaments/GetTournamentPredictions.
 type CSGOTournamentsGetTournamentPredictions struct{}
 
-// CSGOTournamentsUploadTournamentFantasyLineup holds the result of the method ICSGOTournaments/UploadTournamentFantasyLineup
+// CSGOTournamentsUploadTournamentFantasyLineup holds the result of the method ICSGOTournaments/UploadTournamentFantasyLineup.
 type CSGOTournamentsUploadTournamentFantasyLineup struct{}
 
-// CSGOTournamentsUploadTournamentPredictions holds the result of the method ICSGOTournaments/UploadTournamentPredictions
+// CSGOTournamentsUploadTournamentPredictions holds the result of the method ICSGOTournaments/UploadTournamentPredictions.
 type CSGOTournamentsUploadTournamentPredictions struct{}

@@ -2,11 +2,11 @@
 
 package geyser
 
-// ContentServerConfigServiceGetSteamCacheNodeParams holds the result of the method IContentServerConfigService/GetSteamCacheNodeParams
+// ContentServerConfigServiceGetSteamCacheNodeParams holds the result of the method IContentServerConfigService/GetSteamCacheNodeParams.
 type ContentServerConfigServiceGetSteamCacheNodeParams struct{}
 
-// ContentServerConfigServiceSetSteamCachePerformanceStats holds the result of the method IContentServerConfigService/SetSteamCachePerformanceStats
+// ContentServerConfigServiceSetSteamCachePerformanceStats holds the result of the method IContentServerConfigService/SetSteamCachePerformanceStats.
 type ContentServerConfigServiceSetSteamCachePerformanceStats struct{}
 
-// ContentServerConfigServiceSetSteamCacheClientFilters holds the result of the method IContentServerConfigService/SetSteamCacheClientFilters
+// ContentServerConfigServiceSetSteamCacheClientFilters holds the result of the method IContentServerConfigService/SetSteamCacheClientFilters.
 type ContentServerConfigServiceSetSteamCacheClientFilters struct{}

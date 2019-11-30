@@ -2,11 +2,11 @@
 
 package geyser
 
-// GameNotificationsServiceUserCreateSession holds the result of the method IGameNotificationsService/UserCreateSession
+// GameNotificationsServiceUserDeleteSession holds the result of the method IGameNotificationsService/UserDeleteSession.
+type GameNotificationsServiceUserDeleteSession struct{}
+
+// GameNotificationsServiceUserCreateSession holds the result of the method IGameNotificationsService/UserCreateSession.
 type GameNotificationsServiceUserCreateSession struct{}
 
-// GameNotificationsServiceUserUpdateSession holds the result of the method IGameNotificationsService/UserUpdateSession
+// GameNotificationsServiceUserUpdateSession holds the result of the method IGameNotificationsService/UserUpdateSession.
 type GameNotificationsServiceUserUpdateSession struct{}
-
-// GameNotificationsServiceUserDeleteSession holds the result of the method IGameNotificationsService/UserDeleteSession
-type GameNotificationsServiceUserDeleteSession struct{}

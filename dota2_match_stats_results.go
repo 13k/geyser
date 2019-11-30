@@ -2,5 +2,5 @@
 
 package geyser
 
-// DOTA2MatchStatsGetRealtimeStats holds the result of the method IDOTA2MatchStats/GetRealtimeStats
+// DOTA2MatchStatsGetRealtimeStats holds the result of the method IDOTA2MatchStats/GetRealtimeStats.
 type DOTA2MatchStatsGetRealtimeStats struct{}

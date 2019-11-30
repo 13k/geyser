@@ -2,11 +2,11 @@
 
 package geyser
 
-// InventoryServiceSplitItemStack holds the result of the method IInventoryService/SplitItemStack
-type InventoryServiceSplitItemStack struct{}
-
-// InventoryServiceCombineItemStacks holds the result of the method IInventoryService/CombineItemStacks
+// InventoryServiceCombineItemStacks holds the result of the method IInventoryService/CombineItemStacks.
 type InventoryServiceCombineItemStacks struct{}
 
-// InventoryServiceGetPriceSheet holds the result of the method IInventoryService/GetPriceSheet
+// InventoryServiceGetPriceSheet holds the result of the method IInventoryService/GetPriceSheet.
 type InventoryServiceGetPriceSheet struct{}
+
+// InventoryServiceSplitItemStack holds the result of the method IInventoryService/SplitItemStack.
+type InventoryServiceSplitItemStack struct{}

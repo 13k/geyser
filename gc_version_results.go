@@ -2,8 +2,8 @@
 
 package geyser
 
-// GCVersionGetClientVersion holds the result of the method IGCVersion/GetClientVersion
+// GCVersionGetClientVersion holds the result of the method IGCVersion/GetClientVersion.
 type GCVersionGetClientVersion struct{}
 
-// GCVersionGetServerVersion holds the result of the method IGCVersion/GetServerVersion
+// GCVersionGetServerVersion holds the result of the method IGCVersion/GetServerVersion.
 type GCVersionGetServerVersion struct{}
