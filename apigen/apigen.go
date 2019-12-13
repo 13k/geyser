@@ -32,13 +32,15 @@ const (
 	commentfDisclaimerInterface = "API interface: %s."
 	commentfSchemaVar           = "%s stores the SchemaInterfaces for interface %s."
 	commentfStruct              = "%s represents interface %s."
-	commentStructUndoc          = "This is an undocumented interface. Refer to the package documentation for more information."
-	commentfSupportedAppIDs     = "Supported AppIDs: %d."
-	commentfSupportedVersions   = "Supported versions: %d."
+	commentfSupportedAppIDs     = "Supported AppIDs: %s."
+	commentfSupportedVersions   = "Supported versions: %s."
+	commentStructUndoc          = "This is an undocumented interface."
 	commentfStructCtor          = "%s creates a new %s interface."
 	commentfStructGetter        = "%s creates a new %s interface."
 	commentfStructMethodHeader  = "%s creates a Request for interface method %s."
-	commentStructMethodUndoc    = "This is an undocumented method. Refer to the package documentation for more information."
+	commentStructMethodUndoc    = "This is an undocumented method."
+	commentfParamsVersioned     = "Parameters (v%d)"
+	commentParams               = "Parameters"
 	commentfStructResult        = "%s holds the result of the method %s/%s."
 
 	errfUnknownInterfaceFilename = "Unknown filename for interface %q"
@@ -242,7 +244,8 @@ func (g *APIGen) genStructDef() j.Code {
 	}
 
 	if g.requiredAppID {
-		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, g.appIDs))
+		appIDsComment := stringJoinUint32(g.appIDs, ", ")
+		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, appIDsComment))
 	}
 
 	if g.undoc {
@@ -277,8 +280,9 @@ func (g *APIGen) genStructCtor() j.Code {
 	}
 
 	if g.requiredAppID {
+		appIDsComment := stringJoinUint32(g.appIDs, ", ")
 		params = append(params, j.Id("appID").Uint32())
-		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, g.appIDs))
+		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, appIDsComment))
 	}
 
 	retTypes := []j.Code{
@@ -337,9 +341,10 @@ func (g *APIGen) genStructGetter() j.Code {
 	ctorParams := []j.Code{j.Id("c")}
 
 	if g.requiredAppID {
+		appIDsComment := stringJoinUint32(g.appIDs, ", ")
 		getterParams = append(getterParams, j.Id("appID").Uint32())
 		ctorParams = append(ctorParams, j.Id("appID"))
-		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, g.appIDs))
+		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, appIDsComment))
 	}
 
 	retTypes := []j.Code{
@@ -406,11 +411,38 @@ func (g *APIGen) genMethod(methodName string, sms *geyser.SchemaMethods) (j.Code
 	}
 
 	if requiredVersion {
-		comments = append(comments, fmt.Sprintf(commentfSupportedVersions, versions))
+		versionsComment := stringJoinInt(versions, ", ")
+		comments = append(comments, "")
+		comments = append(comments, fmt.Sprintf(commentfSupportedVersions, versionsComment))
 	}
 
 	if undoc {
+		comments = append(comments, "")
 		comments = append(comments, commentStructMethodUndoc)
+	}
+
+	var paramsComments []string
+
+	for _, sm := range sms.Methods {
+		if len(sm.GetParams()) > 0 {
+			var title string
+
+			if requiredVersion {
+				title = fmt.Sprintf(commentfParamsVersioned, sm.Version)
+			} else {
+				title = commentParams
+			}
+
+			paramsComments = append(paramsComments, "", title, "")
+
+			for _, param := range sm.GetParams() {
+				paramsComments = append(paramsComments, paramComment(param))
+			}
+		}
+	}
+
+	if len(paramsComments) > 0 {
+		comments = append(comments, paramsComments...)
 	}
 
 	structReceiver := j.Id("i").Op("*").Id(g.structName)
@@ -453,17 +485,9 @@ func (g *APIGen) genMethod(methodName string, sms *geyser.SchemaMethods) (j.Code
 		j.Return(j.Id("req"), j.Nil()),
 	}
 
-	code := j.Null()
-
-	for i, c := range comments {
-		code.Comment(c).Line()
-
-		if i != len(comments)-1 {
-			code.Comment("").Line()
-		}
-	}
-
-	code.Func().Parens(structReceiver).Id(funcName).Params(params...).Parens(retTypes).Block(body...)
+	code := j.Null().
+		Comment(strings.Join(comments, "\n")).Line().
+		Func().Parens(structReceiver).Id(funcName).Params(params...).Parens(retTypes).Block(body...)
 
 	return code, nil
 }
@@ -562,4 +586,25 @@ func (g *APIGen) RemoveInterfaceFile() (string, EGenerated, error) {
 func (g *APIGen) RemoveResultsFile() (string, EGenerated, error) {
 	etest, err := g.resultsFile.Remove()
 	return g.resultsFile.Filename(), etest, err
+}
+
+func paramComment(param *geyser.SchemaMethodParam) string {
+	var b strings.Builder
+
+	b.WriteString("  * ")
+	b.WriteString(param.Name)
+	b.WriteString(" [")
+	b.WriteString(param.Type)
+	b.WriteRune(']')
+
+	if !param.Optional {
+		b.WriteString(" (required)")
+	}
+
+	if param.Description != "" {
+		b.WriteString(": ")
+		b.WriteString(param.Description)
+	}
+
+	return b.String()
 }
