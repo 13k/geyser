@@ -32,11 +32,13 @@ const (
 	commentfDisclaimerInterface = "API interface: %s."
 	commentfSchemaVar           = "%s stores the SchemaInterfaces for interface %s."
 	commentfStruct              = "%s represents interface %s."
+	commentStructUndoc          = "This is an undocumented interface. Refer to the package documentation for more information."
 	commentfSupportedAppIDs     = "Supported AppIDs: %d."
 	commentfSupportedVersions   = "Supported versions: %d."
 	commentfStructCtor          = "%s creates a new %s interface."
 	commentfStructGetter        = "%s creates a new %s interface."
 	commentfStructMethodHeader  = "%s creates a Request for interface method %s."
+	commentStructMethodUndoc    = "This is an undocumented method. Refer to the package documentation for more information."
 	commentfStructResult        = "%s holds the result of the method %s/%s."
 
 	errfUnknownInterfaceFilename = "Unknown filename for interface %q"
@@ -50,6 +52,7 @@ type APIGen struct {
 	methodsNames   []string
 	appIDs         []uint32
 	requiredAppID  bool
+	undoc          bool
 	externalPkg    bool
 	pkgName        string
 	schemaVarName  string
@@ -107,6 +110,17 @@ func NewAPIGen(
 
 	sort.Strings(methodsNames)
 
+	undoc := true
+
+	// if at least 1 interface in the group is documented, then we do not consider
+	// the struct undocumented.
+	for _, si := range sis.Interfaces {
+		if !si.Undocumented {
+			undoc = false
+			break
+		}
+	}
+
 	g := &APIGen{
 		baseName:       baseName,
 		interfaces:     sis,
@@ -114,6 +128,7 @@ func NewAPIGen(
 		methodsNames:   methodsNames,
 		appIDs:         appIDs,
 		requiredAppID:  len(appIDs) > 0,
+		undoc:          undoc,
 		externalPkg:    pkgName != srcPkgGeyser,
 		pkgName:        pkgName,
 		structName:     structName,
@@ -228,6 +243,10 @@ func (g *APIGen) genStructDef() j.Code {
 
 	if g.requiredAppID {
 		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, g.appIDs))
+	}
+
+	if g.undoc {
+		comments = append(comments, commentStructUndoc)
 	}
 
 	fields := []j.Code{
@@ -373,6 +392,14 @@ func (g *APIGen) genMethod(methodName string, sms *geyser.SchemaMethods) (j.Code
 	funcName := g.methodFuncName(methodName)
 	resultStructName := g.methodResultStructName(methodName)
 	requiredVersion := len(versions) > 1
+	undoc := true
+
+	for _, sm := range sms.Methods {
+		if !sm.Undocumented {
+			undoc = false
+			break
+		}
+	}
 
 	comments := []string{
 		fmt.Sprintf(commentfStructMethodHeader, funcName, methodName),
@@ -380,6 +407,10 @@ func (g *APIGen) genMethod(methodName string, sms *geyser.SchemaMethods) (j.Code
 
 	if requiredVersion {
 		comments = append(comments, fmt.Sprintf(commentfSupportedVersions, versions))
+	}
+
+	if undoc {
+		comments = append(comments, commentStructMethodUndoc)
 	}
 
 	structReceiver := j.Id("i").Op("*").Id(g.structName)
