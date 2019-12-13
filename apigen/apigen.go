@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"path/filepath"
 	"strings"
 
 	"github.com/13k/geyser"
@@ -10,7 +10,10 @@ import (
 )
 
 const (
-	srcPackage                = "geyser"
+	pkgPathGeyser = "github.com/13k/geyser"
+
+	srcPkgNetHTTP             = "net/http"
+	srcPkgGeyser              = "geyser"
 	srcSchemaInterfacesCtor   = "MustNewSchemaInterfaces"
 	srcSchemaInterface        = "SchemaInterface"
 	srcSchemaMethodsCtor      = "NewSchemaMethods"
@@ -25,152 +28,82 @@ const (
 	commentfSchemaVar           = "%s stores the SchemaInterfaces for interface %s."
 	commentfStruct              = "%s represents interface %s."
 	commentfSupportedAppIDs     = "Supported AppIDs: %d."
+	commentfSupportedVersions   = "Supported versions: %d."
 	commentfStructCtor          = "%s creates a new %s interface."
 	commentfStructGetter        = "%s creates a new %s interface."
-	commentfStructMethod1       = "%s creates a Request for interface method %s."
-	commentfSupportedVersions   = "Supported versions: %d."
+	commentfStructMethodHeader  = "%s creates a Request for interface method %s."
 	commentfStructResult        = "%s holds the result of the method %s/%s."
+
+	errfUnknownInterfaceFilename = "Unknown filename for interface %q"
+	errfUnknownHTTPMethod        = "Unknown HTTP method %q of interface method %q/%q"
 )
 
-var (
-	interfaceFilenames = map[string]string{
-		"IBroadcastService":              "broadcast_service",
-		"ICheatReportingService":         "cheat_reporting_service",
-		"IClientStats":                   "client_stats",
-		"IContentServerConfigService":    "content_server_config_service",
-		"IContentServerDirectoryService": "content_server_directory_service",
-		"ICSGOPlayers":                   "csgo_players",
-		"ICSGOServers":                   "csgo_servers",
-		"ICSGOTournaments":               "csgo_tournaments",
-		"IDOTA2Fantasy":                  "dota2_fantasy",
-		"IDOTA2Match":                    "dota2_match",
-		"IDOTA2MatchStats":               "dota2_match_stats",
-		"IDOTA2StreamSystem":             "dota2_stream_system",
-		"IDOTA2Ticket":                   "dota2_ticket",
-		"IEconDOTA2":                     "econ_dota2",
-		"IEconItems":                     "econ_items",
-		"IEconService":                   "econ_service",
-		"IGameNotificationsService":      "game_notifications_service",
-		"IGameServersService":            "game_servers_service",
-		"IGCVersion":                     "gc_version",
-		"IInventoryService":              "inventory_service",
-		"IPlayerService":                 "player_service",
-		"IPortal2Leaderboards":           "portal2_leaderboards",
-		"IPublishedFileService":          "published_file_service",
-		"ISteamApps":                     "steam_apps",
-		"ISteamBroadcast":                "steam_broadcast",
-		"ISteamCDN":                      "steam_cdn",
-		"ISteamDirectory":                "steam_directory",
-		"ISteamEconomy":                  "steam_economy",
-		"ISteamEnvoy":                    "steam_envoy",
-		"ISteamNews":                     "steam_news",
-		"ISteamRemoteStorage":            "steam_remote_storage",
-		"ISteamUserAuth":                 "steam_user_auth",
-		"ISteamUserOAuth":                "steam_user_oauth",
-		"ISteamUserStats":                "steam_user_stats",
-		"ISteamUser":                     "steam_user",
-		"ISteamWebAPIUtil":               "steam_web_api_util",
-		"ISteamWebUserPresenceOAuth":     "steam_web_user_presence_oauth",
-		"IStoreService":                  "store_service",
-		"ITFItems":                       "tf_items",
-		"ITFPromos":                      "tf_promos",
-		"ITFSystem":                      "tf_system",
-	}
-
-	jenImportNames = map[string]string{}
-)
-
-func jenFile() *j.File {
-	f := j.NewFile(srcPackage)
-
-	f.ImportNames(jenImportNames)
-
-	return f
+type APIGen struct {
+	baseName       string
+	interfaces     *geyser.SchemaInterfaces
+	appIDs         []uint32
+	requiredAppID  bool
+	externalPkg    bool
+	pkgName        string
+	schemaVarName  string
+	structName     string
+	structCtorName string
+	interfaceFile  *GeneratedFile
+	resultsFile    *GeneratedFile
 }
 
-func jenIfErrRet(values ...j.Code) *j.Statement {
-	return j.If(j.Err().Op("!=").Nil()).Block(j.Return(values...))
-}
-
-func jenIfErrRetNilErr() *j.Statement {
-	return jenIfErrRet(j.Nil(), j.Err())
-}
-
-func jenHTTPMethod(method string) j.Code {
-	method = strings.ToUpper(method)
-
-	switch method {
-	case http.MethodGet:
-		return j.Qual("net/http", "MethodGet")
-	case http.MethodPost:
-		return j.Qual("net/http", "MethodPost")
-	case http.MethodPut:
-		return j.Qual("net/http", "MethodPut")
-	default:
-		return nil
-	}
-}
-
-func jenSchemaInterfaceAddr() *j.Statement   { return j.Op("&").Id(srcSchemaInterface) }
-func jenSchemaInterfacePtr() *j.Statement    { return j.Op("*").Id(srcSchemaInterface) }
-func jenSchemaMethodAddr() *j.Statement      { return j.Op("&").Id(srcSchemaMethod) }
-func jenSchemaMethodParamAddr() *j.Statement { return j.Op("&").Id(srcSchemaMethodParam) }
-func jenClientPtr() *j.Statement             { return j.Op("*").Id(srcClient) }
-func jenRequestAddr() *j.Statement           { return j.Op("&").Id(srcRequest) }
-func jenRequestPtr() *j.Statement            { return j.Op("*").Id(srcRequest) }
-
-type apiGen struct {
-	BaseName              string
-	Interfaces            *geyser.SchemaInterfaces
-	AppIDs                []uint32
-	RequiredAppID         bool
-	Filename              string
-	ResultsFilename       string
-	SchemaVarName         string
-	StructName            string
-	StructConstructorName string
-}
-
-func newAPIGen(sis *geyser.SchemaInterfaces) (*apiGen, error) {
+func NewAPIGen(
+	sis *geyser.SchemaInterfaces,
+	pkgName string,
+	outputDir string,
+	filenames map[string]string,
+) (*APIGen, error) {
 	baseName, err := sis.GroupName()
 
 	if err != nil {
 		return nil, err
 	}
 
-	baseFilename := interfaceFilenames[baseName]
-
-	if baseFilename == "" {
-		err = fmt.Errorf("Unknown filename for interface %q", baseName)
-		return nil, err
-	}
-
-	structName := strings.TrimPrefix(baseName, "I")
 	appIDs, err := sis.AppIDs()
 
 	if err != nil {
 		return nil, err
 	}
 
-	g := &apiGen{
-		BaseName:              baseName,
-		Interfaces:            sis,
-		AppIDs:                appIDs,
-		RequiredAppID:         len(appIDs) > 0,
-		Filename:              baseFilename + ".go",
-		ResultsFilename:       baseFilename + "_results.go",
-		SchemaVarName:         "Schema" + structName,
-		StructName:            structName,
-		StructConstructorName: "New" + structName,
+	baseFilename := filenames[baseName]
+
+	if baseFilename == "" {
+		err = fmt.Errorf(errfUnknownInterfaceFilename, baseName)
+		return nil, err
+	}
+
+	structName := strings.TrimPrefix(baseName, "I")
+	structCtorName := "New" + structName
+	schemaVarName := "Schema" + structName
+	interfaceFile := NewGeneratedFile(filepath.Join(outputDir, baseFilename+".go"))
+	resultsFile := NewGeneratedFile(filepath.Join(outputDir, baseFilename+"_results.go"))
+
+	g := &APIGen{
+		baseName:       baseName,
+		interfaces:     sis,
+		appIDs:         appIDs,
+		requiredAppID:  len(appIDs) > 0,
+		externalPkg:    pkgName != srcPkgGeyser,
+		pkgName:        pkgName,
+		structName:     structName,
+		structCtorName: structCtorName,
+		schemaVarName:  schemaVarName,
+		interfaceFile:  interfaceFile,
+		resultsFile:    resultsFile,
 	}
 
 	return g, nil
 }
 
-func (g *apiGen) genSIDecl(si *geyser.SchemaInterface) (j.Code, error) {
+func (g *APIGen) genSIDecl(si *geyser.SchemaInterface) (j.Code, error) {
 	var methodDecls []j.Code
 
-	for _, sm := range si.Methods.Methods {
+	for _, sm := range si.GetMethods() {
 		methodDecl, err := g.genSMDecl(si, sm)
 
 		if err != nil {
@@ -181,50 +114,52 @@ func (g *apiGen) genSIDecl(si *geyser.SchemaInterface) (j.Code, error) {
 	}
 
 	methodDecls = append(methodDecls, j.Line())
-	methodsDecl := j.Id(srcSchemaMethodsCtor).Call(methodDecls...)
+	methodsDecl := g.jenSchemaMethodsCtorID().Call(methodDecls...)
 
-	code := jenSchemaInterfaceAddr().Values(j.Dict{
-		j.Id("Name"):    j.Lit(si.Name),
-		j.Id("Methods"): methodsDecl,
+	code := g.jenSchemaInterfaceAddr().Values(j.Dict{
+		j.Id("Name"):         j.Lit(si.Name),
+		j.Id("Methods"):      methodsDecl,
+		j.Id("Undocumented"): j.Lit(si.Undocumented),
 	})
 
 	return code, nil
 }
 
-func (g *apiGen) genSMDecl(si *geyser.SchemaInterface, sm *geyser.SchemaMethod) (j.Code, error) {
+func (g *APIGen) genSMDecl(si *geyser.SchemaInterface, sm *geyser.SchemaMethod) (j.Code, error) {
 	httpMethod := jenHTTPMethod(sm.HTTPMethod)
 
 	if httpMethod == nil {
-		err := fmt.Errorf("Unknown HTTP method %q in interface method %q.%q", sm.HTTPMethod, si.Name, sm.Name)
+		err := fmt.Errorf(errfUnknownHTTPMethod, sm.HTTPMethod, si.Name, sm.Name)
 		return nil, err
 	}
 
 	var paramDecls []j.Code
 
-	for _, smp := range sm.Params.Params {
+	for _, smp := range sm.GetParams() {
 		paramDecl := g.genSMPDecl(si, sm, smp)
 		paramDecls = append(paramDecls, j.Line().Add(paramDecl))
 	}
 
 	paramDecls = append(paramDecls, j.Line())
-	paramsSliceDecl := j.Id(srcSchemaMethodParamsCtor).Call(paramDecls...)
+	paramsSliceDecl := g.jenSchemaMethodParamsCtor().Call(paramDecls...)
 
-	code := jenSchemaMethodAddr().Values(j.Dict{
-		j.Id("Name"):       j.Lit(sm.Name),
-		j.Id("Version"):    j.Lit(sm.Version),
-		j.Id("HTTPMethod"): httpMethod,
-		j.Id("Params"):     paramsSliceDecl,
+	code := g.jenSchemaMethodAddr().Values(j.Dict{
+		j.Id("Name"):         j.Lit(sm.Name),
+		j.Id("Version"):      j.Lit(sm.Version),
+		j.Id("HTTPMethod"):   httpMethod,
+		j.Id("Params"):       paramsSliceDecl,
+		j.Id("Undocumented"): j.Lit(sm.Undocumented),
 	})
 
 	return code, nil
 }
 
-func (g *apiGen) genSMPDecl(
+func (g *APIGen) genSMPDecl(
 	_ *geyser.SchemaInterface,
 	_ *geyser.SchemaMethod,
 	smp *geyser.SchemaMethodParam,
 ) j.Code {
-	return jenSchemaMethodParamAddr().Values(j.Dict{
+	return g.jenSchemaMethodParamAddr().Values(j.Dict{
 		j.Id("Name"):        j.Lit(smp.Name),
 		j.Id("Type"):        j.Lit(smp.Type),
 		j.Id("Optional"):    j.Lit(smp.Optional),
@@ -232,10 +167,10 @@ func (g *apiGen) genSMPDecl(
 	})
 }
 
-func (g *apiGen) genSchemaDecl() (j.Code, error) {
+func (g *APIGen) genSchemaDecl() (j.Code, error) {
 	var siDecls []j.Code
 
-	for _, si := range g.Interfaces.Interfaces {
+	for _, si := range g.interfaces.Interfaces {
 		siDecl, err := g.genSIDecl(si)
 
 		if err != nil {
@@ -246,32 +181,32 @@ func (g *apiGen) genSchemaDecl() (j.Code, error) {
 	}
 
 	siDecls = append(siDecls, j.Line())
-	comment := fmt.Sprintf(commentfSchemaVar, g.SchemaVarName, g.BaseName)
+	comment := fmt.Sprintf(commentfSchemaVar, g.schemaVarName, g.baseName)
 
 	schemaDecl := j.
 		Comment(comment).
 		Line().
 		Var().
-		Id(g.SchemaVarName).
+		Id(g.schemaVarName).
 		Op("=").
-		Id(srcSchemaInterfacesCtor).
+		Add(g.jenSchemaInterfacesCtorID()).
 		Call(siDecls...)
 
 	return schemaDecl, nil
 }
 
-func (g *apiGen) genStructDef() j.Code {
+func (g *APIGen) genStructDef() j.Code {
 	comments := []string{
-		fmt.Sprintf(commentfStruct, g.StructName, g.BaseName),
+		fmt.Sprintf(commentfStruct, g.structName, g.baseName),
 	}
 
-	if g.RequiredAppID {
-		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, g.AppIDs))
+	if g.requiredAppID {
+		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, g.appIDs))
 	}
 
 	fields := []j.Code{
-		j.Id("Client").Add(jenClientPtr()),
-		j.Id("Interface").Add(jenSchemaInterfacePtr()),
+		j.Id("Client").Add(g.jenUnqualiClientPtr()),
+		j.Id("Interface").Add(g.jenSchemaInterfacePtr()),
 	}
 
 	code := j.Null()
@@ -284,44 +219,44 @@ func (g *apiGen) genStructDef() j.Code {
 		}
 	}
 
-	return code.Type().Id(g.StructName).Struct(fields...)
+	return code.Type().Id(g.structName).Struct(fields...)
 }
 
-func (g *apiGen) genStructCtor() j.Code {
+func (g *APIGen) genStructCtor() j.Code {
 	comments := []string{
-		fmt.Sprintf(commentfStructCtor, g.StructConstructorName, g.StructName),
+		fmt.Sprintf(commentfStructCtor, g.structCtorName, g.structName),
 	}
 
 	params := []j.Code{
-		j.Id("c").Add(jenClientPtr()),
+		j.Id("c").Add(g.jenUnqualiClientPtr()),
 	}
 
-	if g.RequiredAppID {
+	if g.requiredAppID {
 		params = append(params, j.Id("appID").Uint32())
-		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, g.AppIDs))
+		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, g.appIDs))
 	}
 
 	retTypes := []j.Code{
-		j.Op("*").Id(g.StructName),
+		j.Op("*").Id(g.structName),
 		j.Error(),
 	}
 
 	getArgs := []j.Code{
-		j.Lit(g.BaseName),
+		j.Lit(g.baseName),
 	}
 
-	if g.RequiredAppID {
+	if g.requiredAppID {
 		getArgs = append(getArgs, j.Id("appID"))
 	} else {
 		getArgs = append(getArgs, j.Lit(0))
 	}
 
 	body := []j.Code{
-		j.List(j.Id("si"), j.Err()).Op(":=").Id(g.SchemaVarName).Dot("Get").Call(getArgs...),
+		j.List(j.Id("si"), j.Err()).Op(":=").Id(g.schemaVarName).Dot("Get").Call(getArgs...),
 		j.Line(),
 		jenIfErrRetNilErr(),
 		j.Line(),
-		j.Id("s").Op(":=").Op("&").Id(g.StructName).Values(j.Dict{
+		j.Id("s").Op(":=").Op("&").Id(g.structName).Values(j.Dict{
 			j.Id("Client"):    j.Id("c"),
 			j.Id("Interface"): j.Id("si"),
 		}),
@@ -341,34 +276,34 @@ func (g *apiGen) genStructCtor() j.Code {
 
 	return code.
 		Func().
-		Id(g.StructConstructorName).
+		Id(g.structCtorName).
 		Params(params...).
 		Params(retTypes...).
 		Block(body...)
 }
 
-func (g *apiGen) genStructGetter() j.Code {
+func (g *APIGen) genStructGetter() j.Code {
 	comments := []string{
-		fmt.Sprintf(commentfStructGetter, g.StructName, g.StructName),
+		fmt.Sprintf(commentfStructGetter, g.structName, g.structName),
 	}
 
-	getterReceiver := j.Id("c").Add(jenClientPtr())
+	getterReceiver := j.Id("c").Add(g.jenUnqualiClientPtr())
 	getterParams := []j.Code{}
 	ctorParams := []j.Code{j.Id("c")}
 
-	if g.RequiredAppID {
+	if g.requiredAppID {
 		getterParams = append(getterParams, j.Id("appID").Uint32())
 		ctorParams = append(ctorParams, j.Id("appID"))
-		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, g.AppIDs))
+		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, g.appIDs))
 	}
 
 	retTypes := []j.Code{
-		j.Op("*").Id(g.StructName),
+		j.Op("*").Id(g.structName),
 		j.Error(),
 	}
 
 	fnBody := []j.Code{
-		j.Return(j.Id(g.StructConstructorName).Call(ctorParams...)),
+		j.Return(j.Id(g.structCtorName).Call(ctorParams...)),
 	}
 
 	code := j.Null()
@@ -384,13 +319,13 @@ func (g *apiGen) genStructGetter() j.Code {
 	return code.
 		Func().
 		Parens(getterReceiver).
-		Id(g.StructName).
+		Id(g.structName).
 		Params(getterParams...).
 		Params(retTypes...).
 		Block(fnBody...)
 }
 
-func (g *apiGen) genMethod(name string, sms *geyser.SchemaMethods) (j.Code, error) {
+func (g *APIGen) genMethod(name string, sms *geyser.SchemaMethods) (j.Code, error) {
 	versions, err := sms.Versions()
 
 	if err != nil {
@@ -400,14 +335,14 @@ func (g *apiGen) genMethod(name string, sms *geyser.SchemaMethods) (j.Code, erro
 	requiredVersion := len(versions) > 1
 
 	comments := []string{
-		fmt.Sprintf(commentfStructMethod1, name, name),
+		fmt.Sprintf(commentfStructMethodHeader, name, name),
 	}
 
 	if requiredVersion {
 		comments = append(comments, fmt.Sprintf(commentfSupportedVersions, versions))
 	}
 
-	structReceiver := j.Id("i").Op("*").Id(g.StructName)
+	structReceiver := j.Id("i").Op("*").Id(g.structName)
 
 	params := []j.Code{}
 
@@ -416,7 +351,7 @@ func (g *apiGen) genMethod(name string, sms *geyser.SchemaMethods) (j.Code, erro
 	}
 
 	retTypes := j.List(
-		jenRequestPtr(),
+		g.jenRequestPtr(),
 		j.Error(),
 	)
 
@@ -430,9 +365,9 @@ func (g *apiGen) genMethod(name string, sms *geyser.SchemaMethods) (j.Code, erro
 
 	getParams := []j.Code{j.Lit(name), getParamsLast}
 
-	resultStructName := fmt.Sprintf("%s%s", g.StructName, name)
+	resultStructName := fmt.Sprintf("%s%s", g.structName, name)
 
-	reqInst := j.Id("req").Op(":=").Add(jenRequestAddr()).Values(j.Dict{
+	reqInst := j.Id("req").Op(":=").Add(g.jenRequestAddr()).Values(j.Dict{
 		j.Id("Client"):    j.Id("i").Dot("Client"),
 		j.Id("Interface"): j.Id("i").Dot("Interface"),
 		j.Id("Method"):    j.Id("sm"),
@@ -464,8 +399,8 @@ func (g *apiGen) genMethod(name string, sms *geyser.SchemaMethods) (j.Code, erro
 	return code, nil
 }
 
-func (g *apiGen) genMethods() (j.Code, error) {
-	grouped, err := g.Interfaces.GroupMethods()
+func (g *APIGen) genMethods() (j.Code, error) {
+	grouped, err := g.interfaces.GroupMethods()
 
 	if err != nil {
 		return nil, err
@@ -486,9 +421,9 @@ func (g *apiGen) genMethods() (j.Code, error) {
 	return code, nil
 }
 
-func (g *apiGen) genResult(name string) j.Code {
-	resultStructName := fmt.Sprintf("%s%s", g.StructName, name)
-	comment := fmt.Sprintf(commentfStructResult, resultStructName, g.BaseName, name)
+func (g *APIGen) genResult(name string) j.Code {
+	resultStructName := fmt.Sprintf("%s%s", g.structName, name)
+	comment := fmt.Sprintf(commentfStructResult, resultStructName, g.baseName, name)
 
 	return j.
 		Comment(comment).
@@ -498,8 +433,8 @@ func (g *apiGen) genResult(name string) j.Code {
 		Struct()
 }
 
-func (g *apiGen) genResults() (j.Code, error) {
-	grouped, err := g.Interfaces.GroupMethods()
+func (g *APIGen) genResults() (j.Code, error) {
+	grouped, err := g.interfaces.GroupMethods()
 
 	if err != nil {
 		return nil, err
@@ -515,11 +450,11 @@ func (g *apiGen) genResults() (j.Code, error) {
 	return code, nil
 }
 
-func (g *apiGen) InterfaceFile() (*j.File, error) {
-	f := jenFile()
+func (g *APIGen) genInterfaceFile() (*j.File, error) {
+	f := jenFile(g.pkgName)
 
 	f.HeaderComment(commentDisclaimer)
-	f.HeaderComment(fmt.Sprintf(commentfDisclaimerInterface, g.BaseName))
+	f.HeaderComment(fmt.Sprintf(commentfDisclaimerInterface, g.baseName))
 
 	schemaDecl, err := g.genSchemaDecl()
 
@@ -543,8 +478,8 @@ func (g *apiGen) InterfaceFile() (*j.File, error) {
 	return f, nil
 }
 
-func (g *apiGen) ResultsFile() (*j.File, error) {
-	f := jenFile()
+func (g *APIGen) genResultsFile() (*j.File, error) {
+	f := jenFile(g.pkgName)
 
 	f.HeaderComment(commentDisclaimer)
 
@@ -557,4 +492,24 @@ func (g *apiGen) ResultsFile() (*j.File, error) {
 	f.Add(results)
 
 	return f, nil
+}
+
+func (g *APIGen) GenerateInterfaceFile() (string, EGenerated, error) {
+	etest, err := g.interfaceFile.Update(g.genInterfaceFile)
+	return g.interfaceFile.Filename(), etest, err
+}
+
+func (g *APIGen) GenerateResultsFile() (string, EGenerated, error) {
+	etest, err := g.resultsFile.Update(g.genResultsFile)
+	return g.resultsFile.Filename(), etest, err
+}
+
+func (g *APIGen) RemoveInterfaceFile() (string, EGenerated, error) {
+	etest, err := g.interfaceFile.Remove()
+	return g.interfaceFile.Filename(), etest, err
+}
+
+func (g *APIGen) RemoveResultsFile() (string, EGenerated, error) {
+	etest, err := g.resultsFile.Remove()
+	return g.resultsFile.Filename(), etest, err
 }

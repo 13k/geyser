@@ -1,135 +1,116 @@
 package main
 
 import (
-	"encoding/json"
+	"bytes"
+	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
-
-	"github.com/13k/geyser"
-	"github.com/go-resty/resty/v2"
 )
 
 const (
-	usage = `
-Usage: apigen <command>
-
-Environment variables:
-
-DEBUG=1           Enable debugging
-API_KEY=key       Use API_KEY when fetching API schema
-SCHEMA=file.json  Use file.json as (locally cached) schema
+	fmtUsage = `
+Usage: apigen [options] <command>
 
 Commands:
 
-filename  Print a list of interfaces and respective filenames
-generate  Generate files
-clean     Remove all generated files
-	`
+filenames [options]  Print a list of interfaces and respective filenames
+generate             Generate files
+clean                Remove all generated files
 
-	schemaURL = "https://api.steampowered.com/ISteamWebAPIUtil/GetSupportedAPIList/v1"
+
+Options:
+
+%s
+
+If any of the cached schema option is used and the file doesn't exist, the
+schema will be fetched remotely and the file will be created. If the file
+already exists, the schema will be loaded from it.
+
+`
 )
 
 var (
-	debug      bool
-	apiKey     string
-	schemaFile string
+	apiKey          string
+	steamSchemaFile string
+	dotaSchemaFile  string
+	outputDir       string
 )
 
 func init() {
-	debug = os.Getenv("DEBUG") != ""
-	apiKey = os.Getenv("API_KEY")
-	schemaFile = os.Getenv("SCHEMA")
-}
-
-type schema struct {
-	API *schemaAPI `json:"apilist"`
-}
-
-type schemaAPI struct {
-	Interfaces *geyser.SchemaInterfaces `json:"interfaces"`
-}
-
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println(usage)
-		os.Exit(1)
-	}
-
-	cmd := os.Args[1]
-
-	switch cmd {
-	case "clean", "filename", "generate":
-	default:
-		log.Fatalf("Invalid command %q", cmd)
-	}
-
-	var result *schema
-
-	if schemaFile != "" {
-		result = localSchema(schemaFile)
-	} else {
-		result = remoteSchema()
-	}
-
-	interfaces := result.API.Interfaces
-	outputDir, err := os.Getwd()
+	cwd, err := os.Getwd()
 
 	if err != nil {
 		panic(err)
 	}
 
-	for _, group := range interfaces.GroupByName() {
-		a := &action{
-			Interfaces: group,
-			OutputDir:  outputDir,
-		}
+	flag.StringVar(&apiKey, "key", "", "use API key when fetching API schema")
+	flag.StringVar(&steamSchemaFile, "steam", "", "Use file as cached Steam API schema")
+	flag.StringVar(&dotaSchemaFile, "dota", "", "Use file as cached Dota2 API schema")
+	flag.StringVar(&outputDir, "output", cwd, "Output directory")
+	flag.StringVar(&outputDir, "o", cwd, "Output directory")
 
-		if err := a.Execute(cmd); err != nil {
+	flag.Usage = usage
+}
+
+func usage() {
+	var optsBuf bytes.Buffer
+
+	originalOutput := flag.CommandLine.Output()
+
+	flag.CommandLine.SetOutput(&optsBuf)
+	flag.PrintDefaults()
+	flag.CommandLine.SetOutput(originalOutput)
+
+	fmt.Fprintf(flag.CommandLine.Output(), fmtUsage, optsBuf.String())
+}
+
+func main() {
+	flag.Parse()
+
+	if flag.NArg() < 1 {
+		usage()
+		os.Exit(1)
+	}
+
+	var cmd Command
+	cmdStr := flag.Arg(0)
+
+	switch cmdStr {
+	case "clean":
+		cmd = &CleanCommand{OutputDir: outputDir}
+	case "filenames":
+		flags := flag.NewFlagSet("filenames", flag.ExitOnError)
+		onlyMissing := flags.Bool("m", false, "print only missing filenames")
+
+		if err := flags.Parse(flag.Args()[1:]); err != nil {
 			log.Fatal(err)
 		}
+
+		cmd = &FilenamesCommand{OnlyMissing: *onlyMissing}
+	case "generate":
+		cmd = &GenerateCommand{OutputDir: outputDir}
+	case "help":
+		usage()
+		os.Exit(0)
+	default:
+		fmt.Fprintf(flag.CommandLine.Output(), "Invalid command %q\n", cmdStr)
+		os.Exit(1)
 	}
-}
 
-func remoteSchema() *schema {
-	if apiKey == "" {
-		log.Fatal("API_KEY environment var is required when fetching remote schema")
-	}
-
-	result := &schema{}
-
-	client := resty.New().
-		SetDebug(debug).
-		SetQueryParam("key", apiKey)
-
-	resp, err := client.R().
-		SetResult(result).
-		Get(schemaURL)
+	steamSchema, err := NewSteamSchema(steamSchemaFile, apiKey)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if !resp.IsSuccess() {
-		log.Fatalf("Response: %s", resp.Status())
-	}
-
-	return result
-}
-
-func localSchema(filename string) *schema {
-	schemaData, err := ioutil.ReadFile(filename)
+	dotaSchema, err := NewDotaSchema(dotaSchemaFile)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	result := &schema{}
-
-	if err = json.Unmarshal(schemaData, result); err != nil {
+	if err := cmd.Run(steamSchema, dotaSchema); err != nil {
 		log.Fatal(err)
 	}
-
-	return result
 }
