@@ -8,7 +8,7 @@ import (
 
 	"github.com/13k/geyser"
 	j "github.com/dave/jennifer/jen"
-	"github.com/huandu/xstrings"
+	"github.com/iancoleman/strcase"
 )
 
 const (
@@ -377,7 +377,7 @@ func (g *APIGen) genStructGetter() j.Code {
 
 func (g *APIGen) methodFuncName(methodName string) string {
 	if methodName[0] >= 'a' && methodName[0] <= 'z' {
-		return xstrings.ToCamelCase(methodName)
+		return strcase.ToCamel(methodName)
 	}
 
 	return methodName

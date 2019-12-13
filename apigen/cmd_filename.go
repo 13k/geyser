@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/13k/geyser"
-	"github.com/huandu/xstrings"
+	"github.com/iancoleman/strcase"
 )
 
 type FilenamesCommand struct {
@@ -32,7 +32,7 @@ func (cmd *FilenamesCommand) Run(schemas ...*Schema) error {
 
 			if filename == "" {
 				missing = true
-				filename = xstrings.ToSnakeCase(strings.TrimPrefix(groupName, "I"))
+				filename = strcase.ToSnake(strings.TrimPrefix(groupName, "I"))
 				comment = " // suggested"
 			}
 
