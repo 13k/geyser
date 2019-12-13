@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/13k/geyser"
@@ -12,6 +13,9 @@ import (
 
 const (
 	pkgPathGeyser = "github.com/13k/geyser"
+
+	fnamefInterface = "%s.go"
+	fnamefResults   = "%s_results.go"
 
 	srcPkgNetHTTP             = "net/http"
 	srcPkgGeyser              = "geyser"
@@ -43,6 +47,7 @@ type APIGen struct {
 	baseName       string
 	interfaces     *geyser.SchemaInterfaces
 	groupedMethods map[string]*geyser.SchemaMethods
+	methodsNames   []string
 	appIDs         []uint32
 	requiredAppID  bool
 	externalPkg    bool
@@ -88,13 +93,25 @@ func NewAPIGen(
 	structName := strings.TrimPrefix(baseName, "I")
 	structCtorName := "New" + structName
 	schemaVarName := "Schema" + structName
-	interfaceFile := NewGeneratedFile(filepath.Join(outputDir, baseFilename+".go"))
-	resultsFile := NewGeneratedFile(filepath.Join(outputDir, baseFilename+"_results.go"))
+
+	interfaceFname := fmt.Sprintf(fnamefInterface, baseFilename)
+	interfaceFile := NewGeneratedFile(filepath.Join(outputDir, interfaceFname))
+	resultsFname := fmt.Sprintf(fnamefResults, baseFilename)
+	resultsFile := NewGeneratedFile(filepath.Join(outputDir, resultsFname))
+
+	methodsNames := make([]string, 0, len(groupedMethods))
+
+	for name := range groupedMethods {
+		methodsNames = append(methodsNames, name)
+	}
+
+	sort.Strings(methodsNames)
 
 	g := &APIGen{
 		baseName:       baseName,
 		interfaces:     sis,
 		groupedMethods: groupedMethods,
+		methodsNames:   methodsNames,
 		appIDs:         appIDs,
 		requiredAppID:  len(appIDs) > 0,
 		externalPkg:    pkgName != srcPkgGeyser,
@@ -423,8 +440,8 @@ func (g *APIGen) genMethod(methodName string, sms *geyser.SchemaMethods) (j.Code
 func (g *APIGen) genMethods() (j.Code, error) {
 	code := j.Null()
 
-	for name, group := range g.groupedMethods {
-		method, err := g.genMethod(name, group)
+	for _, name := range g.methodsNames {
+		method, err := g.genMethod(name, g.groupedMethods[name])
 
 		if err != nil {
 			return nil, err
@@ -451,7 +468,7 @@ func (g *APIGen) genResult(methodName string) j.Code {
 func (g *APIGen) genResults() j.Code {
 	code := j.Null()
 
-	for name := range g.groupedMethods {
+	for _, name := range g.methodsNames {
 		result := g.genResult(name)
 		code.Line().Add(result)
 	}
