@@ -7,6 +7,11 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
+// Requester is the minimal interface for a `Request` to `Execute`.
+type Requester interface {
+	Request(ClientRequest) (*resty.Response, error)
+}
+
 // RequestOptions wrap options to pass to a request.
 type RequestOptions struct {
 	Context  context.Context
@@ -20,7 +25,7 @@ type RequestOptions struct {
 
 // Request represents a "bound" request with client, interface and method.
 type Request struct {
-	Client    *Client
+	Client    Requester
 	Interface *SchemaInterface
 	Method    *SchemaMethod
 	Options   RequestOptions
@@ -35,7 +40,8 @@ func (req *Request) SetOptions(options RequestOptions) *Request {
 	return req
 }
 
-// SetResult sets the result object where the response will be deserialized into.
+// SetResult sets the result object where the response will be deserialized
+// into.
 //
 // It expects a JSON "unmarshable" object.
 func (req *Request) SetResult(result interface{}) *Request {

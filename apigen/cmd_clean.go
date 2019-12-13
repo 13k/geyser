@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"path/filepath"
+
+	"github.com/13k/geyser"
 )
 
 type CleanCommand struct {
@@ -12,7 +14,7 @@ type CleanCommand struct {
 
 func (cmd *CleanCommand) Run(schemas ...*Schema) error {
 	for _, schema := range schemas {
-		for groupName, group := range schema.API.Interfaces.GroupByName() {
+		err := schema.eachSortedInterfaceGroup(func(groupName string, group *geyser.SchemaInterfaces) error {
 			outputDir := filepath.Join(cmd.OutputDir, schema.relPath)
 
 			g, err := NewAPIGen(
@@ -35,6 +37,12 @@ func (cmd *CleanCommand) Run(schemas ...*Schema) error {
 			if err := cmd.clean(g.RemoveResultsFile); err != nil {
 				return err
 			}
+
+			return nil
+		})
+
+		if err != nil {
+			return err
 		}
 	}
 

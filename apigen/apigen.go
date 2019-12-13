@@ -7,6 +7,7 @@ import (
 
 	"github.com/13k/geyser"
 	j "github.com/dave/jennifer/jen"
+	"github.com/huandu/xstrings"
 )
 
 const (
@@ -16,7 +17,7 @@ const (
 	srcPkgGeyser              = "geyser"
 	srcSchemaInterfacesCtor   = "MustNewSchemaInterfaces"
 	srcSchemaInterface        = "SchemaInterface"
-	srcSchemaMethodsCtor      = "NewSchemaMethods"
+	srcSchemaMethodsCtor      = "MustNewSchemaMethods"
 	srcSchemaMethod           = "SchemaMethod"
 	srcSchemaMethodParamsCtor = "NewSchemaMethodParams"
 	srcSchemaMethodParam      = "SchemaMethodParam"
@@ -41,6 +42,7 @@ const (
 type APIGen struct {
 	baseName       string
 	interfaces     *geyser.SchemaInterfaces
+	groupedMethods map[string]*geyser.SchemaMethods
 	appIDs         []uint32
 	requiredAppID  bool
 	externalPkg    bool
@@ -70,6 +72,12 @@ func NewAPIGen(
 		return nil, err
 	}
 
+	groupedMethods, err := sis.GroupMethods()
+
+	if err != nil {
+		return nil, err
+	}
+
 	baseFilename := filenames[baseName]
 
 	if baseFilename == "" {
@@ -86,6 +94,7 @@ func NewAPIGen(
 	g := &APIGen{
 		baseName:       baseName,
 		interfaces:     sis,
+		groupedMethods: groupedMethods,
 		appIDs:         appIDs,
 		requiredAppID:  len(appIDs) > 0,
 		externalPkg:    pkgName != srcPkgGeyser,
@@ -325,17 +334,31 @@ func (g *APIGen) genStructGetter() j.Code {
 		Block(fnBody...)
 }
 
-func (g *APIGen) genMethod(name string, sms *geyser.SchemaMethods) (j.Code, error) {
+func (g *APIGen) methodFuncName(methodName string) string {
+	if methodName[0] >= 'a' && methodName[0] <= 'z' {
+		return xstrings.ToCamelCase(methodName)
+	}
+
+	return methodName
+}
+
+func (g *APIGen) methodResultStructName(methodName string) string {
+	return g.structName + g.methodFuncName(methodName)
+}
+
+func (g *APIGen) genMethod(methodName string, sms *geyser.SchemaMethods) (j.Code, error) {
 	versions, err := sms.Versions()
 
 	if err != nil {
 		return nil, err
 	}
 
+	funcName := g.methodFuncName(methodName)
+	resultStructName := g.methodResultStructName(methodName)
 	requiredVersion := len(versions) > 1
 
 	comments := []string{
-		fmt.Sprintf(commentfStructMethodHeader, name, name),
+		fmt.Sprintf(commentfStructMethodHeader, funcName, methodName),
 	}
 
 	if requiredVersion {
@@ -363,9 +386,7 @@ func (g *APIGen) genMethod(name string, sms *geyser.SchemaMethods) (j.Code, erro
 		getParamsLast = j.Lit(versions[0])
 	}
 
-	getParams := []j.Code{j.Lit(name), getParamsLast}
-
-	resultStructName := fmt.Sprintf("%s%s", g.structName, name)
+	getParams := []j.Code{j.Lit(methodName), getParamsLast}
 
 	reqInst := j.Id("req").Op(":=").Add(g.jenRequestAddr()).Values(j.Dict{
 		j.Id("Client"):    j.Id("i").Dot("Client"),
@@ -394,21 +415,15 @@ func (g *APIGen) genMethod(name string, sms *geyser.SchemaMethods) (j.Code, erro
 		}
 	}
 
-	code.Func().Parens(structReceiver).Id(name).Params(params...).Parens(retTypes).Block(body...)
+	code.Func().Parens(structReceiver).Id(funcName).Params(params...).Parens(retTypes).Block(body...)
 
 	return code, nil
 }
 
 func (g *APIGen) genMethods() (j.Code, error) {
-	grouped, err := g.interfaces.GroupMethods()
-
-	if err != nil {
-		return nil, err
-	}
-
 	code := j.Null()
 
-	for name, group := range grouped {
+	for name, group := range g.groupedMethods {
 		method, err := g.genMethod(name, group)
 
 		if err != nil {
@@ -421,9 +436,9 @@ func (g *APIGen) genMethods() (j.Code, error) {
 	return code, nil
 }
 
-func (g *APIGen) genResult(name string) j.Code {
-	resultStructName := fmt.Sprintf("%s%s", g.structName, name)
-	comment := fmt.Sprintf(commentfStructResult, resultStructName, g.baseName, name)
+func (g *APIGen) genResult(methodName string) j.Code {
+	resultStructName := g.methodResultStructName(methodName)
+	comment := fmt.Sprintf(commentfStructResult, resultStructName, g.baseName, methodName)
 
 	return j.
 		Comment(comment).
@@ -433,21 +448,15 @@ func (g *APIGen) genResult(name string) j.Code {
 		Struct()
 }
 
-func (g *APIGen) genResults() (j.Code, error) {
-	grouped, err := g.interfaces.GroupMethods()
-
-	if err != nil {
-		return nil, err
-	}
-
+func (g *APIGen) genResults() j.Code {
 	code := j.Null()
 
-	for name := range grouped {
+	for name := range g.groupedMethods {
 		result := g.genResult(name)
 		code.Line().Add(result)
 	}
 
-	return code, nil
+	return code
 }
 
 func (g *APIGen) genInterfaceFile() (*j.File, error) {
@@ -482,14 +491,7 @@ func (g *APIGen) genResultsFile() (*j.File, error) {
 	f := jenFile(g.pkgName)
 
 	f.HeaderComment(commentDisclaimer)
-
-	results, err := g.genResults()
-
-	if err != nil {
-		return nil, err
-	}
-
-	f.Add(results)
+	f.Add(g.genResults())
 
 	return f, nil
 }

@@ -9,21 +9,30 @@ import (
 )
 
 const (
-	baseURL      = "https://api.steampowered.com"
+	HostURL = "https://api.steampowered.com"
+
 	pathTemplate = "/{interface}/{method}/{version}"
 )
 
-// Logger is the interface type accepted by the Client.
+// Logger is the logger interface type accepted by `Client`.
 type Logger interface {
 	Errorf(format string, v ...interface{})
 	Warnf(format string, v ...interface{})
 	Debugf(format string, v ...interface{})
 }
 
-// ClientOption functions set options in the Client.
+// ClientOption functions set options in `Client`.
 type ClientOption func(*Client) error
 
-// WithLogger sets the Logger instance on the Client.
+// WithBaseURL sets the base URL for all outgoing requests.
+func WithBaseURL(baseURL string) ClientOption {
+	return func(c *Client) error {
+		c.client.SetHostURL(baseURL)
+		return nil
+	}
+}
+
+// WithLogger sets the logger.
 func WithLogger(logger Logger) ClientOption {
 	return func(c *Client) error {
 		c.client.SetLogger(logger)
@@ -31,7 +40,7 @@ func WithLogger(logger Logger) ClientOption {
 	}
 }
 
-// WithDebug enables debug logging on the Client.
+// WithDebug enables debug logging.
 func WithDebug() ClientOption {
 	return func(c *Client) error {
 		c.client.SetDebug(true)
@@ -39,7 +48,7 @@ func WithDebug() ClientOption {
 	}
 }
 
-// WithProxy sets the proxy on the Client.
+// WithProxy sets the proxy.
 func WithProxy(proxy string) ClientOption {
 	return func(c *Client) error {
 		c.client.SetProxy(proxy)
@@ -55,8 +64,10 @@ func WithUserAgent(userAgent string) ClientOption {
 	}
 }
 
-// WithRetryCount enables request retrying and allows to set the number of tries, using a backoff
-// mechanism. Setting to 0 disables retrying.
+// WithRetryCount enables request retrying and allows to set the number of
+// tries, using a backoff mechanism.
+//
+// Setting to 0 disables retrying.
 func WithRetryCount(retryCount int) ClientOption {
 	return func(c *Client) error {
 		c.client.SetRetryCount(retryCount)
@@ -121,14 +132,9 @@ type Client struct {
 	client *resty.Client
 }
 
-/*
-New creates a new Client.
-
-It uses the option functions approach to pass multiple options.
-*/
+// New creates a new client.
 func New(options ...ClientOption) (*Client, error) {
 	rclient := resty.New().
-		SetHostURL(baseURL).
 		SetQueryParam("format", "json")
 
 	client := &Client{client: rclient}
@@ -137,6 +143,10 @@ func New(options ...ClientOption) (*Client, error) {
 		if err := option(client); err != nil {
 			return nil, err
 		}
+	}
+
+	if rclient.HostURL == "" {
+		rclient.SetHostURL(HostURL)
 	}
 
 	return client, nil
@@ -150,8 +160,8 @@ type ClientRequest struct {
 	Result    interface{}
 }
 
-// Request performs an API request to the given interface and method with given options and stores
-// the result in the given result.
+// Request performs an API request to the given interface and method with given
+// options and stores the result in the given result.
 func (c *Client) Request(creq ClientRequest) (*resty.Response, error) {
 	var params url.Values
 
@@ -171,7 +181,7 @@ func (c *Client) Request(creq ClientRequest) (*resty.Response, error) {
 	pathParams := map[string]string{
 		"interface": creq.Interface.Name,
 		"method":    creq.Method.Name,
-		"version":   creq.Method.getVersionPathParam(),
+		"version":   creq.Method.versionPathParam(),
 	}
 
 	req := c.client.R().

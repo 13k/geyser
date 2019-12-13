@@ -228,13 +228,11 @@ func (s *Schema) Normalize(undoc bool) {
 }
 
 func (s *Schema) Merge(other *Schema) error {
-	var err error
-
-	if err = s.buildIndex(); err != nil {
+	if err := s.buildIndex(); err != nil {
 		return err
 	}
 
-	if err = other.buildIndex(); err != nil {
+	if err := other.buildIndex(); err != nil {
 		return err
 	}
 
@@ -272,7 +270,18 @@ func (s *Schema) Merge(other *Schema) error {
 		}
 
 		// prepend all methods in `s`
-		rMethodsCollection := si.Methods.Add(geyser.NewSchemaMethods(rMethods...))
+
+		rMethodsCollection, err := geyser.NewSchemaMethods(rMethods...)
+
+		if err != nil {
+			return err
+		}
+
+		rMethodsCollection, err = si.Methods.Add(rMethodsCollection)
+
+		if err != nil {
+			return err
+		}
 
 		rInterface := &geyser.SchemaInterface{
 			Name:    si.Name,
@@ -282,9 +291,15 @@ func (s *Schema) Merge(other *Schema) error {
 		result = append(result, rInterface)
 	}
 
-	s.API.Interfaces, err = geyser.NewSchemaInterfaces(result...)
+	interfaces, err := geyser.NewSchemaInterfaces(result...)
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	s.API.Interfaces = interfaces
+
+	return nil
 }
 
 func (s *Schema) Dump(cacheFile string) error {
@@ -304,7 +319,12 @@ func (s *Schema) Dump(cacheFile string) error {
 type interfaceGroupIterator func(string, *geyser.SchemaInterfaces) error
 
 func (s *Schema) eachSortedInterfaceGroup(fn interfaceGroupIterator) error {
-	groups := s.API.Interfaces.GroupByName()
+	groups, err := s.API.Interfaces.GroupByName()
+
+	if err != nil {
+		return err
+	}
+
 	groupNames := make([]string, 0, len(groups))
 
 	for groupName := range groups {
@@ -315,6 +335,7 @@ func (s *Schema) eachSortedInterfaceGroup(fn interfaceGroupIterator) error {
 
 	for _, groupName := range groupNames {
 		group := groups[groupName]
+
 		if err := fn(groupName, group); err != nil {
 			return err
 		}
