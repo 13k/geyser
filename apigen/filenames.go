@@ -30,7 +30,6 @@ var (
 		"ISteamCDN":                      "steam_cdn",
 		"ISteamDirectory":                "steam_directory",
 		"ISteamEconomy":                  "steam_economy",
-		"ISteamEnvoy":                    "steam_envoy",
 		"ISteamNews":                     "steam_news",
 		"ISteamRemoteStorage":            "steam_remote_storage",
 		"ISteamUserAuth":                 "steam_user_auth",

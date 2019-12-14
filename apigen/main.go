@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"log"
 	"os"
+
+	"github.com/13k/geyser"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -27,6 +29,10 @@ If any of the cached schema option is used and the file doesn't exist, the
 schema will be fetched remotely and the file will be created. If the file
 already exists, the schema will be loaded from it.
 
+Filenames options:
+
+%s
+
 `
 )
 
@@ -35,6 +41,9 @@ var (
 	steamSchemaFile string
 	dotaSchemaFile  string
 	outputDir       string
+
+	filenamesFlags       *flag.FlagSet
+	filenamesOnlyMissing bool
 )
 
 func init() {
@@ -50,19 +59,26 @@ func init() {
 	flag.StringVar(&outputDir, "output", cwd, "Output directory")
 	flag.StringVar(&outputDir, "o", cwd, "Output directory")
 
+	filenamesFlags = flag.NewFlagSet("filenames", flag.ExitOnError)
+	filenamesFlags.BoolVar(&filenamesOnlyMissing, "m", false, "print only missing filenames")
+
 	flag.Usage = usage
 }
 
 func usage() {
-	var optsBuf bytes.Buffer
+	var optionsBuf bytes.Buffer
 
-	originalOutput := flag.CommandLine.Output()
-
-	flag.CommandLine.SetOutput(&optsBuf)
+	flag.CommandLine.SetOutput(&optionsBuf)
 	flag.PrintDefaults()
-	flag.CommandLine.SetOutput(originalOutput)
+	flag.CommandLine.SetOutput(os.Stderr)
 
-	fmt.Fprintf(flag.CommandLine.Output(), fmtUsage, optsBuf.String())
+	var filenamesBuf bytes.Buffer
+
+	filenamesFlags.SetOutput(&filenamesBuf)
+	filenamesFlags.PrintDefaults()
+	filenamesFlags.SetOutput(os.Stderr)
+
+	fmt.Fprintf(os.Stderr, fmtUsage, optionsBuf.String(), filenamesBuf.String())
 }
 
 func main() {
@@ -73,23 +89,31 @@ func main() {
 		os.Exit(1)
 	}
 
+	log := logrus.New()
+	log.SetOutput(os.Stderr)
+
 	var cmd Command
 	cmdStr := flag.Arg(0)
 
 	switch cmdStr {
 	case "clean":
-		cmd = &CleanCommand{OutputDir: outputDir}
+		cmd = &CleanCommand{
+			OutputDir: outputDir,
+			Log:       log,
+		}
 	case "filenames":
-		flags := flag.NewFlagSet("filenames", flag.ExitOnError)
-		onlyMissing := flags.Bool("m", false, "print only missing filenames")
-
-		if err := flags.Parse(flag.Args()[1:]); err != nil {
-			log.Fatal(err)
+		if err := filenamesFlags.Parse(flag.Args()[1:]); err != nil {
+			fatal(log, err)
 		}
 
-		cmd = &FilenamesCommand{OnlyMissing: *onlyMissing}
+		cmd = &FilenamesCommand{
+			OnlyMissing: filenamesOnlyMissing,
+		}
 	case "generate":
-		cmd = &GenerateCommand{OutputDir: outputDir}
+		cmd = &GenerateCommand{
+			OutputDir: outputDir,
+			Log:       log,
+		}
 	case "help":
 		usage()
 		os.Exit(0)
@@ -101,16 +125,50 @@ func main() {
 	steamSchema, err := NewSteamSchema(steamSchemaFile, apiKey)
 
 	if err != nil {
-		log.Fatal(err)
+		fatal(log, err)
 	}
 
 	dotaSchema, err := NewDotaSchema(dotaSchemaFile)
 
 	if err != nil {
-		log.Fatal(err)
+		fatal(log, err)
 	}
 
 	if err := cmd.Run(steamSchema, dotaSchema); err != nil {
-		log.Fatal(err)
+		fatal(log, err)
+	}
+}
+
+func fatal(log logrus.FieldLogger, err error) {
+	l := log.WithError(err)
+
+	switch e := err.(type) {
+	case *geyser.InterfaceNotFoundError:
+		l.WithField("key", e.Key).Fatal()
+	case *geyser.InvalidInterfaceNameError:
+		l.WithFields(logrus.Fields{
+			"interface": e.Interface.Name,
+			"err":       e.Err,
+		}).Fatal()
+	case *geyser.InterfaceMethodNotFoundError:
+		l.WithField("key", e.Key).Fatal()
+	case *geyser.InvalidMethodNameError:
+		l.WithFields(logrus.Fields{
+			"method":  e.Method.Name,
+			"version": e.Method.Version,
+		}).Fatal()
+	case *geyser.InvalidMethodVersionError:
+		l.WithFields(logrus.Fields{
+			"method":  e.Method.Name,
+			"version": e.Method.Version,
+		}).Fatal()
+	case *geyser.InvalidMethodHTTPMethodError:
+		l.WithFields(logrus.Fields{
+			"method":      e.Method.Name,
+			"version":     e.Method.Version,
+			"http_method": e.Method.HTTPMethod,
+		}).Fatal()
+	default:
+		l.Fatal()
 	}
 }

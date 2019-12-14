@@ -2,39 +2,44 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"path/filepath"
 
 	"github.com/13k/geyser"
+	"github.com/sirupsen/logrus"
 )
 
 type GenerateCommand struct {
 	OutputDir string
+	Log       logrus.FieldLogger
 }
 
 func (cmd *GenerateCommand) Run(schemas ...*Schema) error {
 	for _, schema := range schemas {
-		err := schema.eachSortedInterfaceGroup(func(groupName string, group *geyser.SchemaInterfaces) error {
+		err := schema.eachSortedInterfaceGroup(func(baseName string, group geyser.SchemaInterfacesGroup) error {
+			baseFilename := schema.Filename(group)
+
+			if baseFilename == "" {
+				return fmt.Errorf(errfUnknownInterfaceFilename, baseName)
+			}
+
 			outputDir := filepath.Join(cmd.OutputDir, schema.relPath)
 
 			g, err := NewAPIGen(
 				group,
 				schema.pkgName,
 				outputDir,
-				schema.filenames,
+				baseFilename,
 			)
 
 			if err != nil {
 				return err
 			}
 
-			log.Printf("* %s", groupName)
-
-			if err := cmd.gen(g.GenerateInterfaceFile); err != nil {
+			if err := cmd.gen(baseName, g.GenerateInterfaceFile); err != nil {
 				return err
 			}
 
-			if err := cmd.gen(g.GenerateResultsFile); err != nil {
+			if err := cmd.gen(baseName, g.GenerateResultsFile); err != nil {
 				return err
 			}
 
@@ -51,20 +56,31 @@ func (cmd *GenerateCommand) Run(schemas ...*Schema) error {
 
 type genFunc func() (string, EGenerated, error)
 
-func (cmd *GenerateCommand) gen(gen genFunc) error {
+func (cmd *GenerateCommand) gen(baseName string, gen genFunc) error {
 	filename, etest, err := gen()
 
 	if err != nil {
 		return err
 	}
 
+	relpath, err := filepath.Rel(cmd.OutputDir, filename)
+
+	if err != nil {
+		panic(err)
+	}
+
+	l := cmd.Log.WithFields(logrus.Fields{
+		"interface": baseName,
+		"file":      relpath,
+	})
+
 	switch etest {
 	case EGeneratedDoesNotExist:
-		log.Printf("  [+] %s\n", filename)
+		l.Info("generated")
 	case EGeneratedModified:
-		log.Printf("  [=] %s (modified file unchanged)\n", filename)
+		l.Warn("manually modified file unchanged")
 	case EGeneratedGenerated:
-		log.Printf("  [#] %s (re-generated)\n", filename)
+		l.Info("re-generated")
 	default:
 		return fmt.Errorf("unknown generation result: %d", etest)
 	}

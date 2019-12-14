@@ -2,39 +2,44 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"path/filepath"
 
 	"github.com/13k/geyser"
+	"github.com/sirupsen/logrus"
 )
 
 type CleanCommand struct {
 	OutputDir string
+	Log       logrus.FieldLogger
 }
 
 func (cmd *CleanCommand) Run(schemas ...*Schema) error {
 	for _, schema := range schemas {
-		err := schema.eachSortedInterfaceGroup(func(groupName string, group *geyser.SchemaInterfaces) error {
+		err := schema.eachSortedInterfaceGroup(func(baseName string, group geyser.SchemaInterfacesGroup) error {
+			baseFilename := schema.Filename(group)
+
+			if baseFilename == "" {
+				return fmt.Errorf(errfUnknownInterfaceFilename, baseName)
+			}
+
 			outputDir := filepath.Join(cmd.OutputDir, schema.relPath)
 
 			g, err := NewAPIGen(
 				group,
 				schema.pkgName,
 				outputDir,
-				schema.filenames,
+				baseFilename,
 			)
 
 			if err != nil {
 				return err
 			}
 
-			log.Printf("* %s", groupName)
-
-			if err := cmd.clean(g.RemoveInterfaceFile); err != nil {
+			if err := cmd.clean(baseName, g.RemoveInterfaceFile); err != nil {
 				return err
 			}
 
-			if err := cmd.clean(g.RemoveResultsFile); err != nil {
+			if err := cmd.clean(baseName, g.RemoveResultsFile); err != nil {
 				return err
 			}
 
@@ -51,19 +56,30 @@ func (cmd *CleanCommand) Run(schemas ...*Schema) error {
 
 type cleanFunc func() (string, EGenerated, error)
 
-func (cmd *CleanCommand) clean(clean cleanFunc) error {
+func (cmd *CleanCommand) clean(baseName string, clean cleanFunc) error {
 	filename, etest, err := clean()
 
 	if err != nil {
 		return err
 	}
 
+	relpath, err := filepath.Rel(cmd.OutputDir, filename)
+
+	if err != nil {
+		panic(err)
+	}
+
+	l := cmd.Log.WithFields(logrus.Fields{
+		"interface": baseName,
+		"file":      relpath,
+	})
+
 	switch etest {
 	case EGeneratedDoesNotExist:
 	case EGeneratedModified:
-		log.Printf("  [=] %s (modified file unchanged)\n", filename)
+		l.Warn("manually modified file unchanged")
 	case EGeneratedGenerated:
-		log.Printf("  [-] %s\n", filename)
+		l.Info("removed")
 	default:
 		return fmt.Errorf("unknown clean result: %d", etest)
 	}

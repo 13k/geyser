@@ -103,3 +103,22 @@ func (g *APIGen) jenSchemaMethodsCtorID() *j.Statement {
 func (g *APIGen) jenSchemaMethodParamsCtor() *j.Statement {
 	return g.jenGeyserID(srcSchemaMethodParamsCtor)
 }
+
+func (g *APIGen) jenSchemaInterfaceKey(name string, appID j.Code) *j.Statement {
+	keyValues := j.Dict{
+		j.Id("Name"): j.Lit(name),
+	}
+
+	if appID != nil {
+		keyValues[j.Id("AppID")] = appID
+	}
+
+	return g.jenGeyserID(srcSchemaInterfaceKey).Values(keyValues)
+}
+
+func (g *APIGen) jenSchemaMethodKey(name string, version j.Code) *j.Statement {
+	return g.jenGeyserID(srcSchemaMethodKey).Values(j.Dict{
+		j.Id("Name"):    j.Lit(name),
+		j.Id("Version"): version,
+	})
+}

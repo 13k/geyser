@@ -8,5 +8,6 @@ require (
 	github.com/go-resty/resty/v2 v2.1.0
 	github.com/golang/protobuf v1.3.2 // indirect
 	github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334
+	github.com/sirupsen/logrus v1.4.2
 	golang.org/x/net v0.0.0-20190923162816-aa69164e4478 // indirect
 )

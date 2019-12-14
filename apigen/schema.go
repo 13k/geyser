@@ -121,6 +121,10 @@ func NewSteamSchema(cacheFile string, apiKey string) (*Schema, error) {
 		return nil, err
 	}
 
+	if err := schema.Validate(); err != nil {
+		return nil, err
+	}
+
 	schema.filenames = filenamesSteam
 	schema.pkgName = "geyser"
 
@@ -131,6 +135,10 @@ func NewDotaSchema(cacheFile string) (*Schema, error) {
 	schema, err := NewSchema(cacheFile, remoteSchemaReqUndocDota)
 
 	if err != nil {
+		return nil, err
+	}
+
+	if err := schema.Validate(); err != nil {
 		return nil, err
 	}
 
@@ -192,7 +200,7 @@ func NewCachedSchema(cacheFile string) (*Schema, error) {
 func (s *Schema) buildIndex() error {
 	s.keyedByName = make(map[string]*geyser.SchemaInterface)
 
-	for _, sif := range s.API.Interfaces.Interfaces {
+	for _, sif := range s.API.Interfaces {
 		if _, ok := s.keyedByName[sif.Name]; ok {
 			return fmt.Errorf(errfSchemaDuplicateInterfaces, sif.Name)
 		}
@@ -203,21 +211,19 @@ func (s *Schema) buildIndex() error {
 	return nil
 }
 
-func (s *Schema) Filename(group *geyser.SchemaInterfaces) (string, error) {
-	groupName, err := group.GroupName()
+func (s *Schema) Validate() error {
+	return s.API.Validate()
+}
 
-	if err != nil {
-		return "", err
-	}
-
-	return s.filenames[groupName], nil
+func (s *Schema) Filename(group geyser.SchemaInterfacesGroup) string {
+	return s.filenames[group.Name()]
 }
 
 func (s *Schema) Normalize(undoc bool) {
-	for _, i := range s.API.Interfaces.Interfaces {
+	for _, i := range s.API.Interfaces {
 		i.Undocumented = undoc
 
-		for _, m := range i.GetMethods() {
+		for _, m := range i.Methods {
 			m.Undocumented = undoc
 
 			if m.HTTPMethod == "" {
@@ -239,56 +245,56 @@ func (s *Schema) Merge(other *Schema) error {
 	var result []*geyser.SchemaInterface
 
 	// append all interfaces in `s` that are not in `other`
-	for _, si := range s.API.Interfaces.Interfaces {
+	for _, si := range s.API.Interfaces {
 		if _, ok := other.keyedByName[si.Name]; !ok {
 			result = append(result, si)
 		}
 	}
 
-	for _, oi := range other.API.Interfaces.Interfaces {
+	for _, oi := range other.API.Interfaces {
 		si := s.keyedByName[oi.Name]
 
-		// append all interfaces in `other` that are not in `s`
+		// append interface in `other` that is not in `s`
 		if si == nil {
 			result = append(result, oi)
 			continue
 		}
 
-		// merge interfaces that belong to both
+		// merge interface that belongs to both
 
-		var rMethods []*geyser.SchemaMethod
+		var oMethods []*geyser.SchemaMethod
 
 		// append all methods in `other` that are not in `s`
-		for _, om := range oi.GetMethods() {
-			if sm := si.Methods.Find(om.Name, om.Version); sm != nil {
+		for _, om := range oi.Methods {
+			omKey, err := om.Key()
+
+			if err != nil {
+				return err
+			}
+
+			if _, err := si.Methods.Get(omKey); err == nil {
 				// ignore conflicting method (keep method in `s`)
 				log.Printf(warnfSchemaMergeMethodConflict, oi.Name, om.Name, om.Version)
 				continue
 			}
 
-			rMethods = append(rMethods, om)
+			oMethods = append(oMethods, om)
 		}
 
 		// prepend all methods in `s`
-
-		rMethodsCollection, err := geyser.NewSchemaMethods(rMethods...)
-
-		if err != nil {
-			return err
-		}
-
-		rMethodsCollection, err = si.Methods.Add(rMethodsCollection)
+		methods, err := geyser.NewSchemaMethods(append(si.Methods, oMethods...)...)
 
 		if err != nil {
 			return err
 		}
 
-		rInterface := &geyser.SchemaInterface{
+		// create a new interface with merged methods
+		mergedInterface := &geyser.SchemaInterface{
 			Name:    si.Name,
-			Methods: rMethodsCollection,
+			Methods: methods,
 		}
 
-		result = append(result, rInterface)
+		result = append(result, mergedInterface)
 	}
 
 	interfaces, err := geyser.NewSchemaInterfaces(result...)
@@ -316,10 +322,10 @@ func (s *Schema) Dump(cacheFile string) error {
 	return enc.Encode(s)
 }
 
-type interfaceGroupIterator func(string, *geyser.SchemaInterfaces) error
+type interfaceGroupIterator func(string, geyser.SchemaInterfacesGroup) error
 
 func (s *Schema) eachSortedInterfaceGroup(fn interfaceGroupIterator) error {
-	groups, err := s.API.Interfaces.GroupByName()
+	groups, err := s.API.Interfaces.GroupByBaseName()
 
 	if err != nil {
 		return err

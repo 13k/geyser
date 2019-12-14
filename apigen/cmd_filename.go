@@ -16,28 +16,25 @@ type FilenamesCommand struct {
 func (cmd *FilenamesCommand) Run(schemas ...*Schema) error {
 	sep := strings.Repeat("-", 80)
 
+	fmt.Println(sep)
+
 	for _, schema := range schemas {
 		fmt.Printf("%s\n%s\n", path.Join("geyser", schema.relPath), sep)
 
-		err := schema.eachSortedInterfaceGroup(func(groupName string, group *geyser.SchemaInterfaces) error {
+		err := schema.eachSortedInterfaceGroup(func(baseName string, group geyser.SchemaInterfacesGroup) error {
 			var comment string
-
-			filename, err := schema.Filename(group)
-
-			if err != nil {
-				return err
-			}
-
 			var missing bool
+
+			filename := schema.Filename(group)
 
 			if filename == "" {
 				missing = true
-				filename = strcase.ToSnake(strings.TrimPrefix(groupName, "I"))
+				filename = strcase.ToSnake(strings.TrimPrefix(baseName, "I"))
 				comment = " // suggested"
 			}
 
 			if !cmd.OnlyMissing || missing {
-				fmt.Printf("%q: %q,%s\n", groupName, filename, comment)
+				fmt.Printf("%q: %q,%s\n", baseName, filename, comment)
 			}
 
 			return nil
