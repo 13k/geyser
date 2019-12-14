@@ -1,196 +1,139 @@
 package geyser
 
-import (
-	"encoding/json"
-)
-
-type schemaInterfacesIndex map[SchemaInterfaceKey]*SchemaInterface
-
-func (i schemaInterfacesIndex) Find(name string, appID uint32) *SchemaInterface {
-	return i[SchemaInterfaceKey{Name: name, AppID: appID}]
-}
-
 // SchemaInterfaces is a collection of `SchemaInterface`.
-//
-// The struct should be read-only.
-type SchemaInterfaces struct {
-	Interfaces []*SchemaInterface
+type SchemaInterfaces []*SchemaInterface
 
-	index       schemaInterfacesIndex
-	indexByName map[string][]*SchemaInterface
-	appIDs      []uint32
-}
-
-// MustNewSchemaInterfaces is like `NewSchemaInterfaces` but panics if it
-// returned an error.
-func MustNewSchemaInterfaces(interfaces ...*SchemaInterface) *SchemaInterfaces {
-	s, err := NewSchemaInterfaces(interfaces...)
+// MustNewSchemaInterfaces is like `NewSchemaInterfaces` but panics if it returned an error.
+func MustNewSchemaInterfaces(interfaces ...*SchemaInterface) SchemaInterfaces {
+	c, err := NewSchemaInterfaces(interfaces...)
 
 	if err != nil {
 		panic(err)
 	}
 
-	return s
+	return c
 }
 
 // NewSchemaInterfaces creates a new collection.
 //
-// Returns errors described in `SchemaInterface.Key`.
-func NewSchemaInterfaces(interfaces ...*SchemaInterface) (*SchemaInterfaces, error) {
-	s := &SchemaInterfaces{Interfaces: interfaces}
+// Returns errors described in `SchemaInterface.Validate`.
+func NewSchemaInterfaces(interfaces ...*SchemaInterface) (SchemaInterfaces, error) {
+	c := SchemaInterfaces(interfaces)
 
-	if err := s.buildIndex(); err != nil {
+	if err := c.Validate(); err != nil {
 		return nil, err
 	}
 
-	return s, nil
+	return c, nil
 }
 
-func (s *SchemaInterfaces) buildIndex() error {
-	s.index = make(schemaInterfacesIndex)
-	s.indexByName = make(map[string][]*SchemaInterface)
-
-	for _, si := range s.Interfaces {
-		key, err := si.Key()
-
-		if err != nil {
+// Validate checks if all contained interfaces are valid.
+//
+// Returns errors described in `SchemaInterface.Validate`.
+func (c SchemaInterfaces) Validate() error {
+	for _, si := range c {
+		if err := si.Validate(); err != nil {
 			return err
 		}
-
-		s.index[*key] = si
-		s.indexByName[key.Name] = append(s.indexByName[key.Name], si)
 	}
 
 	return nil
 }
 
-// UnmarshalJSON deserializes JSON data into the `Interfaces` field.
-func (s *SchemaInterfaces) UnmarshalJSON(data []byte) error {
-	if err := json.Unmarshal(data, &s.Interfaces); err != nil {
-		return err
-	}
-
-	return s.buildIndex()
-}
-
-// MarshalJSON serializes the `Interfaces` field to JSON data.
-func (s SchemaInterfaces) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.Interfaces)
-}
-
-// Find returns the interface with given name and appID. It returns nil if none
-// was found.
-func (s *SchemaInterfaces) Find(name string, appID uint32) *SchemaInterface {
-	return s.index.Find(name, appID)
-}
-
-// Get is like `Find` but returns an error of type `*InterfaceNotFoundError` if
-// none was found.
-func (s *SchemaInterfaces) Get(name string, appID uint32) (si *SchemaInterface, err error) {
-	si = s.index.Find(name, appID)
-
-	if si == nil {
-		err = &InterfaceNotFoundError{Name: name, AppID: appID}
-	}
-
-	return
-}
-
-// GroupByName groups the interfaces by name, returning a map of `{ name => sub-collection }`.
+// Get returns the interface with given key.
 //
-// Each value in the map is a grouped `SchemaInterfaces` and can use group helpers.
+// Returns an error of type `*InterfaceNotFoundError` if none was found.
 //
-// Returns errors described in `NewSchemaInterfaces`.
-func (s *SchemaInterfaces) GroupByName() (map[string]*SchemaInterfaces, error) {
-	var err error
-	result := make(map[string]*SchemaInterfaces)
-
-	for name, interfaces := range s.indexByName {
-		if result[name], err = NewSchemaInterfaces(interfaces...); err != nil {
+// Returns errors described in `SchemaInterface.Key`.
+func (c SchemaInterfaces) Get(key SchemaInterfaceKey) (*SchemaInterface, error) {
+	for _, si := range c {
+		if k, err := si.Key(); err != nil {
 			return nil, err
-		}
-	}
-
-	return result, nil
-}
-
-// IsGroup checks if the collection contains only interfaces with the same name.
-func (s *SchemaInterfaces) IsGroup() bool {
-	return len(s.indexByName) == 1
-}
-
-// GroupName returns the common name between all contained interfaces.
-//
-// If the collection is empty, it returns error `ErrEmptyInterfaces`.
-//
-// If the collection is not a group, it returns error `ErrMixedInterfaces`.
-func (s *SchemaInterfaces) GroupName() (string, error) {
-	if len(s.Interfaces) == 0 {
-		return "", ErrEmptyInterfaces
-	}
-
-	if !s.IsGroup() {
-		return "", ErrMixedInterfaces
-	}
-
-	return s.Interfaces[0].BaseName()
-}
-
-// AppIDs collects the AppID of all interfaces in the collection.
-//
-// If the collection is not a group, it returns error `ErrMixedInterfaces`.
-func (s *SchemaInterfaces) AppIDs() ([]uint32, error) {
-	if !s.IsGroup() {
-		return nil, ErrMixedInterfaces
-	}
-
-	if s.appIDs == nil {
-		m := map[uint32]bool{}
-
-		for key := range s.index {
-			if key.AppID != 0 && !m[key.AppID] {
-				s.appIDs = append(s.appIDs, key.AppID)
-				m[key.AppID] = true
+		} else {
+			if k == key {
+				return si, nil
 			}
 		}
 	}
 
-	return s.appIDs, nil
+	return nil, &InterfaceNotFoundError{Key: key}
 }
 
-// GroupMethods groups interfaces methods by interface name.
+// GroupByName groups the interfaces by base name.
 //
-// If the collection is not a group, it returns error `ErrMixedInterfaces`.
-//
-// Returns errors described in `SchemaMethods.GroupByName` and
-// `SchemaMethods.Add`.
-func (s *SchemaInterfaces) GroupMethods() (map[string]*SchemaMethods, error) {
-	if len(s.Interfaces) == 0 {
-		return nil, nil
-	}
+// Returns errors described in `SchemaInterface.Key`.
+func (c SchemaInterfaces) GroupByBaseName() (map[string]SchemaInterfacesGroup, error) {
+	result := make(map[string]SchemaInterfacesGroup)
 
-	if !s.IsGroup() {
-		return nil, ErrMixedInterfaces
-	}
-
-	var err error
-	result := map[string]*SchemaMethods{}
-
-	for _, si := range s.Interfaces {
-		var grouped map[string]*SchemaMethods
-		grouped, err = si.Methods.GroupByName()
+	for _, si := range c {
+		key, err := si.Key()
 
 		if err != nil {
 			return nil, err
 		}
 
-		for methodName, methods := range grouped {
-			if result[methodName] == nil {
-				result[methodName] = methods
-			} else {
-				if result[methodName], err = result[methodName].Add(methods); err != nil {
-					return nil, err
-				}
+		if result[key.Name] == nil {
+			result[key.Name] = make(SchemaInterfacesGroup)
+		}
+
+		result[key.Name][key] = si
+	}
+
+	return result, nil
+}
+
+// SchemaInterfacesGroup is a group of `SchemaInterface`s with the same base name.
+type SchemaInterfacesGroup map[SchemaInterfaceKey]*SchemaInterface
+
+// Name returns the common name of all interfaces in the group.
+func (g SchemaInterfacesGroup) Name() (name string) {
+	for key := range g {
+		name = key.Name
+		break
+	}
+
+	return
+}
+
+// AppIDs collects the AppID of all interfaces in the group.
+func (g SchemaInterfacesGroup) AppIDs() []uint32 {
+	var appIDs []uint32
+
+	for key := range g {
+		if key.AppID != 0 {
+			appIDs = append(appIDs, key.AppID)
+		}
+	}
+
+	return appIDs
+}
+
+// GroupMethods groups interfaces methods by method name.
+//
+// Returns errors described in `SchemaMethods.GroupByName`.
+func (g SchemaInterfacesGroup) GroupMethods() (map[string]SchemaMethodsGroup, error) {
+	var result map[string]SchemaMethodsGroup
+
+	for _, si := range g {
+		grouped, err := si.Methods.GroupByName()
+
+		if err != nil {
+			return nil, err
+		}
+
+		if result == nil {
+			result = grouped
+			continue
+		}
+
+		for name, group := range grouped {
+			if result[name] == nil {
+				result[name] = group
+				continue
+			}
+
+			for key, sm := range group {
+				result[name][key] = sm
 			}
 		}
 	}

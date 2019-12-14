@@ -5,32 +5,31 @@ import (
 )
 
 const (
-	errInterfaceNotFound       = "Interface not found"
-	errInvalidInterfaceName    = "Invalid interface name"
-	errInterfaceMethodNotFound = "Interface method not found"
-	errInvalidMethodName       = "Invalid method name"
-	errInvalidMethodVersion    = "Invalid method version"
-	errInvalidMethodHTTPMethod = "Invalid method HTTP method"
-	errRequiredParameter       = "Missing required parameter"
+	errInterfaceNotFound       = "interface not found"
+	errInvalidInterfaceName    = "invalid interface name"
+	errInterfaceMethodNotFound = "interface method not found"
+	errInvalidMethodName       = "invalid method name"
+	errInvalidMethodVersion    = "invalid method version"
+	errInvalidMethodHTTPMethod = "invalid method HTTP method"
+	errRequiredParameter       = "missing required parameter"
 )
 
 var (
 	// ErrEmptyInterfaces is returned when trying to manipulate an empty
 	// SchemaInterfaces.
-	ErrEmptyInterfaces = errors.New("Empty interfaces collection")
+	ErrEmptyInterfaces = errors.New("empty interfaces collection")
 	// ErrMixedInterfaces is returned when trying to use group helpers on a
 	// SchemaInterfaces collection containing mixed interface names.
-	ErrMixedInterfaces = errors.New("Mixed interfaces collection")
+	ErrMixedInterfaces = errors.New("mixed interfaces collection")
 	// ErrMixedMethods is returned when trying to use group helpers on a
 	// SchemaMethods collection containing mixed method names.
-	ErrMixedMethods = errors.New("Mixed methods collection")
+	ErrMixedMethods = errors.New("mixed methods collection")
 )
 
 // InterfaceNotFoundError is returned when tried to access an interface with
 // invalid name or invalid AppID.
 type InterfaceNotFoundError struct {
-	Name  string
-	AppID uint32
+	Key SchemaInterfaceKey
 }
 
 func (InterfaceNotFoundError) Error() string {
@@ -50,8 +49,7 @@ func (InvalidInterfaceNameError) Error() string {
 // InterfaceMethodNotFoundError is returned when tried to access an interface
 // method with invalid name or invalid version.
 type InterfaceMethodNotFoundError struct {
-	Name    string
-	Version int
+	Key SchemaMethodKey
 }
 
 func (InterfaceMethodNotFoundError) Error() string {

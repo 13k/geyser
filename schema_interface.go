@@ -20,23 +20,24 @@ type SchemaInterfaceKey struct {
 //
 // The struct should be read-only.
 type SchemaInterface struct {
-	Name         string         `json:"name"`
-	Methods      *SchemaMethods `json:"methods"`
-	Undocumented bool           `json:"undocumented"`
+	Name         string        `json:"name"`
+	Methods      SchemaMethods `json:"methods"`
+	Undocumented bool          `json:"undocumented"`
 
-	appID    uint32
-	baseName string
-	key      *SchemaInterfaceKey
+	key SchemaInterfaceKey
 }
 
 func (i *SchemaInterface) parse() error {
-	if i.key != nil {
+	if i.key.Name != "" {
 		return nil
 	}
 
 	if !siNameRegexp.MatchString(i.Name) {
 		return &InvalidInterfaceNameError{Interface: i}
 	}
+
+	var appID uint32
+	baseName := i.Name
 
 	if matches := siNameAppIDRegexp.FindStringSubmatch(i.Name); matches != nil {
 		appID64, err := strconv.ParseUint(matches[2], 10, 32)
@@ -45,50 +46,33 @@ func (i *SchemaInterface) parse() error {
 			return &InvalidInterfaceNameError{Interface: i, Err: err}
 		}
 
-		i.baseName = matches[1]
-		i.appID = uint32(appID64)
-	} else {
-		i.baseName = i.Name
+		baseName = matches[1]
+		appID = uint32(appID64)
 	}
 
-	i.key = &SchemaInterfaceKey{Name: i.baseName, AppID: i.appID}
+	i.key.Name = baseName
+	i.key.AppID = appID
 
 	return nil
 }
 
-// Key returns the key identifying the interface.
+// Validate checks if the interface and all its methods are valid.
 //
-// If the interface name is invalid, it returns an error of type
-// `*InvalidInterfaceNameError`.
-func (i *SchemaInterface) Key() (key *SchemaInterfaceKey, err error) {
-	err = i.parse()
-	key = i.key
-	return
-}
-
-// GetMethods returns the underlying slice of `SchemaMethod`.
-func (i *SchemaInterface) GetMethods() []*SchemaMethod {
-	if i.Methods == nil {
-		return nil
+// Returns an error of type `*InvalidInterfaceNameError` if the interface name is invalid.
+//
+// Returns errors described in `SchemaMethods.Validate`.
+func (i *SchemaInterface) Validate() error {
+	if err := i.parse(); err != nil {
+		return err
 	}
 
-	return i.Methods.Methods
+	return i.Methods.Validate()
 }
 
-// BaseName extracts the base name of the interface (without the AppID part).
+// Key returns the key identifying the interface.
 //
-// Returns errors described in `Key`.
-func (i *SchemaInterface) BaseName() (s string, err error) {
-	err = i.parse()
-	s = i.baseName
-	return
-}
-
-// AppID extracts the AppID of the interface (without the BaseName part).
-//
-// Returns errors described in `Key`.
-func (i *SchemaInterface) AppID() (id uint32, err error) {
-	err = i.parse()
-	id = i.appID
-	return
+// Returns errors described in `Validate`.
+func (i *SchemaInterface) Key() (SchemaInterfaceKey, error) {
+	err := i.parse()
+	return i.key, err
 }

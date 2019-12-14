@@ -26,13 +26,13 @@ type SchemaMethodKey struct {
 //
 // The struct should be read-only.
 type SchemaMethod struct {
-	Name         string              `json:"name"`
-	Version      int                 `json:"version"`
-	HTTPMethod   string              `json:"httpmethod"`
-	Params       *SchemaMethodParams `json:"parameters"`
-	Undocumented bool                `json:"undocumented"`
+	Name         string             `json:"name"`
+	Version      int                `json:"version"`
+	HTTPMethod   string             `json:"httpmethod"`
+	Params       SchemaMethodParams `json:"parameters"`
+	Undocumented bool               `json:"undocumented"`
 
-	key     *SchemaMethodKey
+	key     SchemaMethodKey
 	version string
 }
 
@@ -45,7 +45,7 @@ func (m *SchemaMethod) versionPathParam() string {
 }
 
 func (m *SchemaMethod) parse() error {
-	if m.key != nil {
+	if m.key.Name != "" {
 		return nil
 	}
 
@@ -61,37 +61,35 @@ func (m *SchemaMethod) parse() error {
 		return &InvalidMethodHTTPMethodError{Method: m}
 	}
 
-	m.key = &SchemaMethodKey{Name: m.Name, Version: m.Version}
+	m.key.Name = m.Name
+	m.key.Version = m.Version
 
 	return nil
 }
 
-// Key returns the key identifying the method.
+// Validate checks if the method is valid.
 //
-// If the method has an invalid name, an error of type `*InvalidMethodNameError`
-// is returned.
+// Returns an error of type `*InvalidMethodNameError` if the method has an invalid name.
 //
-// If the method has an invalid version, an error of type
-// `*InvalidMethodVersionError` is returned.
+// Returns an error of type `*InvalidMethodVersionError` if the method has an invalid version.
 //
-// If the method has an invalid http method, an error of type
-// `*InvalidMethodHTTPMethodError` is returned.
-func (m *SchemaMethod) Key() (key *SchemaMethodKey, err error) {
-	err = m.parse()
-	key = m.key
-	return
+// Returns an error of type `*InvalidMethodHTTPMethodError` if the method has an invalid http
+// method.
+func (m *SchemaMethod) Validate() error {
+	return m.parse()
 }
 
-// GetParams returns the underlying slice of `SchemaMethodParam`.
-func (m *SchemaMethod) GetParams() []*SchemaMethodParam {
-	if m.Params == nil {
-		return nil
-	}
-
-	return m.Params.Params
+// Key returns the key identifying the method.
+//
+// Returns errors described in `Validate`.
+func (m *SchemaMethod) Key() (SchemaMethodKey, error) {
+	err := m.parse()
+	return m.key, err
 }
 
 // ValidateParams validates the given parameters against the params collection.
+//
+// Returns errors described in `SchemaMethodParams.ValidateParams`.
 func (m *SchemaMethod) ValidateParams(params url.Values) error {
-	return m.Params.Validate(params)
+	return m.Params.ValidateParams(params)
 }

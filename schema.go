@@ -2,15 +2,13 @@ package geyser
 
 // Schema is the root of an API schema specification.
 type Schema struct {
-	Host       string            `json:"host"`
-	Interfaces *SchemaInterfaces `json:"interfaces"`
+	Host       string           `json:"host"`
+	Interfaces SchemaInterfaces `json:"interfaces"`
 }
 
-// GetInterfaces returns the underlying slice of `SchemaInterface`.
-func (s *Schema) GetInterfaces() []*SchemaInterface {
-	if s.Interfaces == nil {
-		return nil
-	}
-
-	return s.Interfaces.Interfaces
+// Validate checks if all contained interfaces are valid.
+//
+// Returns errors described in `SchemaInterfaces.Validate`
+func (s *Schema) Validate() error {
+	return s.Interfaces.Validate()
 }
