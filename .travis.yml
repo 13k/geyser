@@ -7,8 +7,9 @@ before_script:
   - go install github.com/golangci/golangci-lint/cmd/golangci-lint
 script:
   - golangci-lint run
-  - go test -v -race ./...
-  - go test -v ./...
+  - go test -v -race -covermode atomic -coverprofile=coverage.txt ./...
 cache:
   directories:
     - $GOPATH/pkg/mod
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
