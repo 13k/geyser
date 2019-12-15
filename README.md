@@ -2,9 +2,9 @@
 
 [![MIT](https://img.shields.io/github/license/13k/geyser)](https://github.com/13k/geyser/blob/master/LICENSE)
 [![GoDoc](https://godoc.org/github.com/13k/geyser?status.svg)](https://godoc.org/github.com/13k/geyser)
-[![Travis](https://img.shields.io/travis/13k/geyser)](https://travis-ci.org/13k/geyser)
+[![Travis](https://api.travis-ci.org/13k/geyser.svg?branch=master)](https://travis-ci.org/13k/geyser)
 [![GoReportCard](https://goreportcard.com/badge/github.com/13k/geyser)](https://goreportcard.com/report/github.com/13k/geyser)
-[![Codecov](https://img.shields.io/codecov/c/gh/13k/geyser)](https://codecov.io/gh/13k/geyser)
+[![codecov](https://codecov.io/gh/13k/geyser/branch/master/graph/badge.svg)](https://codecov.io/gh/13k/geyser)
 
 Steam Web API client for Go.
 
