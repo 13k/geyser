@@ -12,14 +12,14 @@ import (
 
 const (
 	fmtUsage = `
-Usage: apigen [options] <command>
+Usage: apigen [options] <command> [command_options]
 
 Commands:
 
-filenames [options]  Print a list of interfaces and respective filenames
-generate             Generate files
-clean                Remove all generated files
-
+filenames  Print a list of interfaces and respective filenames
+generate   Generate files
+clean      Remove all generated files
+sandbox    Create a temporary "sandbox" to test generated files
 
 Options:
 
@@ -33,10 +33,24 @@ Filenames options:
 
 %s
 
+Sandbox
+
+Creates a sandbox by linking all non-generated Go files and the go.mod file from the package into
+the destination directory.
+
+If the destination directory option is not given, it will create a temporary directory.
+
+NOTE: must be run from the main package directory!
+
+Sandbox options:
+
+%s
+
 `
 )
 
 var (
+	cwd             string
 	apiKey          string
 	steamSchemaFile string
 	dotaSchemaFile  string
@@ -44,10 +58,15 @@ var (
 
 	filenamesFlags       *flag.FlagSet
 	filenamesOnlyMissing bool
+
+	sandboxFlags *flag.FlagSet
+	sandboxDir   string
 )
 
 func init() {
-	cwd, err := os.Getwd()
+	var err error
+
+	cwd, err = os.Getwd()
 
 	if err != nil {
 		panic(err)
@@ -60,7 +79,10 @@ func init() {
 	flag.StringVar(&outputDir, "o", cwd, "Output directory")
 
 	filenamesFlags = flag.NewFlagSet("filenames", flag.ExitOnError)
-	filenamesFlags.BoolVar(&filenamesOnlyMissing, "m", false, "print only missing filenames")
+	filenamesFlags.BoolVar(&filenamesOnlyMissing, "m", false, "Print only missing filenames")
+
+	sandboxFlags = flag.NewFlagSet("sandbox", flag.ExitOnError)
+	sandboxFlags.StringVar(&sandboxDir, "d", "", "Sandbox directory (defaults to new tempdir)")
 
 	flag.Usage = usage
 }
@@ -78,7 +100,19 @@ func usage() {
 	filenamesFlags.PrintDefaults()
 	filenamesFlags.SetOutput(os.Stderr)
 
-	fmt.Fprintf(os.Stderr, fmtUsage, optionsBuf.String(), filenamesBuf.String())
+	var sandboxBuf bytes.Buffer
+
+	sandboxFlags.SetOutput(&sandboxBuf)
+	sandboxFlags.PrintDefaults()
+	sandboxFlags.SetOutput(os.Stderr)
+
+	fmt.Fprintf(
+		os.Stderr,
+		fmtUsage,
+		optionsBuf.String(),
+		filenamesBuf.String(),
+		sandboxBuf.String(),
+	)
 }
 
 func main() {
@@ -96,11 +130,6 @@ func main() {
 	cmdStr := flag.Arg(0)
 
 	switch cmdStr {
-	case "clean":
-		cmd = &CleanCommand{
-			OutputDir: outputDir,
-			Log:       log,
-		}
 	case "filenames":
 		if err := filenamesFlags.Parse(flag.Args()[1:]); err != nil {
 			fatal(log, err)
@@ -108,6 +137,26 @@ func main() {
 
 		cmd = &FilenamesCommand{
 			OnlyMissing: filenamesOnlyMissing,
+		}
+	case "sandbox":
+		if err := sandboxFlags.Parse(flag.Args()[1:]); err != nil {
+			fatal(log, err)
+		}
+
+		sandboxCmd := &SandboxCommand{
+			Directory: sandboxDir,
+			Log:       log,
+		}
+
+		if err := sandboxCmd.Run(); err != nil {
+			fatal(log, err)
+		}
+
+		return
+	case "clean":
+		cmd = &CleanCommand{
+			OutputDir: outputDir,
+			Log:       log,
 		}
 	case "generate":
 		cmd = &GenerateCommand{

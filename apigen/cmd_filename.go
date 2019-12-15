@@ -9,6 +9,8 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
+var _ Command = (*FilenamesCommand)(nil)
+
 type FilenamesCommand struct {
 	OnlyMissing bool
 }

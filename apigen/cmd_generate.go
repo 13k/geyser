@@ -8,6 +8,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var _ Command = (*GenerateCommand)(nil)
+
 type GenerateCommand struct {
 	OutputDir string
 	Log       logrus.FieldLogger

@@ -8,6 +8,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var _ Command = (*CleanCommand)(nil)
+
 type CleanCommand struct {
 	OutputDir string
 	Log       logrus.FieldLogger
