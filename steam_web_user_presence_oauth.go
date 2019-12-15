@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamWebUserPresenceOAuth stores the SchemaInterfaces for interface ISteamWebUserPresenceOAuth.
 var SchemaSteamWebUserPresenceOAuth = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
 				Name:       "PollStatus",
@@ -56,10 +56,47 @@ var SchemaSteamWebUserPresenceOAuth = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "Logon",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "Logoff",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "Message",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "DeviceInfo",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "Poll",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
 			},
 		),
-		Name: "ISteamWebUserPresenceOAuth",
+		Name:         "ISteamWebUserPresenceOAuth",
+		Undocumented: false,
 	},
 )
 
@@ -71,7 +108,7 @@ type SteamWebUserPresenceOAuth struct {
 
 // NewSteamWebUserPresenceOAuth creates a new SteamWebUserPresenceOAuth interface.
 func NewSteamWebUserPresenceOAuth(c *Client) (*SteamWebUserPresenceOAuth, error) {
-	si, err := SchemaSteamWebUserPresenceOAuth.Get("ISteamWebUserPresenceOAuth", 0)
+	si, err := SchemaSteamWebUserPresenceOAuth.Get(SchemaInterfaceKey{Name: "ISteamWebUserPresenceOAuth"})
 
 	if err != nil {
 		return nil, err
@@ -90,9 +127,149 @@ func (c *Client) SteamWebUserPresenceOAuth() (*SteamWebUserPresenceOAuth, error)
 	return NewSteamWebUserPresenceOAuth(c)
 }
 
-// PollStatus creates a Request for interface method PollStatus.
+/*
+DeviceInfo creates a Request for interface method DeviceInfo.
+
+This is an undocumented method.
+*/
+func (i *SteamWebUserPresenceOAuth) DeviceInfo() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "DeviceInfo",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamWebUserPresenceOAuthDeviceInfo{},
+	}
+
+	return req, nil
+}
+
+/*
+Logoff creates a Request for interface method Logoff.
+
+This is an undocumented method.
+*/
+func (i *SteamWebUserPresenceOAuth) Logoff() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "Logoff",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamWebUserPresenceOAuthLogoff{},
+	}
+
+	return req, nil
+}
+
+/*
+Logon creates a Request for interface method Logon.
+
+This is an undocumented method.
+*/
+func (i *SteamWebUserPresenceOAuth) Logon() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "Logon",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamWebUserPresenceOAuthLogon{},
+	}
+
+	return req, nil
+}
+
+/*
+Message creates a Request for interface method Message.
+
+This is an undocumented method.
+*/
+func (i *SteamWebUserPresenceOAuth) Message() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "Message",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamWebUserPresenceOAuthMessage{},
+	}
+
+	return req, nil
+}
+
+/*
+Poll creates a Request for interface method Poll.
+
+This is an undocumented method.
+*/
+func (i *SteamWebUserPresenceOAuth) Poll() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "Poll",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamWebUserPresenceOAuthPoll{},
+	}
+
+	return req, nil
+}
+
+/*
+PollStatus creates a Request for interface method PollStatus.
+
+Parameters
+
+  * steamid [string] (required): Steam ID of the user
+  * umqid [uint64] (required): UMQ Session ID
+  * message [uint32] (required): Message that was last known to the user
+  * pollid [uint32]: Caller-specific poll id
+  * sectimeout [uint32]: Long-poll timeout in seconds
+  * secidletime [uint32]: How many seconds is client considering itself idle, e.g. screen is off
+  * use_accountids [uint32]: Boolean, 0 (default): return steamid_from in output, 1: return accountid_from
+*/
 func (i *SteamWebUserPresenceOAuth) PollStatus() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("PollStatus", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "PollStatus",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

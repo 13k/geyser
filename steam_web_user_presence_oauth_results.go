@@ -2,5 +2,20 @@
 
 package geyser
 
+// SteamWebUserPresenceOAuthDeviceInfo holds the result of the method ISteamWebUserPresenceOAuth/DeviceInfo.
+type SteamWebUserPresenceOAuthDeviceInfo struct{}
+
+// SteamWebUserPresenceOAuthLogoff holds the result of the method ISteamWebUserPresenceOAuth/Logoff.
+type SteamWebUserPresenceOAuthLogoff struct{}
+
+// SteamWebUserPresenceOAuthLogon holds the result of the method ISteamWebUserPresenceOAuth/Logon.
+type SteamWebUserPresenceOAuthLogon struct{}
+
+// SteamWebUserPresenceOAuthMessage holds the result of the method ISteamWebUserPresenceOAuth/Message.
+type SteamWebUserPresenceOAuthMessage struct{}
+
+// SteamWebUserPresenceOAuthPoll holds the result of the method ISteamWebUserPresenceOAuth/Poll.
+type SteamWebUserPresenceOAuthPoll struct{}
+
 // SteamWebUserPresenceOAuthPollStatus holds the result of the method ISteamWebUserPresenceOAuth/PollStatus.
 type SteamWebUserPresenceOAuthPollStatus struct{}

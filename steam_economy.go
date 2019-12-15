@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamEconomy stores the SchemaInterfaces for interface ISteamEconomy.
 var SchemaSteamEconomy = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetAssetClassInfo",
@@ -44,7 +44,8 @@ var SchemaSteamEconomy = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -69,10 +70,12 @@ var SchemaSteamEconomy = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ISteamEconomy",
+		Name:         "ISteamEconomy",
+		Undocumented: false,
 	},
 )
 
@@ -84,7 +87,7 @@ type SteamEconomy struct {
 
 // NewSteamEconomy creates a new SteamEconomy interface.
 func NewSteamEconomy(c *Client) (*SteamEconomy, error) {
-	si, err := SchemaSteamEconomy.Get("ISteamEconomy", 0)
+	si, err := SchemaSteamEconomy.Get(SchemaInterfaceKey{Name: "ISteamEconomy"})
 
 	if err != nil {
 		return nil, err
@@ -103,9 +106,22 @@ func (c *Client) SteamEconomy() (*SteamEconomy, error) {
 	return NewSteamEconomy(c)
 }
 
-// GetAssetClassInfo creates a Request for interface method GetAssetClassInfo.
+/*
+GetAssetClassInfo creates a Request for interface method GetAssetClassInfo.
+
+Parameters
+
+  * appid [uint32] (required): Must be a steam economy app.
+  * language [string]: The user's local language
+  * class_count [uint32] (required): Number of classes requested. Must be at least one.
+  * classid0 [uint64] (required): Class ID of the nth class.
+  * instanceid0 [uint64]: Instance ID of the nth class.
+*/
 func (i *SteamEconomy) GetAssetClassInfo() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetAssetClassInfo", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetAssetClassInfo",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -121,9 +137,20 @@ func (i *SteamEconomy) GetAssetClassInfo() (*Request, error) {
 	return req, nil
 }
 
-// GetAssetPrices creates a Request for interface method GetAssetPrices.
+/*
+GetAssetPrices creates a Request for interface method GetAssetPrices.
+
+Parameters
+
+  * appid [uint32] (required): Must be a steam economy app.
+  * currency [string]: The currency to filter for
+  * language [string]: The user's local language
+*/
 func (i *SteamEconomy) GetAssetPrices() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetAssetPrices", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetAssetPrices",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

@@ -8,7 +8,7 @@ import "net/http"
 // SchemaCheatReportingService stores the SchemaInterfaces for interface ICheatReportingService.
 var SchemaCheatReportingService = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
 				Name:       "ReportCheatData",
@@ -98,10 +98,12 @@ var SchemaCheatReportingService = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ICheatReportingService",
+		Name:         "ICheatReportingService",
+		Undocumented: false,
 	},
 )
 
@@ -113,7 +115,7 @@ type CheatReportingService struct {
 
 // NewCheatReportingService creates a new CheatReportingService interface.
 func NewCheatReportingService(c *Client) (*CheatReportingService, error) {
-	si, err := SchemaCheatReportingService.Get("ICheatReportingService", 0)
+	si, err := SchemaCheatReportingService.Get(SchemaInterfaceKey{Name: "ICheatReportingService"})
 
 	if err != nil {
 		return nil, err
@@ -132,9 +134,31 @@ func (c *Client) CheatReportingService() (*CheatReportingService, error) {
 	return NewCheatReportingService(c)
 }
 
-// ReportCheatData creates a Request for interface method ReportCheatData.
+/*
+ReportCheatData creates a Request for interface method ReportCheatData.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid [uint64] (required): steamid of the user running and reporting the cheat.
+  * appid [uint32] (required): The appid.
+  * pathandfilename [string] (required): path and file name of the cheat executable.
+  * webcheaturl [string] (required): web url where the cheat was found and downloaded.
+  * time_now [uint64] (required): local system time now.
+  * time_started [uint64] (required): local system time when cheat process started. ( 0 if not yet run )
+  * time_stopped [uint64] (required): local system time when cheat process stopped. ( 0 if still running )
+  * cheatname [string] (required): descriptive name for the cheat.
+  * game_process_id [uint32] (required): process ID of the running game.
+  * cheat_process_id [uint32] (required): process ID of the cheat process that ran
+  * cheat_param_1 [uint64] (required): cheat param 1
+  * cheat_param_2 [uint64] (required): cheat param 2
+  * cheat_data_dump [string] (required): data collection in json format
+*/
 func (i *CheatReportingService) ReportCheatData() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("ReportCheatData", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "ReportCheatData",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

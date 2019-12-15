@@ -5,23 +5,23 @@ package geyser
 // EconServiceCancelTradeOffer holds the result of the method IEconService/CancelTradeOffer.
 type EconServiceCancelTradeOffer struct{}
 
-// EconServiceGetTradeHoldDurations holds the result of the method IEconService/GetTradeHoldDurations.
-type EconServiceGetTradeHoldDurations struct{}
+// EconServiceDeclineTradeOffer holds the result of the method IEconService/DeclineTradeOffer.
+type EconServiceDeclineTradeOffer struct{}
 
 // EconServiceGetTradeHistory holds the result of the method IEconService/GetTradeHistory.
 type EconServiceGetTradeHistory struct{}
 
-// EconServiceGetTradeStatus holds the result of the method IEconService/GetTradeStatus.
-type EconServiceGetTradeStatus struct{}
-
-// EconServiceGetTradeOffers holds the result of the method IEconService/GetTradeOffers.
-type EconServiceGetTradeOffers struct{}
+// EconServiceGetTradeHoldDurations holds the result of the method IEconService/GetTradeHoldDurations.
+type EconServiceGetTradeHoldDurations struct{}
 
 // EconServiceGetTradeOffer holds the result of the method IEconService/GetTradeOffer.
 type EconServiceGetTradeOffer struct{}
 
+// EconServiceGetTradeOffers holds the result of the method IEconService/GetTradeOffers.
+type EconServiceGetTradeOffers struct{}
+
 // EconServiceGetTradeOffersSummary holds the result of the method IEconService/GetTradeOffersSummary.
 type EconServiceGetTradeOffersSummary struct{}
 
-// EconServiceDeclineTradeOffer holds the result of the method IEconService/DeclineTradeOffer.
-type EconServiceDeclineTradeOffer struct{}
+// EconServiceGetTradeStatus holds the result of the method IEconService/GetTradeStatus.
+type EconServiceGetTradeStatus struct{}

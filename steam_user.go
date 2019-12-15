@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamUser stores the SchemaInterfaces for interface ISteamUser.
 var SchemaSteamUser = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetFriendList",
@@ -32,7 +32,8 @@ var SchemaSteamUser = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -51,7 +52,8 @@ var SchemaSteamUser = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -70,7 +72,8 @@ var SchemaSteamUser = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -89,7 +92,8 @@ var SchemaSteamUser = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 2,
+				Undocumented: false,
+				Version:      2,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -108,7 +112,8 @@ var SchemaSteamUser = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -133,10 +138,12 @@ var SchemaSteamUser = MustNewSchemaInterfaces(
 						Type:        "int32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ISteamUser",
+		Name:         "ISteamUser",
+		Undocumented: false,
 	},
 )
 
@@ -148,7 +155,7 @@ type SteamUser struct {
 
 // NewSteamUser creates a new SteamUser interface.
 func NewSteamUser(c *Client) (*SteamUser, error) {
-	si, err := SchemaSteamUser.Get("ISteamUser", 0)
+	si, err := SchemaSteamUser.Get(SchemaInterfaceKey{Name: "ISteamUser"})
 
 	if err != nil {
 		return nil, err
@@ -167,45 +174,20 @@ func (c *Client) SteamUser() (*SteamUser, error) {
 	return NewSteamUser(c)
 }
 
-// GetUserGroupList creates a Request for interface method GetUserGroupList.
-func (i *SteamUser) GetUserGroupList() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetUserGroupList", 1)
+/*
+GetFriendList creates a Request for interface method GetFriendList.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &SteamUserGetUserGroupList{},
-	}
-
-	return req, nil
-}
-
-// ResolveVanityURL creates a Request for interface method ResolveVanityURL.
-func (i *SteamUser) ResolveVanityURL() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("ResolveVanityURL", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &SteamUserResolveVanityURL{},
-	}
-
-	return req, nil
-}
-
-// GetFriendList creates a Request for interface method GetFriendList.
+  * key [string] (required): access key
+  * steamid [uint64] (required): SteamID of user
+  * relationship [string]: relationship type (ex: friend)
+*/
 func (i *SteamUser) GetFriendList() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetFriendList", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetFriendList",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -221,9 +203,19 @@ func (i *SteamUser) GetFriendList() (*Request, error) {
 	return req, nil
 }
 
-// GetPlayerBans creates a Request for interface method GetPlayerBans.
+/*
+GetPlayerBans creates a Request for interface method GetPlayerBans.
+
+Parameters
+
+  * key [string] (required): access key
+  * steamids [string] (required): Comma-delimited list of SteamIDs
+*/
 func (i *SteamUser) GetPlayerBans() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetPlayerBans", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetPlayerBans",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -239,11 +231,26 @@ func (i *SteamUser) GetPlayerBans() (*Request, error) {
 	return req, nil
 }
 
-// GetPlayerSummaries creates a Request for interface method GetPlayerSummaries.
-//
-// Supported versions: [1 2].
+/*
+GetPlayerSummaries creates a Request for interface method GetPlayerSummaries.
+
+Supported versions: 1, 2.
+
+Parameters (v1)
+
+  * key [string] (required): access key
+  * steamids [string] (required): Comma-delimited list of SteamIDs
+
+Parameters (v2)
+
+  * key [string] (required): access key
+  * steamids [string] (required): Comma-delimited list of SteamIDs (max: 100)
+*/
 func (i *SteamUser) GetPlayerSummaries(version int) (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetPlayerSummaries", version)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetPlayerSummaries",
+		Version: version,
+	})
 
 	if err != nil {
 		return nil, err
@@ -254,6 +261,63 @@ func (i *SteamUser) GetPlayerSummaries(version int) (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &SteamUserGetPlayerSummaries{},
+	}
+
+	return req, nil
+}
+
+/*
+GetUserGroupList creates a Request for interface method GetUserGroupList.
+
+Parameters
+
+  * key [string] (required): access key
+  * steamid [uint64] (required): SteamID of user
+*/
+func (i *SteamUser) GetUserGroupList() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetUserGroupList",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamUserGetUserGroupList{},
+	}
+
+	return req, nil
+}
+
+/*
+ResolveVanityURL creates a Request for interface method ResolveVanityURL.
+
+Parameters
+
+  * key [string] (required): access key
+  * vanityurl [string] (required): The vanity URL to get a SteamID for
+  * url_type [int32]: The type of vanity URL. 1 (default): Individual profile, 2: Group, 3: Official game group
+*/
+func (i *SteamUser) ResolveVanityURL() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "ResolveVanityURL",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamUserResolveVanityURL{},
 	}
 
 	return req, nil

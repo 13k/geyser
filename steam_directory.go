@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamDirectory stores the SchemaInterfaces for interface ISteamDirectory.
 var SchemaSteamDirectory = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetCMList",
@@ -26,7 +26,8 @@ var SchemaSteamDirectory = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -45,16 +46,19 @@ var SchemaSteamDirectory = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetSteamPipeDomains",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetSteamPipeDomains",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ISteamDirectory",
+		Name:         "ISteamDirectory",
+		Undocumented: false,
 	},
 )
 
@@ -66,7 +70,7 @@ type SteamDirectory struct {
 
 // NewSteamDirectory creates a new SteamDirectory interface.
 func NewSteamDirectory(c *Client) (*SteamDirectory, error) {
-	si, err := SchemaSteamDirectory.Get("ISteamDirectory", 0)
+	si, err := SchemaSteamDirectory.Get(SchemaInterfaceKey{Name: "ISteamDirectory"})
 
 	if err != nil {
 		return nil, err
@@ -85,9 +89,19 @@ func (c *Client) SteamDirectory() (*SteamDirectory, error) {
 	return NewSteamDirectory(c)
 }
 
-// GetCMList creates a Request for interface method GetCMList.
+/*
+GetCMList creates a Request for interface method GetCMList.
+
+Parameters
+
+  * cellid [uint32] (required): Client's Steam cell ID
+  * maxcount [uint32]: Max number of servers to return
+*/
 func (i *SteamDirectory) GetCMList() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetCMList", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetCMList",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -103,9 +117,19 @@ func (i *SteamDirectory) GetCMList() (*Request, error) {
 	return req, nil
 }
 
-// GetCSList creates a Request for interface method GetCSList.
+/*
+GetCSList creates a Request for interface method GetCSList.
+
+Parameters
+
+  * cellid [uint32] (required): Client's Steam cell ID
+  * maxcount [uint32]: Max number of servers to return
+*/
 func (i *SteamDirectory) GetCSList() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetCSList", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetCSList",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -123,7 +147,10 @@ func (i *SteamDirectory) GetCSList() (*Request, error) {
 
 // GetSteamPipeDomains creates a Request for interface method GetSteamPipeDomains.
 func (i *SteamDirectory) GetSteamPipeDomains() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSteamPipeDomains", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSteamPipeDomains",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

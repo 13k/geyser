@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamCDN stores the SchemaInterfaces for interface ISteamCDN.
 var SchemaSteamCDN = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
 				Name:       "SetClientFilters",
@@ -44,7 +44,8 @@ var SchemaSteamCDN = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -87,10 +88,12 @@ var SchemaSteamCDN = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ISteamCDN",
+		Name:         "ISteamCDN",
+		Undocumented: false,
 	},
 )
 
@@ -102,7 +105,7 @@ type SteamCDN struct {
 
 // NewSteamCDN creates a new SteamCDN interface.
 func NewSteamCDN(c *Client) (*SteamCDN, error) {
-	si, err := SchemaSteamCDN.Get("ISteamCDN", 0)
+	si, err := SchemaSteamCDN.Get(SchemaInterfaceKey{Name: "ISteamCDN"})
 
 	if err != nil {
 		return nil, err
@@ -121,9 +124,22 @@ func (c *Client) SteamCDN() (*SteamCDN, error) {
 	return NewSteamCDN(c)
 }
 
-// SetClientFilters creates a Request for interface method SetClientFilters.
+/*
+SetClientFilters creates a Request for interface method SetClientFilters.
+
+Parameters
+
+  * key [string] (required): access key
+  * cdnname [string] (required): Steam name of CDN property
+  * allowedipblocks [string]: comma-separated list of allowed IP address blocks in CIDR format - blank for not used
+  * allowedasns [string]: comma-separated list of allowed client network AS numbers - blank for not used
+  * allowedipcountries [string]: comma-separated list of allowed client IP country codes in ISO 3166-1 format - blank for not used
+*/
 func (i *SteamCDN) SetClientFilters() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("SetClientFilters", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "SetClientFilters",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -139,9 +155,23 @@ func (i *SteamCDN) SetClientFilters() (*Request, error) {
 	return req, nil
 }
 
-// SetPerformanceStats creates a Request for interface method SetPerformanceStats.
+/*
+SetPerformanceStats creates a Request for interface method SetPerformanceStats.
+
+Parameters
+
+  * key [string] (required): access key
+  * cdnname [string] (required): Steam name of CDN property
+  * mbps_sent [uint32]: Outgoing network traffic in Mbps
+  * mbps_recv [uint32]: Incoming network traffic in Mbps
+  * cpu_percent [uint32]: Percent CPU load
+  * cache_hit_percent [uint32]: Percent cache hits
+*/
 func (i *SteamCDN) SetPerformanceStats() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("SetPerformanceStats", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "SetPerformanceStats",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

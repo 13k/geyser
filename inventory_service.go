@@ -8,7 +8,7 @@ import "net/http"
 // SchemaInventoryService stores the SchemaInterfaces for interface IInventoryService.
 var SchemaInventoryService = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
 				Name:       "SplitItemStack",
@@ -38,7 +38,8 @@ var SchemaInventoryService = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -75,7 +76,8 @@ var SchemaInventoryService = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -94,10 +96,54 @@ var SchemaInventoryService = MustNewSchemaInterfaces(
 						Type:        "int32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetInventory",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "ExchangeItem",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "AddPromoItem",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetItemDefs",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetItemDefMeta",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "ConsumeItem",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
 			},
 		),
-		Name: "IInventoryService",
+		Name:         "IInventoryService",
+		Undocumented: false,
 	},
 )
 
@@ -109,7 +155,7 @@ type InventoryService struct {
 
 // NewInventoryService creates a new InventoryService interface.
 func NewInventoryService(c *Client) (*InventoryService, error) {
-	si, err := SchemaInventoryService.Get("IInventoryService", 0)
+	si, err := SchemaInventoryService.Get(SchemaInterfaceKey{Name: "IInventoryService"})
 
 	if err != nil {
 		return nil, err
@@ -128,9 +174,47 @@ func (c *Client) InventoryService() (*InventoryService, error) {
 	return NewInventoryService(c)
 }
 
-// CombineItemStacks creates a Request for interface method CombineItemStacks.
+/*
+AddPromoItem creates a Request for interface method AddPromoItem.
+
+This is an undocumented method.
+*/
+func (i *InventoryService) AddPromoItem() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "AddPromoItem",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &InventoryServiceAddPromoItem{},
+	}
+
+	return req, nil
+}
+
+/*
+CombineItemStacks creates a Request for interface method CombineItemStacks.
+
+Parameters
+
+  * key [string] (required): Access key
+  * appid [uint32] (required)
+  * fromitemid [uint64] (required)
+  * destitemid [uint64] (required)
+  * quantity [uint32] (required)
+*/
 func (i *InventoryService) CombineItemStacks() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("CombineItemStacks", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "CombineItemStacks",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -146,9 +230,144 @@ func (i *InventoryService) CombineItemStacks() (*Request, error) {
 	return req, nil
 }
 
-// GetPriceSheet creates a Request for interface method GetPriceSheet.
+/*
+ConsumeItem creates a Request for interface method ConsumeItem.
+
+This is an undocumented method.
+*/
+func (i *InventoryService) ConsumeItem() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "ConsumeItem",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &InventoryServiceConsumeItem{},
+	}
+
+	return req, nil
+}
+
+/*
+ExchangeItem creates a Request for interface method ExchangeItem.
+
+This is an undocumented method.
+*/
+func (i *InventoryService) ExchangeItem() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "ExchangeItem",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &InventoryServiceExchangeItem{},
+	}
+
+	return req, nil
+}
+
+/*
+GetInventory creates a Request for interface method GetInventory.
+
+This is an undocumented method.
+*/
+func (i *InventoryService) GetInventory() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetInventory",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &InventoryServiceGetInventory{},
+	}
+
+	return req, nil
+}
+
+/*
+GetItemDefMeta creates a Request for interface method GetItemDefMeta.
+
+This is an undocumented method.
+*/
+func (i *InventoryService) GetItemDefMeta() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetItemDefMeta",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &InventoryServiceGetItemDefMeta{},
+	}
+
+	return req, nil
+}
+
+/*
+GetItemDefs creates a Request for interface method GetItemDefs.
+
+This is an undocumented method.
+*/
+func (i *InventoryService) GetItemDefs() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetItemDefs",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &InventoryServiceGetItemDefs{},
+	}
+
+	return req, nil
+}
+
+/*
+GetPriceSheet creates a Request for interface method GetPriceSheet.
+
+Parameters
+
+  * key [string] (required): Access key
+  * ecurrency [int32] (required)
+*/
 func (i *InventoryService) GetPriceSheet() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetPriceSheet", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetPriceSheet",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -164,9 +383,21 @@ func (i *InventoryService) GetPriceSheet() (*Request, error) {
 	return req, nil
 }
 
-// SplitItemStack creates a Request for interface method SplitItemStack.
+/*
+SplitItemStack creates a Request for interface method SplitItemStack.
+
+Parameters
+
+  * key [string] (required): Access key
+  * appid [uint32] (required)
+  * itemid [uint64] (required)
+  * quantity [uint32] (required)
+*/
 func (i *InventoryService) SplitItemStack() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("SplitItemStack", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "SplitItemStack",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

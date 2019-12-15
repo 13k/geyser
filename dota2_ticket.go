@@ -8,7 +8,7 @@ import "net/http"
 // SchemaDOTA2Ticket stores the SchemaInterfaces for interface IDOTA2Ticket.
 var SchemaDOTA2Ticket = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "ClaimBadgeReward",
@@ -38,7 +38,8 @@ var SchemaDOTA2Ticket = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -51,7 +52,8 @@ var SchemaDOTA2Ticket = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -70,7 +72,8 @@ var SchemaDOTA2Ticket = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -101,13 +104,15 @@ var SchemaDOTA2Ticket = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IDOTA2Ticket_205790",
+		Name:         "IDOTA2Ticket_570",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "ClaimBadgeReward",
@@ -137,7 +142,8 @@ var SchemaDOTA2Ticket = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -150,7 +156,8 @@ var SchemaDOTA2Ticket = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -169,7 +176,8 @@ var SchemaDOTA2Ticket = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -200,16 +208,18 @@ var SchemaDOTA2Ticket = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IDOTA2Ticket_570",
+		Name:         "IDOTA2Ticket_205790",
+		Undocumented: false,
 	},
 )
 
 // DOTA2Ticket represents interface IDOTA2Ticket.
 //
-// Supported AppIDs: [570 205790].
+// Supported AppIDs: 570, 205790.
 type DOTA2Ticket struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -217,9 +227,12 @@ type DOTA2Ticket struct {
 
 // NewDOTA2Ticket creates a new DOTA2Ticket interface.
 //
-// Supported AppIDs: [570 205790].
+// Supported AppIDs: 570, 205790.
 func NewDOTA2Ticket(c *Client, appID uint32) (*DOTA2Ticket, error) {
-	si, err := SchemaDOTA2Ticket.Get("IDOTA2Ticket", appID)
+	si, err := SchemaDOTA2Ticket.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "IDOTA2Ticket",
+	})
 
 	if err != nil {
 		return nil, err
@@ -235,50 +248,26 @@ func NewDOTA2Ticket(c *Client, appID uint32) (*DOTA2Ticket, error) {
 
 // DOTA2Ticket creates a new DOTA2Ticket interface.
 //
-// Supported AppIDs: [570 205790].
+// Supported AppIDs: 570, 205790.
 func (c *Client) DOTA2Ticket(appID uint32) (*DOTA2Ticket, error) {
 	return NewDOTA2Ticket(c, appID)
 }
 
-// SetSteamAccountPurchased creates a Request for interface method SetSteamAccountPurchased.
-func (i *DOTA2Ticket) SetSteamAccountPurchased() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("SetSteamAccountPurchased", 1)
+/*
+ClaimBadgeReward creates a Request for interface method ClaimBadgeReward.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &DOTA2TicketSetSteamAccountPurchased{},
-	}
-
-	return req, nil
-}
-
-// SteamAccountValidForBadgeType creates a Request for interface method SteamAccountValidForBadgeType.
-func (i *DOTA2Ticket) SteamAccountValidForBadgeType() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("SteamAccountValidForBadgeType", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &DOTA2TicketSteamAccountValidForBadgeType{},
-	}
-
-	return req, nil
-}
-
-// ClaimBadgeReward creates a Request for interface method ClaimBadgeReward.
+  * BadgeID [string] (required): The Badge ID
+  * ValidBadgeType1 [uint32] (required): Valid Badge Type 1
+  * ValidBadgeType2 [uint32] (required): Valid Badge Type 2
+  * ValidBadgeType3 [uint32] (required): Valid Badge Type 3
+*/
 func (i *DOTA2Ticket) ClaimBadgeReward() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("ClaimBadgeReward", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "ClaimBadgeReward",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -294,9 +283,18 @@ func (i *DOTA2Ticket) ClaimBadgeReward() (*Request, error) {
 	return req, nil
 }
 
-// GetSteamIDForBadgeID creates a Request for interface method GetSteamIDForBadgeID.
+/*
+GetSteamIDForBadgeID creates a Request for interface method GetSteamIDForBadgeID.
+
+Parameters
+
+  * BadgeID [string] (required): The badge ID
+*/
 func (i *DOTA2Ticket) GetSteamIDForBadgeID() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSteamIDForBadgeID", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSteamIDForBadgeID",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -307,6 +305,64 @@ func (i *DOTA2Ticket) GetSteamIDForBadgeID() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &DOTA2TicketGetSteamIDForBadgeID{},
+	}
+
+	return req, nil
+}
+
+/*
+SetSteamAccountPurchased creates a Request for interface method SetSteamAccountPurchased.
+
+Parameters
+
+  * steamid [uint64] (required): The 64-bit Steam ID
+  * BadgeType [uint32] (required): Badge Type
+*/
+func (i *DOTA2Ticket) SetSteamAccountPurchased() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "SetSteamAccountPurchased",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &DOTA2TicketSetSteamAccountPurchased{},
+	}
+
+	return req, nil
+}
+
+/*
+SteamAccountValidForBadgeType creates a Request for interface method SteamAccountValidForBadgeType.
+
+Parameters
+
+  * steamid [uint64] (required): The 64-bit Steam ID
+  * ValidBadgeType1 [uint32] (required): Valid Badge Type 1
+  * ValidBadgeType2 [uint32] (required): Valid Badge Type 2
+  * ValidBadgeType3 [uint32] (required): Valid Badge Type 3
+*/
+func (i *DOTA2Ticket) SteamAccountValidForBadgeType() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "SteamAccountValidForBadgeType",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &DOTA2TicketSteamAccountValidForBadgeType{},
 	}
 
 	return req, nil

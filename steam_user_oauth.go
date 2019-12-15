@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamUserOAuth stores the SchemaInterfaces for interface ISteamUserOAuth.
 var SchemaSteamUserOAuth = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetTokenDetails",
@@ -20,10 +20,47 @@ var SchemaSteamUserOAuth = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetUserSummaries",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetGroupSummaries",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetGroupList",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetFriendList",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "Search",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
 			},
 		),
-		Name: "ISteamUserOAuth",
+		Name:         "ISteamUserOAuth",
+		Undocumented: false,
 	},
 )
 
@@ -35,7 +72,7 @@ type SteamUserOAuth struct {
 
 // NewSteamUserOAuth creates a new SteamUserOAuth interface.
 func NewSteamUserOAuth(c *Client) (*SteamUserOAuth, error) {
-	si, err := SchemaSteamUserOAuth.Get("ISteamUserOAuth", 0)
+	si, err := SchemaSteamUserOAuth.Get(SchemaInterfaceKey{Name: "ISteamUserOAuth"})
 
 	if err != nil {
 		return nil, err
@@ -54,9 +91,93 @@ func (c *Client) SteamUserOAuth() (*SteamUserOAuth, error) {
 	return NewSteamUserOAuth(c)
 }
 
-// GetTokenDetails creates a Request for interface method GetTokenDetails.
+/*
+GetFriendList creates a Request for interface method GetFriendList.
+
+This is an undocumented method.
+*/
+func (i *SteamUserOAuth) GetFriendList() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetFriendList",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamUserOAuthGetFriendList{},
+	}
+
+	return req, nil
+}
+
+/*
+GetGroupList creates a Request for interface method GetGroupList.
+
+This is an undocumented method.
+*/
+func (i *SteamUserOAuth) GetGroupList() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetGroupList",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamUserOAuthGetGroupList{},
+	}
+
+	return req, nil
+}
+
+/*
+GetGroupSummaries creates a Request for interface method GetGroupSummaries.
+
+This is an undocumented method.
+*/
+func (i *SteamUserOAuth) GetGroupSummaries() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetGroupSummaries",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamUserOAuthGetGroupSummaries{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTokenDetails creates a Request for interface method GetTokenDetails.
+
+Parameters
+
+  * access_token [string] (required): OAuth2 token for which to return details
+*/
 func (i *SteamUserOAuth) GetTokenDetails() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTokenDetails", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTokenDetails",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -67,6 +188,56 @@ func (i *SteamUserOAuth) GetTokenDetails() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &SteamUserOAuthGetTokenDetails{},
+	}
+
+	return req, nil
+}
+
+/*
+GetUserSummaries creates a Request for interface method GetUserSummaries.
+
+This is an undocumented method.
+*/
+func (i *SteamUserOAuth) GetUserSummaries() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetUserSummaries",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamUserOAuthGetUserSummaries{},
+	}
+
+	return req, nil
+}
+
+/*
+Search creates a Request for interface method Search.
+
+This is an undocumented method.
+*/
+func (i *SteamUserOAuth) Search() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "Search",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamUserOAuthSearch{},
 	}
 
 	return req, nil

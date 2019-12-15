@@ -8,7 +8,7 @@ import "net/http"
 // SchemaEconService stores the SchemaInterfaces for interface IEconService.
 var SchemaEconService = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetTradeHistory",
@@ -68,7 +68,8 @@ var SchemaEconService = MustNewSchemaInterfaces(
 						Type:        "bool",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -99,7 +100,8 @@ var SchemaEconService = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -154,7 +156,8 @@ var SchemaEconService = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -185,7 +188,8 @@ var SchemaEconService = MustNewSchemaInterfaces(
 						Type:        "bool",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -204,7 +208,8 @@ var SchemaEconService = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -223,7 +228,8 @@ var SchemaEconService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -242,7 +248,8 @@ var SchemaEconService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -267,10 +274,12 @@ var SchemaEconService = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IEconService",
+		Name:         "IEconService",
+		Undocumented: false,
 	},
 )
 
@@ -282,7 +291,7 @@ type EconService struct {
 
 // NewEconService creates a new EconService interface.
 func NewEconService(c *Client) (*EconService, error) {
-	si, err := SchemaEconService.Get("IEconService", 0)
+	si, err := SchemaEconService.Get(SchemaInterfaceKey{Name: "IEconService"})
 
 	if err != nil {
 		return nil, err
@@ -301,81 +310,19 @@ func (c *Client) EconService() (*EconService, error) {
 	return NewEconService(c)
 }
 
-// GetTradeOffers creates a Request for interface method GetTradeOffers.
-func (i *EconService) GetTradeOffers() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTradeOffers", 1)
+/*
+CancelTradeOffer creates a Request for interface method CancelTradeOffer.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &EconServiceGetTradeOffers{},
-	}
-
-	return req, nil
-}
-
-// GetTradeOffer creates a Request for interface method GetTradeOffer.
-func (i *EconService) GetTradeOffer() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTradeOffer", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &EconServiceGetTradeOffer{},
-	}
-
-	return req, nil
-}
-
-// GetTradeOffersSummary creates a Request for interface method GetTradeOffersSummary.
-func (i *EconService) GetTradeOffersSummary() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTradeOffersSummary", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &EconServiceGetTradeOffersSummary{},
-	}
-
-	return req, nil
-}
-
-// DeclineTradeOffer creates a Request for interface method DeclineTradeOffer.
-func (i *EconService) DeclineTradeOffer() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("DeclineTradeOffer", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &EconServiceDeclineTradeOffer{},
-	}
-
-	return req, nil
-}
-
-// CancelTradeOffer creates a Request for interface method CancelTradeOffer.
+  * key [string] (required): Access key
+  * tradeofferid [uint64] (required)
+*/
 func (i *EconService) CancelTradeOffer() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("CancelTradeOffer", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "CancelTradeOffer",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -391,9 +338,19 @@ func (i *EconService) CancelTradeOffer() (*Request, error) {
 	return req, nil
 }
 
-// GetTradeHoldDurations creates a Request for interface method GetTradeHoldDurations.
-func (i *EconService) GetTradeHoldDurations() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTradeHoldDurations", 1)
+/*
+DeclineTradeOffer creates a Request for interface method DeclineTradeOffer.
+
+Parameters
+
+  * key [string] (required): Access key
+  * tradeofferid [uint64] (required)
+*/
+func (i *EconService) DeclineTradeOffer() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "DeclineTradeOffer",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -403,15 +360,32 @@ func (i *EconService) GetTradeHoldDurations() (*Request, error) {
 		Client:    i.Client,
 		Interface: i.Interface,
 		Method:    sm,
-		Result:    &EconServiceGetTradeHoldDurations{},
+		Result:    &EconServiceDeclineTradeOffer{},
 	}
 
 	return req, nil
 }
 
-// GetTradeHistory creates a Request for interface method GetTradeHistory.
+/*
+GetTradeHistory creates a Request for interface method GetTradeHistory.
+
+Parameters
+
+  * key [string] (required): Access key
+  * max_trades [uint32] (required): The number of trades to return information for
+  * start_after_time [uint32] (required): The time of the last trade shown on the previous page of results, or the time of the first trade if navigating back
+  * start_after_tradeid [uint64] (required): The tradeid shown on the previous page of results, or the ID of the first trade if navigating back
+  * navigating_back [bool] (required): The user wants the previous page of results, so return the previous max_trades trades before the start time and ID
+  * get_descriptions [bool] (required): If set, the item display data for the items included in the returned trades will also be returned
+  * language [string] (required): The language to use when loading item display data
+  * include_failed [bool] (required)
+  * include_total [bool] (required): If set, the total number of trades the account has participated in will be included in the response
+*/
 func (i *EconService) GetTradeHistory() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTradeHistory", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTradeHistory",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -427,9 +401,142 @@ func (i *EconService) GetTradeHistory() (*Request, error) {
 	return req, nil
 }
 
-// GetTradeStatus creates a Request for interface method GetTradeStatus.
+/*
+GetTradeHoldDurations creates a Request for interface method GetTradeHoldDurations.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid_target [uint64] (required): User you are trading with
+  * trade_offer_access_token [string] (required): A special token that allows for trade offers from non-friends.
+*/
+func (i *EconService) GetTradeHoldDurations() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTradeHoldDurations",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &EconServiceGetTradeHoldDurations{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTradeOffer creates a Request for interface method GetTradeOffer.
+
+Parameters
+
+  * key [string] (required): Access key
+  * tradeofferid [uint64] (required)
+  * language [string] (required)
+  * get_descriptions [bool] (required): If set, the item display data for the items included in the returned trade offers will also be returned. If one or more descriptions can't be retrieved, then your request will fail.
+*/
+func (i *EconService) GetTradeOffer() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTradeOffer",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &EconServiceGetTradeOffer{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTradeOffers creates a Request for interface method GetTradeOffers.
+
+Parameters
+
+  * key [string] (required): Access key
+  * get_sent_offers [bool] (required): Request the list of sent offers.
+  * get_received_offers [bool] (required): Request the list of received offers.
+  * get_descriptions [bool] (required): If set, the item display data for the items included in the returned trade offers will also be returned. If one or more descriptions can't be retrieved, then your request will fail.
+  * language [string] (required): The language to use when loading item display data.
+  * active_only [bool] (required): Indicates we should only return offers which are still active, or offers that have changed in state since the time_historical_cutoff
+  * historical_only [bool] (required): Indicates we should only return offers which are not active.
+  * time_historical_cutoff [uint32] (required): When active_only is set, offers updated since this time will also be returned
+*/
+func (i *EconService) GetTradeOffers() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTradeOffers",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &EconServiceGetTradeOffers{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTradeOffersSummary creates a Request for interface method GetTradeOffersSummary.
+
+Parameters
+
+  * key [string] (required): Access key
+  * time_last_visit [uint32] (required): The time the user last visited.  If not passed, will use the time the user last visited the trade offer page.
+*/
+func (i *EconService) GetTradeOffersSummary() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTradeOffersSummary",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &EconServiceGetTradeOffersSummary{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTradeStatus creates a Request for interface method GetTradeStatus.
+
+Parameters
+
+  * key [string] (required): Access key
+  * tradeid [uint64] (required)
+  * get_descriptions [bool] (required): If set, the item display data for the items included in the returned trades will also be returned
+  * language [string] (required): The language to use when loading item display data
+*/
 func (i *EconService) GetTradeStatus() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTradeStatus", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTradeStatus",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

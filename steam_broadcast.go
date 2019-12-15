@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamBroadcast stores the SchemaInterfaces for interface ISteamBroadcast.
 var SchemaSteamBroadcast = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "ViewerHeartbeat",
@@ -38,10 +38,12 @@ var SchemaSteamBroadcast = MustNewSchemaInterfaces(
 						Type:        "int32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ISteamBroadcast",
+		Name:         "ISteamBroadcast",
+		Undocumented: false,
 	},
 )
 
@@ -53,7 +55,7 @@ type SteamBroadcast struct {
 
 // NewSteamBroadcast creates a new SteamBroadcast interface.
 func NewSteamBroadcast(c *Client) (*SteamBroadcast, error) {
-	si, err := SchemaSteamBroadcast.Get("ISteamBroadcast", 0)
+	si, err := SchemaSteamBroadcast.Get(SchemaInterfaceKey{Name: "ISteamBroadcast"})
 
 	if err != nil {
 		return nil, err
@@ -72,9 +74,21 @@ func (c *Client) SteamBroadcast() (*SteamBroadcast, error) {
 	return NewSteamBroadcast(c)
 }
 
-// ViewerHeartbeat creates a Request for interface method ViewerHeartbeat.
+/*
+ViewerHeartbeat creates a Request for interface method ViewerHeartbeat.
+
+Parameters
+
+  * steamid [uint64] (required): Steam ID of the broadcaster
+  * sessionid [uint64] (required): Broadcast Session ID
+  * token [uint64] (required): Viewer token
+  * stream [int32]: video stream representation watching
+*/
 func (i *SteamBroadcast) ViewerHeartbeat() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("ViewerHeartbeat", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "ViewerHeartbeat",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

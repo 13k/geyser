@@ -2,5 +2,20 @@
 
 package geyser
 
+// SteamUserOAuthGetFriendList holds the result of the method ISteamUserOAuth/GetFriendList.
+type SteamUserOAuthGetFriendList struct{}
+
+// SteamUserOAuthGetGroupList holds the result of the method ISteamUserOAuth/GetGroupList.
+type SteamUserOAuthGetGroupList struct{}
+
+// SteamUserOAuthGetGroupSummaries holds the result of the method ISteamUserOAuth/GetGroupSummaries.
+type SteamUserOAuthGetGroupSummaries struct{}
+
 // SteamUserOAuthGetTokenDetails holds the result of the method ISteamUserOAuth/GetTokenDetails.
 type SteamUserOAuthGetTokenDetails struct{}
+
+// SteamUserOAuthGetUserSummaries holds the result of the method ISteamUserOAuth/GetUserSummaries.
+type SteamUserOAuthGetUserSummaries struct{}
+
+// SteamUserOAuthSearch holds the result of the method ISteamUserOAuth/Search.
+type SteamUserOAuthSearch struct{}

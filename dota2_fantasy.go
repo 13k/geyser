@@ -8,7 +8,7 @@ import "net/http"
 // SchemaDOTA2Fantasy stores the SchemaInterfaces for interface IDOTA2Fantasy.
 var SchemaDOTA2Fantasy = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetFantasyPlayerStats",
@@ -50,7 +50,8 @@ var SchemaDOTA2Fantasy = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -63,22 +64,25 @@ var SchemaDOTA2Fantasy = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetProPlayerList",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetProPlayerList",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IDOTA2Fantasy_205790",
+		Name:         "IDOTA2Fantasy_205790",
+		Undocumented: false,
 	},
 )
 
 // DOTA2Fantasy represents interface IDOTA2Fantasy.
 //
-// Supported AppIDs: [205790].
+// Supported AppIDs: 205790.
 type DOTA2Fantasy struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -86,9 +90,12 @@ type DOTA2Fantasy struct {
 
 // NewDOTA2Fantasy creates a new DOTA2Fantasy interface.
 //
-// Supported AppIDs: [205790].
+// Supported AppIDs: 205790.
 func NewDOTA2Fantasy(c *Client, appID uint32) (*DOTA2Fantasy, error) {
-	si, err := SchemaDOTA2Fantasy.Get("IDOTA2Fantasy", appID)
+	si, err := SchemaDOTA2Fantasy.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "IDOTA2Fantasy",
+	})
 
 	if err != nil {
 		return nil, err
@@ -104,14 +111,28 @@ func NewDOTA2Fantasy(c *Client, appID uint32) (*DOTA2Fantasy, error) {
 
 // DOTA2Fantasy creates a new DOTA2Fantasy interface.
 //
-// Supported AppIDs: [205790].
+// Supported AppIDs: 205790.
 func (c *Client) DOTA2Fantasy(appID uint32) (*DOTA2Fantasy, error) {
 	return NewDOTA2Fantasy(c, appID)
 }
 
-// GetFantasyPlayerStats creates a Request for interface method GetFantasyPlayerStats.
+/*
+GetFantasyPlayerStats creates a Request for interface method GetFantasyPlayerStats.
+
+Parameters
+
+  * FantasyLeagueID [uint32] (required): The fantasy league ID
+  * StartTime [uint32]: An optional filter for minimum timestamp
+  * EndTime [uint32]: An optional filter for maximum timestamp
+  * MatchID [uint64]: An optional filter for a specific match
+  * SeriesID [uint32]: An optional filter for a specific series
+  * PlayerAccountID [uint32]: An optional filter for a specific player
+*/
 func (i *DOTA2Fantasy) GetFantasyPlayerStats() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetFantasyPlayerStats", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetFantasyPlayerStats",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -127,9 +148,18 @@ func (i *DOTA2Fantasy) GetFantasyPlayerStats() (*Request, error) {
 	return req, nil
 }
 
-// GetPlayerOfficialInfo creates a Request for interface method GetPlayerOfficialInfo.
+/*
+GetPlayerOfficialInfo creates a Request for interface method GetPlayerOfficialInfo.
+
+Parameters
+
+  * accountid [uint32] (required): The account ID to look up
+*/
 func (i *DOTA2Fantasy) GetPlayerOfficialInfo() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetPlayerOfficialInfo", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetPlayerOfficialInfo",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -147,7 +177,10 @@ func (i *DOTA2Fantasy) GetPlayerOfficialInfo() (*Request, error) {
 
 // GetProPlayerList creates a Request for interface method GetProPlayerList.
 func (i *DOTA2Fantasy) GetProPlayerList() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetProPlayerList", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetProPlayerList",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

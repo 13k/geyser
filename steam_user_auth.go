@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamUserAuth stores the SchemaInterfaces for interface ISteamUserAuth.
 var SchemaSteamUserAuth = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
 				Name:       "AuthenticateUser",
@@ -32,7 +32,8 @@ var SchemaSteamUserAuth = MustNewSchemaInterfaces(
 						Type:        "rawbinary",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -57,10 +58,12 @@ var SchemaSteamUserAuth = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ISteamUserAuth",
+		Name:         "ISteamUserAuth",
+		Undocumented: false,
 	},
 )
 
@@ -72,7 +75,7 @@ type SteamUserAuth struct {
 
 // NewSteamUserAuth creates a new SteamUserAuth interface.
 func NewSteamUserAuth(c *Client) (*SteamUserAuth, error) {
-	si, err := SchemaSteamUserAuth.Get("ISteamUserAuth", 0)
+	si, err := SchemaSteamUserAuth.Get(SchemaInterfaceKey{Name: "ISteamUserAuth"})
 
 	if err != nil {
 		return nil, err
@@ -91,9 +94,20 @@ func (c *Client) SteamUserAuth() (*SteamUserAuth, error) {
 	return NewSteamUserAuth(c)
 }
 
-// AuthenticateUser creates a Request for interface method AuthenticateUser.
+/*
+AuthenticateUser creates a Request for interface method AuthenticateUser.
+
+Parameters
+
+  * steamid [uint64] (required): Should be the users steamid, unencrypted.
+  * sessionkey [rawbinary] (required): Should be a 32 byte random blob of data, which is then encrypted with RSA using the Steam system's public key.  Randomness is important here for security.
+  * encrypted_loginkey [rawbinary] (required): Should be the users hashed loginkey, AES encrypted with the sessionkey.
+*/
 func (i *SteamUserAuth) AuthenticateUser() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("AuthenticateUser", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "AuthenticateUser",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -109,9 +123,20 @@ func (i *SteamUserAuth) AuthenticateUser() (*Request, error) {
 	return req, nil
 }
 
-// AuthenticateUserTicket creates a Request for interface method AuthenticateUserTicket.
+/*
+AuthenticateUserTicket creates a Request for interface method AuthenticateUserTicket.
+
+Parameters
+
+  * key [string] (required): access key
+  * appid [uint32] (required): appid of game
+  * ticket [string] (required): Ticket from GetAuthSessionTicket.
+*/
 func (i *SteamUserAuth) AuthenticateUserTicket() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("AuthenticateUserTicket", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "AuthenticateUserTicket",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

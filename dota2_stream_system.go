@@ -8,7 +8,7 @@ import "net/http"
 // SchemaDOTA2StreamSystem stores the SchemaInterfaces for interface IDOTA2StreamSystem.
 var SchemaDOTA2StreamSystem = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetBroadcasterInfo",
@@ -26,13 +26,15 @@ var SchemaDOTA2StreamSystem = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IDOTA2StreamSystem_205790",
+		Name:         "IDOTA2StreamSystem_570",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetBroadcasterInfo",
@@ -50,16 +52,18 @@ var SchemaDOTA2StreamSystem = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IDOTA2StreamSystem_570",
+		Name:         "IDOTA2StreamSystem_205790",
+		Undocumented: false,
 	},
 )
 
 // DOTA2StreamSystem represents interface IDOTA2StreamSystem.
 //
-// Supported AppIDs: [205790 570].
+// Supported AppIDs: 570, 205790.
 type DOTA2StreamSystem struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -67,9 +71,12 @@ type DOTA2StreamSystem struct {
 
 // NewDOTA2StreamSystem creates a new DOTA2StreamSystem interface.
 //
-// Supported AppIDs: [205790 570].
+// Supported AppIDs: 570, 205790.
 func NewDOTA2StreamSystem(c *Client, appID uint32) (*DOTA2StreamSystem, error) {
-	si, err := SchemaDOTA2StreamSystem.Get("IDOTA2StreamSystem", appID)
+	si, err := SchemaDOTA2StreamSystem.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "IDOTA2StreamSystem",
+	})
 
 	if err != nil {
 		return nil, err
@@ -85,14 +92,24 @@ func NewDOTA2StreamSystem(c *Client, appID uint32) (*DOTA2StreamSystem, error) {
 
 // DOTA2StreamSystem creates a new DOTA2StreamSystem interface.
 //
-// Supported AppIDs: [205790 570].
+// Supported AppIDs: 570, 205790.
 func (c *Client) DOTA2StreamSystem(appID uint32) (*DOTA2StreamSystem, error) {
 	return NewDOTA2StreamSystem(c, appID)
 }
 
-// GetBroadcasterInfo creates a Request for interface method GetBroadcasterInfo.
+/*
+GetBroadcasterInfo creates a Request for interface method GetBroadcasterInfo.
+
+Parameters
+
+  * broadcaster_steam_id [uint64] (required): 64-bit Steam ID of the broadcaster
+  * league_id [uint32]: LeagueID to use if we aren't in a lobby
+*/
 func (i *DOTA2StreamSystem) GetBroadcasterInfo() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetBroadcasterInfo", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetBroadcasterInfo",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

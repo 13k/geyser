@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamUserStats stores the SchemaInterfaces for interface ISteamUserStats.
 var SchemaSteamUserStats = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetGlobalAchievementPercentagesForApp",
@@ -20,7 +20,8 @@ var SchemaSteamUserStats = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -33,7 +34,8 @@ var SchemaSteamUserStats = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 2,
+				Undocumented: false,
+				Version:      2,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -70,7 +72,8 @@ var SchemaSteamUserStats = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -83,7 +86,8 @@ var SchemaSteamUserStats = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -114,7 +118,8 @@ var SchemaSteamUserStats = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -139,7 +144,8 @@ var SchemaSteamUserStats = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -164,7 +170,8 @@ var SchemaSteamUserStats = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 2,
+				Undocumented: false,
+				Version:      2,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -189,7 +196,8 @@ var SchemaSteamUserStats = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -214,10 +222,12 @@ var SchemaSteamUserStats = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 2,
+				Undocumented: false,
+				Version:      2,
 			},
 		),
-		Name: "ISteamUserStats",
+		Name:         "ISteamUserStats",
+		Undocumented: false,
 	},
 )
 
@@ -229,7 +239,7 @@ type SteamUserStats struct {
 
 // NewSteamUserStats creates a new SteamUserStats interface.
 func NewSteamUserStats(c *Client) (*SteamUserStats, error) {
-	si, err := SchemaSteamUserStats.Get("ISteamUserStats", 0)
+	si, err := SchemaSteamUserStats.Get(SchemaInterfaceKey{Name: "ISteamUserStats"})
 
 	if err != nil {
 		return nil, err
@@ -248,9 +258,55 @@ func (c *Client) SteamUserStats() (*SteamUserStats, error) {
 	return NewSteamUserStats(c)
 }
 
-// GetGlobalStatsForGame creates a Request for interface method GetGlobalStatsForGame.
+/*
+GetGlobalAchievementPercentagesForApp creates a Request for interface method GetGlobalAchievementPercentagesForApp.
+
+Supported versions: 1, 2.
+
+Parameters (v1)
+
+  * gameid [uint64] (required): GameID to retrieve the achievement percentages for
+
+Parameters (v2)
+
+  * gameid [uint64] (required): GameID to retrieve the achievement percentages for
+*/
+func (i *SteamUserStats) GetGlobalAchievementPercentagesForApp(version int) (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetGlobalAchievementPercentagesForApp",
+		Version: version,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamUserStatsGetGlobalAchievementPercentagesForApp{},
+	}
+
+	return req, nil
+}
+
+/*
+GetGlobalStatsForGame creates a Request for interface method GetGlobalStatsForGame.
+
+Parameters
+
+  * appid [uint32] (required): AppID that we're getting global stats for
+  * count [uint32] (required): Number of stats get data for
+  * name[0] [string] (required): Names of stat to get data for
+  * startdate [uint32]: Start date for daily totals (unix epoch timestamp)
+  * enddate [uint32]: End date for daily totals (unix epoch timestamp)
+*/
 func (i *SteamUserStats) GetGlobalStatsForGame() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetGlobalStatsForGame", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetGlobalStatsForGame",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -266,9 +322,18 @@ func (i *SteamUserStats) GetGlobalStatsForGame() (*Request, error) {
 	return req, nil
 }
 
-// GetNumberOfCurrentPlayers creates a Request for interface method GetNumberOfCurrentPlayers.
+/*
+GetNumberOfCurrentPlayers creates a Request for interface method GetNumberOfCurrentPlayers.
+
+Parameters
+
+  * appid [uint32] (required): AppID that we're getting user count for
+*/
 func (i *SteamUserStats) GetNumberOfCurrentPlayers() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetNumberOfCurrentPlayers", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetNumberOfCurrentPlayers",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -284,9 +349,21 @@ func (i *SteamUserStats) GetNumberOfCurrentPlayers() (*Request, error) {
 	return req, nil
 }
 
-// GetPlayerAchievements creates a Request for interface method GetPlayerAchievements.
+/*
+GetPlayerAchievements creates a Request for interface method GetPlayerAchievements.
+
+Parameters
+
+  * key [string] (required): access key
+  * steamid [uint64] (required): SteamID of user
+  * appid [uint32] (required): AppID to get achievements for
+  * l [string]: Language to return strings for
+*/
 func (i *SteamUserStats) GetPlayerAchievements() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetPlayerAchievements", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetPlayerAchievements",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -302,11 +379,28 @@ func (i *SteamUserStats) GetPlayerAchievements() (*Request, error) {
 	return req, nil
 }
 
-// GetSchemaForGame creates a Request for interface method GetSchemaForGame.
-//
-// Supported versions: [1 2].
+/*
+GetSchemaForGame creates a Request for interface method GetSchemaForGame.
+
+Supported versions: 1, 2.
+
+Parameters (v1)
+
+  * key [string] (required): access key
+  * appid [uint32] (required): appid of game
+  * l [string]: localized langauge to return (english, french, etc.)
+
+Parameters (v2)
+
+  * key [string] (required): access key
+  * appid [uint32] (required): appid of game
+  * l [string]: localized language to return (english, french, etc.)
+*/
 func (i *SteamUserStats) GetSchemaForGame(version int) (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSchemaForGame", version)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSchemaForGame",
+		Version: version,
+	})
 
 	if err != nil {
 		return nil, err
@@ -322,11 +416,28 @@ func (i *SteamUserStats) GetSchemaForGame(version int) (*Request, error) {
 	return req, nil
 }
 
-// GetUserStatsForGame creates a Request for interface method GetUserStatsForGame.
-//
-// Supported versions: [1 2].
+/*
+GetUserStatsForGame creates a Request for interface method GetUserStatsForGame.
+
+Supported versions: 1, 2.
+
+Parameters (v1)
+
+  * key [string] (required): access key
+  * steamid [uint64] (required): SteamID of user
+  * appid [uint32] (required): appid of game
+
+Parameters (v2)
+
+  * key [string] (required): access key
+  * steamid [uint64] (required): SteamID of user
+  * appid [uint32] (required): appid of game
+*/
 func (i *SteamUserStats) GetUserStatsForGame(version int) (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetUserStatsForGame", version)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetUserStatsForGame",
+		Version: version,
+	})
 
 	if err != nil {
 		return nil, err
@@ -337,26 +448,6 @@ func (i *SteamUserStats) GetUserStatsForGame(version int) (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &SteamUserStatsGetUserStatsForGame{},
-	}
-
-	return req, nil
-}
-
-// GetGlobalAchievementPercentagesForApp creates a Request for interface method GetGlobalAchievementPercentagesForApp.
-//
-// Supported versions: [1 2].
-func (i *SteamUserStats) GetGlobalAchievementPercentagesForApp(version int) (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetGlobalAchievementPercentagesForApp", version)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &SteamUserStatsGetGlobalAchievementPercentagesForApp{},
 	}
 
 	return req, nil

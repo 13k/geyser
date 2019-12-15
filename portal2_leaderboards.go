@@ -8,7 +8,7 @@ import "net/http"
 // SchemaPortal2Leaderboards stores the SchemaInterfaces for interface IPortal2Leaderboards.
 var SchemaPortal2Leaderboards = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetBucketizedData",
@@ -20,16 +20,18 @@ var SchemaPortal2Leaderboards = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IPortal2Leaderboards_620",
+		Name:         "IPortal2Leaderboards_620",
+		Undocumented: false,
 	},
 )
 
 // Portal2Leaderboards represents interface IPortal2Leaderboards.
 //
-// Supported AppIDs: [620].
+// Supported AppIDs: 620.
 type Portal2Leaderboards struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -37,9 +39,12 @@ type Portal2Leaderboards struct {
 
 // NewPortal2Leaderboards creates a new Portal2Leaderboards interface.
 //
-// Supported AppIDs: [620].
+// Supported AppIDs: 620.
 func NewPortal2Leaderboards(c *Client, appID uint32) (*Portal2Leaderboards, error) {
-	si, err := SchemaPortal2Leaderboards.Get("IPortal2Leaderboards", appID)
+	si, err := SchemaPortal2Leaderboards.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "IPortal2Leaderboards",
+	})
 
 	if err != nil {
 		return nil, err
@@ -55,14 +60,23 @@ func NewPortal2Leaderboards(c *Client, appID uint32) (*Portal2Leaderboards, erro
 
 // Portal2Leaderboards creates a new Portal2Leaderboards interface.
 //
-// Supported AppIDs: [620].
+// Supported AppIDs: 620.
 func (c *Client) Portal2Leaderboards(appID uint32) (*Portal2Leaderboards, error) {
 	return NewPortal2Leaderboards(c, appID)
 }
 
-// GetBucketizedData creates a Request for interface method GetBucketizedData.
+/*
+GetBucketizedData creates a Request for interface method GetBucketizedData.
+
+Parameters
+
+  * leaderboardName [string] (required): The leaderboard name to fetch data for.
+*/
 func (i *Portal2Leaderboards) GetBucketizedData() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetBucketizedData", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetBucketizedData",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

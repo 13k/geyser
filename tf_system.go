@@ -8,21 +8,23 @@ import "net/http"
 // SchemaTFSystem stores the SchemaInterfaces for interface ITFSystem.
 var SchemaTFSystem = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetWorldStatus",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetWorldStatus",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ITFSystem_440",
+		Name:         "ITFSystem_440",
+		Undocumented: false,
 	},
 )
 
 // TFSystem represents interface ITFSystem.
 //
-// Supported AppIDs: [440].
+// Supported AppIDs: 440.
 type TFSystem struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -30,9 +32,12 @@ type TFSystem struct {
 
 // NewTFSystem creates a new TFSystem interface.
 //
-// Supported AppIDs: [440].
+// Supported AppIDs: 440.
 func NewTFSystem(c *Client, appID uint32) (*TFSystem, error) {
-	si, err := SchemaTFSystem.Get("ITFSystem", appID)
+	si, err := SchemaTFSystem.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "ITFSystem",
+	})
 
 	if err != nil {
 		return nil, err
@@ -48,14 +53,17 @@ func NewTFSystem(c *Client, appID uint32) (*TFSystem, error) {
 
 // TFSystem creates a new TFSystem interface.
 //
-// Supported AppIDs: [440].
+// Supported AppIDs: 440.
 func (c *Client) TFSystem(appID uint32) (*TFSystem, error) {
 	return NewTFSystem(c, appID)
 }
 
 // GetWorldStatus creates a Request for interface method GetWorldStatus.
 func (i *TFSystem) GetWorldStatus() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetWorldStatus", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetWorldStatus",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

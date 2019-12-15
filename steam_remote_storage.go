@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamRemoteStorage stores the SchemaInterfaces for interface ISteamRemoteStorage.
 var SchemaSteamRemoteStorage = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
 				Name:       "GetCollectionDetails",
@@ -26,7 +26,8 @@ var SchemaSteamRemoteStorage = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -45,7 +46,8 @@ var SchemaSteamRemoteStorage = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -70,10 +72,12 @@ var SchemaSteamRemoteStorage = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ISteamRemoteStorage",
+		Name:         "ISteamRemoteStorage",
+		Undocumented: false,
 	},
 )
 
@@ -85,7 +89,7 @@ type SteamRemoteStorage struct {
 
 // NewSteamRemoteStorage creates a new SteamRemoteStorage interface.
 func NewSteamRemoteStorage(c *Client) (*SteamRemoteStorage, error) {
-	si, err := SchemaSteamRemoteStorage.Get("ISteamRemoteStorage", 0)
+	si, err := SchemaSteamRemoteStorage.Get(SchemaInterfaceKey{Name: "ISteamRemoteStorage"})
 
 	if err != nil {
 		return nil, err
@@ -104,9 +108,19 @@ func (c *Client) SteamRemoteStorage() (*SteamRemoteStorage, error) {
 	return NewSteamRemoteStorage(c)
 }
 
-// GetCollectionDetails creates a Request for interface method GetCollectionDetails.
+/*
+GetCollectionDetails creates a Request for interface method GetCollectionDetails.
+
+Parameters
+
+  * collectioncount [uint32] (required): Number of collections being requested
+  * publishedfileids[0] [uint64] (required): collection ids to get the details for
+*/
 func (i *SteamRemoteStorage) GetCollectionDetails() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetCollectionDetails", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetCollectionDetails",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -122,9 +136,19 @@ func (i *SteamRemoteStorage) GetCollectionDetails() (*Request, error) {
 	return req, nil
 }
 
-// GetPublishedFileDetails creates a Request for interface method GetPublishedFileDetails.
+/*
+GetPublishedFileDetails creates a Request for interface method GetPublishedFileDetails.
+
+Parameters
+
+  * itemcount [uint32] (required): Number of items being requested
+  * publishedfileids[0] [uint64] (required): published file id to look up
+*/
 func (i *SteamRemoteStorage) GetPublishedFileDetails() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetPublishedFileDetails", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetPublishedFileDetails",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -140,9 +164,20 @@ func (i *SteamRemoteStorage) GetPublishedFileDetails() (*Request, error) {
 	return req, nil
 }
 
-// GetUGCFileDetails creates a Request for interface method GetUGCFileDetails.
+/*
+GetUGCFileDetails creates a Request for interface method GetUGCFileDetails.
+
+Parameters
+
+  * steamid [uint64]: If specified, only returns details if the file is owned by the SteamID specified
+  * ugcid [uint64] (required): ID of UGC file to get info for
+  * appid [uint32] (required): appID of product
+*/
 func (i *SteamRemoteStorage) GetUGCFileDetails() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetUGCFileDetails", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetUGCFileDetails",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

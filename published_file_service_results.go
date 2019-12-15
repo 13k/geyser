@@ -2,11 +2,35 @@
 
 package geyser
 
+// PublishedFileServiceCanSubscribe holds the result of the method IPublishedFileService/CanSubscribe.
+type PublishedFileServiceCanSubscribe struct{}
+
 // PublishedFileServiceGetDetails holds the result of the method IPublishedFileService/GetDetails.
 type PublishedFileServiceGetDetails struct{}
 
 // PublishedFileServiceGetUserFiles holds the result of the method IPublishedFileService/GetUserFiles.
 type PublishedFileServiceGetUserFiles struct{}
 
+// PublishedFileServicePublish holds the result of the method IPublishedFileService/Publish.
+type PublishedFileServicePublish struct{}
+
 // PublishedFileServiceQueryFiles holds the result of the method IPublishedFileService/QueryFiles.
 type PublishedFileServiceQueryFiles struct{}
+
+// PublishedFileServiceRefreshVotingQueue holds the result of the method IPublishedFileService/RefreshVotingQueue.
+type PublishedFileServiceRefreshVotingQueue struct{}
+
+// PublishedFileServiceSetDeveloperMetadata holds the result of the method IPublishedFileService/SetDeveloperMetadata.
+type PublishedFileServiceSetDeveloperMetadata struct{}
+
+// PublishedFileServiceSubscribe holds the result of the method IPublishedFileService/Subscribe.
+type PublishedFileServiceSubscribe struct{}
+
+// PublishedFileServiceUnsubscribe holds the result of the method IPublishedFileService/Unsubscribe.
+type PublishedFileServiceUnsubscribe struct{}
+
+// PublishedFileServiceUpdate holds the result of the method IPublishedFileService/Update.
+type PublishedFileServiceUpdate struct{}
+
+// PublishedFileServiceUpdateTags holds the result of the method IPublishedFileService/UpdateTags.
+type PublishedFileServiceUpdateTags struct{}

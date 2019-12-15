@@ -8,7 +8,7 @@ import "net/http"
 // SchemaContentServerConfigService stores the SchemaInterfaces for interface IContentServerConfigService.
 var SchemaContentServerConfigService = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
 				Name:       "SetSteamCacheClientFilters",
@@ -44,7 +44,8 @@ var SchemaContentServerConfigService = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -69,7 +70,8 @@ var SchemaContentServerConfigService = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -130,10 +132,12 @@ var SchemaContentServerConfigService = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IContentServerConfigService",
+		Name:         "IContentServerConfigService",
+		Undocumented: false,
 	},
 )
 
@@ -145,7 +149,7 @@ type ContentServerConfigService struct {
 
 // NewContentServerConfigService creates a new ContentServerConfigService interface.
 func NewContentServerConfigService(c *Client) (*ContentServerConfigService, error) {
-	si, err := SchemaContentServerConfigService.Get("IContentServerConfigService", 0)
+	si, err := SchemaContentServerConfigService.Get(SchemaInterfaceKey{Name: "IContentServerConfigService"})
 
 	if err != nil {
 		return nil, err
@@ -164,9 +168,20 @@ func (c *Client) ContentServerConfigService() (*ContentServerConfigService, erro
 	return NewContentServerConfigService(c)
 }
 
-// SetSteamCachePerformanceStats creates a Request for interface method SetSteamCachePerformanceStats.
-func (i *ContentServerConfigService) SetSteamCachePerformanceStats() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("SetSteamCachePerformanceStats", 1)
+/*
+GetSteamCacheNodeParams creates a Request for interface method GetSteamCacheNodeParams.
+
+Parameters
+
+  * key [string] (required): Access key
+  * cache_id [uint32] (required): Unique ID number
+  * cache_key [string] (required): Valid current cache API key
+*/
+func (i *ContentServerConfigService) GetSteamCacheNodeParams() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSteamCacheNodeParams",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -176,15 +191,28 @@ func (i *ContentServerConfigService) SetSteamCachePerformanceStats() (*Request, 
 		Client:    i.Client,
 		Interface: i.Interface,
 		Method:    sm,
-		Result:    &ContentServerConfigServiceSetSteamCachePerformanceStats{},
+		Result:    &ContentServerConfigServiceGetSteamCacheNodeParams{},
 	}
 
 	return req, nil
 }
 
-// SetSteamCacheClientFilters creates a Request for interface method SetSteamCacheClientFilters.
+/*
+SetSteamCacheClientFilters creates a Request for interface method SetSteamCacheClientFilters.
+
+Parameters
+
+  * key [string] (required): Access key
+  * cache_id [uint32] (required): Unique ID number
+  * cache_key [string] (required): Valid current cache API key
+  * change_notes [string] (required): Notes
+  * allowed_ip_blocks [string] (required): comma-separated list of allowed IP address blocks in CIDR format - blank to clear unfilter
+*/
 func (i *ContentServerConfigService) SetSteamCacheClientFilters() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("SetSteamCacheClientFilters", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "SetSteamCacheClientFilters",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -200,9 +228,26 @@ func (i *ContentServerConfigService) SetSteamCacheClientFilters() (*Request, err
 	return req, nil
 }
 
-// GetSteamCacheNodeParams creates a Request for interface method GetSteamCacheNodeParams.
-func (i *ContentServerConfigService) GetSteamCacheNodeParams() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSteamCacheNodeParams", 1)
+/*
+SetSteamCachePerformanceStats creates a Request for interface method SetSteamCachePerformanceStats.
+
+Parameters
+
+  * key [string] (required): Access key
+  * cache_id [uint32] (required): Unique ID number
+  * cache_key [string] (required): Valid current cache API key
+  * mbps_sent [uint32] (required): Outgoing network traffic in Mbps
+  * mbps_recv [uint32] (required): Incoming network traffic in Mbps
+  * cpu_percent [uint32] (required): Percent CPU load
+  * cache_hit_percent [uint32] (required): Percent cache hits
+  * num_connected_ips [uint32] (required): Number of unique connected IP addresses
+  * upstream_egress_utilization [uint32] (required): What is the percent utilization of the busiest datacenter egress link?
+*/
+func (i *ContentServerConfigService) SetSteamCachePerformanceStats() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "SetSteamCachePerformanceStats",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -212,7 +257,7 @@ func (i *ContentServerConfigService) GetSteamCacheNodeParams() (*Request, error)
 		Client:    i.Client,
 		Interface: i.Interface,
 		Method:    sm,
-		Result:    &ContentServerConfigServiceGetSteamCacheNodeParams{},
+		Result:    &ContentServerConfigServiceSetSteamCachePerformanceStats{},
 	}
 
 	return req, nil

@@ -8,21 +8,23 @@ import "net/http"
 // SchemaClientStats stores the SchemaInterfaces for interface IClientStats.
 var SchemaClientStats = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodPost,
-				Name:       "ReportEvent",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodPost,
+				Name:         "ReportEvent",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IClientStats_1046930",
+		Name:         "IClientStats_1046930",
+		Undocumented: false,
 	},
 )
 
 // ClientStats represents interface IClientStats.
 //
-// Supported AppIDs: [1046930].
+// Supported AppIDs: 1046930.
 type ClientStats struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -30,9 +32,12 @@ type ClientStats struct {
 
 // NewClientStats creates a new ClientStats interface.
 //
-// Supported AppIDs: [1046930].
+// Supported AppIDs: 1046930.
 func NewClientStats(c *Client, appID uint32) (*ClientStats, error) {
-	si, err := SchemaClientStats.Get("IClientStats", appID)
+	si, err := SchemaClientStats.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "IClientStats",
+	})
 
 	if err != nil {
 		return nil, err
@@ -48,14 +53,17 @@ func NewClientStats(c *Client, appID uint32) (*ClientStats, error) {
 
 // ClientStats creates a new ClientStats interface.
 //
-// Supported AppIDs: [1046930].
+// Supported AppIDs: 1046930.
 func (c *Client) ClientStats(appID uint32) (*ClientStats, error) {
 	return NewClientStats(c, appID)
 }
 
 // ReportEvent creates a Request for interface method ReportEvent.
 func (i *ClientStats) ReportEvent() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("ReportEvent", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "ReportEvent",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

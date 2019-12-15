@@ -2,8 +2,26 @@
 
 package geyser
 
+// InventoryServiceAddPromoItem holds the result of the method IInventoryService/AddPromoItem.
+type InventoryServiceAddPromoItem struct{}
+
 // InventoryServiceCombineItemStacks holds the result of the method IInventoryService/CombineItemStacks.
 type InventoryServiceCombineItemStacks struct{}
+
+// InventoryServiceConsumeItem holds the result of the method IInventoryService/ConsumeItem.
+type InventoryServiceConsumeItem struct{}
+
+// InventoryServiceExchangeItem holds the result of the method IInventoryService/ExchangeItem.
+type InventoryServiceExchangeItem struct{}
+
+// InventoryServiceGetInventory holds the result of the method IInventoryService/GetInventory.
+type InventoryServiceGetInventory struct{}
+
+// InventoryServiceGetItemDefMeta holds the result of the method IInventoryService/GetItemDefMeta.
+type InventoryServiceGetItemDefMeta struct{}
+
+// InventoryServiceGetItemDefs holds the result of the method IInventoryService/GetItemDefs.
+type InventoryServiceGetItemDefs struct{}
 
 // InventoryServiceGetPriceSheet holds the result of the method IInventoryService/GetPriceSheet.
 type InventoryServiceGetPriceSheet struct{}

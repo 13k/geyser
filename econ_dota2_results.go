@@ -2,9 +2,6 @@
 
 package geyser
 
-// EconDOTA2GetItemCreators holds the result of the method IEconDOTA2/GetItemCreators.
-type EconDOTA2GetItemCreators struct{}
-
 // EconDOTA2GetEventStatsForAccount holds the result of the method IEconDOTA2/GetEventStatsForAccount.
 type EconDOTA2GetEventStatsForAccount struct{}
 
@@ -13,6 +10,9 @@ type EconDOTA2GetGameItems struct{}
 
 // EconDOTA2GetHeroes holds the result of the method IEconDOTA2/GetHeroes.
 type EconDOTA2GetHeroes struct{}
+
+// EconDOTA2GetItemCreators holds the result of the method IEconDOTA2/GetItemCreators.
+type EconDOTA2GetItemCreators struct{}
 
 // EconDOTA2GetItemIconPath holds the result of the method IEconDOTA2/GetItemIconPath.
 type EconDOTA2GetItemIconPath struct{}

@@ -8,7 +8,7 @@ import "net/http"
 // SchemaStoreService stores the SchemaInterfaces for interface IStoreService.
 var SchemaStoreService = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetAppList",
@@ -74,10 +74,12 @@ var SchemaStoreService = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IStoreService",
+		Name:         "IStoreService",
+		Undocumented: false,
 	},
 )
 
@@ -89,7 +91,7 @@ type StoreService struct {
 
 // NewStoreService creates a new StoreService interface.
 func NewStoreService(c *Client) (*StoreService, error) {
-	si, err := SchemaStoreService.Get("IStoreService", 0)
+	si, err := SchemaStoreService.Get(SchemaInterfaceKey{Name: "IStoreService"})
 
 	if err != nil {
 		return nil, err
@@ -108,9 +110,27 @@ func (c *Client) StoreService() (*StoreService, error) {
 	return NewStoreService(c)
 }
 
-// GetAppList creates a Request for interface method GetAppList.
+/*
+GetAppList creates a Request for interface method GetAppList.
+
+Parameters
+
+  * key [string] (required): Access key
+  * if_modified_since [uint32]: Return only items that have been modified since this date.
+  * have_description_language [string]: Return only items that have a description in this language.
+  * include_games [bool]: Include games (defaults to enabled)
+  * include_dlc [bool]: Include DLC
+  * include_software [bool]: Include software items
+  * include_videos [bool]: Include videos and series
+  * include_hardware [bool]: Include hardware
+  * last_appid [uint32]: For continuations, this is the last appid returned from the previous call.
+  * max_results [uint32]: Number of results to return at a time.  Default 10k, max 50k.
+*/
 func (i *StoreService) GetAppList() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetAppList", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetAppList",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

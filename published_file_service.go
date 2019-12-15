@@ -8,7 +8,7 @@ import "net/http"
 // SchemaPublishedFileService stores the SchemaInterfaces for interface IPublishedFileService.
 var SchemaPublishedFileService = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "QueryFiles",
@@ -134,6 +134,12 @@ var SchemaPublishedFileService = MustNewSchemaInterfaces(
 						Type:        "{message}",
 					},
 					&SchemaMethodParam{
+						Description: "(Optional) At least one of the tags must be present on a published file to satisfy the query.",
+						Name:        "taggroups",
+						Optional:    false,
+						Type:        "{message}",
+					},
+					&SchemaMethodParam{
 						Description: "(Optional) If true, only return the total number of files that satisfy this query.",
 						Name:        "totalonly",
 						Optional:    false,
@@ -218,7 +224,8 @@ var SchemaPublishedFileService = MustNewSchemaInterfaces(
 						Type:        "{enum}",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -315,7 +322,8 @@ var SchemaPublishedFileService = MustNewSchemaInterfaces(
 						Type:        "{enum}",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -418,6 +426,12 @@ var SchemaPublishedFileService = MustNewSchemaInterfaces(
 						Type:        "int32",
 					},
 					&SchemaMethodParam{
+						Description: "(Optional) At least one of the tags must be present on a published file to satisfy the query.",
+						Name:        "taggroups",
+						Optional:    false,
+						Type:        "{message}",
+					},
+					&SchemaMethodParam{
 						Description: "(Optional) If true, only return the total number of files that satisfy this query.",
 						Name:        "totalonly",
 						Optional:    false,
@@ -496,10 +510,68 @@ var SchemaPublishedFileService = MustNewSchemaInterfaces(
 						Type:        "{enum}",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "Subscribe",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "Unsubscribe",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "CanSubscribe",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "Publish",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "Update",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "RefreshVotingQueue",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "SetDeveloperMetadata",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "UpdateTags",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
 			},
 		),
-		Name: "IPublishedFileService",
+		Name:         "IPublishedFileService",
+		Undocumented: false,
 	},
 )
 
@@ -511,7 +583,7 @@ type PublishedFileService struct {
 
 // NewPublishedFileService creates a new PublishedFileService interface.
 func NewPublishedFileService(c *Client) (*PublishedFileService, error) {
-	si, err := SchemaPublishedFileService.Get("IPublishedFileService", 0)
+	si, err := SchemaPublishedFileService.Get(SchemaInterfaceKey{Name: "IPublishedFileService"})
 
 	if err != nil {
 		return nil, err
@@ -530,9 +602,16 @@ func (c *Client) PublishedFileService() (*PublishedFileService, error) {
 	return NewPublishedFileService(c)
 }
 
-// QueryFiles creates a Request for interface method QueryFiles.
-func (i *PublishedFileService) QueryFiles() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("QueryFiles", 1)
+/*
+CanSubscribe creates a Request for interface method CanSubscribe.
+
+This is an undocumented method.
+*/
+func (i *PublishedFileService) CanSubscribe() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "CanSubscribe",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -542,15 +621,38 @@ func (i *PublishedFileService) QueryFiles() (*Request, error) {
 		Client:    i.Client,
 		Interface: i.Interface,
 		Method:    sm,
-		Result:    &PublishedFileServiceQueryFiles{},
+		Result:    &PublishedFileServiceCanSubscribe{},
 	}
 
 	return req, nil
 }
 
-// GetDetails creates a Request for interface method GetDetails.
+/*
+GetDetails creates a Request for interface method GetDetails.
+
+Parameters
+
+  * key [string] (required): Access key
+  * publishedfileids [uint64] (required): Set of published file Ids to retrieve details for.
+  * includetags [bool] (required): If true, return tag information in the returned details.
+  * includeadditionalpreviews [bool] (required): If true, return preview information in the returned details.
+  * includechildren [bool] (required): If true, return children in the returned details.
+  * includekvtags [bool] (required): If true, return key value tags in the returned details.
+  * includevotes [bool] (required): If true, return vote data in the returned details.
+  * short_description [bool] (required): If true, return a short description instead of the full description.
+  * includeforsaledata [bool] (required): If true, return pricing data, if applicable.
+  * includemetadata [bool] (required): If true, populate the metadata field.
+  * language [int32]: Specifies the localized text to return. Defaults to English.
+  * return_playtime_stats [uint32] (required): Return playtime stats for the specified number of days before today.
+  * appid [uint32] (required)
+  * strip_description_bbcode [bool] (required): Strips BBCode from descriptions.
+  * desired_revision [{enum}]: Return the data for the specified revision.
+*/
 func (i *PublishedFileService) GetDetails() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetDetails", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetDetails",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -566,9 +668,47 @@ func (i *PublishedFileService) GetDetails() (*Request, error) {
 	return req, nil
 }
 
-// GetUserFiles creates a Request for interface method GetUserFiles.
+/*
+GetUserFiles creates a Request for interface method GetUserFiles.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid [uint64] (required): Steam ID of the user whose files are being requested.
+  * appid [uint32] (required): App Id of the app that the files were published to.
+  * page [uint32]: (Optional) Starting page for results.
+  * numperpage [uint32]: (Optional) The number of results, per page to return.
+  * type [string]: (Optional) Type of files to be returned.
+  * sortmethod [string]: (Optional) Sorting method to use on returned values.
+  * privacy [uint32] (required): (optional) Filter by privacy settings.
+  * requiredtags [string] (required): (Optional) Tags that must be present on a published file to satisfy the query.
+  * excludedtags [string] (required): (Optional) Tags that must NOT be present on a published file to satisfy the query.
+  * required_kv_tags [{message}] (required): Required key-value tags to match on.
+  * filetype [uint32] (required): (Optional) File type to match files to.
+  * creator_appid [uint32] (required): App Id of the app that published the files, only matched if specified.
+  * match_cloud_filename [string] (required): Match this cloud filename if specified.
+  * cache_max_age_seconds [uint32]: Allow stale data to be returned for the specified number of seconds.
+  * language [int32]: Specifies the localized text to return. Defaults to English.
+  * taggroups [{message}] (required): (Optional) At least one of the tags must be present on a published file to satisfy the query.
+  * totalonly [bool] (required): (Optional) If true, only return the total number of files that satisfy this query.
+  * ids_only [bool] (required): (Optional) If true, only return the published file ids of files that satisfy this query.
+  * return_vote_data [bool]: Return vote data
+  * return_tags [bool] (required): Return tags in the file details
+  * return_kv_tags [bool]: Return key-value tags in the file details
+  * return_previews [bool] (required): Return preview image and video details in the file details
+  * return_children [bool] (required): Return child item ids in the file details
+  * return_short_description [bool]: Populate the short_description field instead of file_description
+  * return_for_sale_data [bool] (required): Return pricing information, if applicable
+  * return_metadata [bool]: Populate the metadata field
+  * return_playtime_stats [uint32] (required): Return playtime stats for the specified number of days before today.
+  * strip_description_bbcode [bool] (required): Strips BBCode from descriptions.
+  * desired_revision [{enum}]: Return the data for the specified revision.
+*/
 func (i *PublishedFileService) GetUserFiles() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetUserFiles", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetUserFiles",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -579,6 +719,242 @@ func (i *PublishedFileService) GetUserFiles() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &PublishedFileServiceGetUserFiles{},
+	}
+
+	return req, nil
+}
+
+/*
+Publish creates a Request for interface method Publish.
+
+This is an undocumented method.
+*/
+func (i *PublishedFileService) Publish() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "Publish",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PublishedFileServicePublish{},
+	}
+
+	return req, nil
+}
+
+/*
+QueryFiles creates a Request for interface method QueryFiles.
+
+Parameters
+
+  * key [string] (required): Access key
+  * query_type [uint32] (required): enumeration EPublishedFileQueryType in clientenums.h
+  * page [uint32] (required): Current page
+  * cursor [string] (required): Cursor to paginate through the results (set to '*' for the first request).  Prefer this over using the page parameter, as it will allow you to do deep pagination.  When used, the page parameter will be ignored.
+  * numperpage [uint32]: (Optional) The number of results, per page to return.
+  * creator_appid [uint32] (required): App that created the files
+  * appid [uint32] (required): App that consumes the files
+  * requiredtags [string] (required): Tags to match on. See match_all_tags parameter below
+  * excludedtags [string] (required): (Optional) Tags that must NOT be present on a published file to satisfy the query.
+  * match_all_tags [bool]: If true, then items must have all the tags specified, otherwise they must have at least one of the tags.
+  * required_flags [string] (required): Required flags that must be set on any returned items
+  * omitted_flags [string] (required): Flags that must not be set on any returned items
+  * search_text [string] (required): Text to match in the item's title or description
+  * filetype [uint32] (required): EPublishedFileInfoMatchingFileType
+  * child_publishedfileid [uint64] (required): Find all items that reference the given item.
+  * days [uint32] (required): If query_type is k_PublishedFileQueryType_RankedByTrend, then this is the number of days to get votes for [1,7].
+  * include_recent_votes_only [bool] (required): If query_type is k_PublishedFileQueryType_RankedByTrend, then limit result set just to items that have votes within the day range given
+  * cache_max_age_seconds [uint32]: Allow stale data to be returned for the specified number of seconds.
+  * language [int32]: Language to search in and also what gets returned. Defaults to English.
+  * required_kv_tags [{message}] (required): Required key-value tags to match on.
+  * taggroups [{message}] (required): (Optional) At least one of the tags must be present on a published file to satisfy the query.
+  * totalonly [bool] (required): (Optional) If true, only return the total number of files that satisfy this query.
+  * ids_only [bool] (required): (Optional) If true, only return the published file ids of files that satisfy this query.
+  * return_vote_data [bool] (required): Return vote data
+  * return_tags [bool] (required): Return tags in the file details
+  * return_kv_tags [bool] (required): Return key-value tags in the file details
+  * return_previews [bool] (required): Return preview image and video details in the file details
+  * return_children [bool] (required): Return child item ids in the file details
+  * return_short_description [bool] (required): Populate the short_description field instead of file_description
+  * return_for_sale_data [bool] (required): Return pricing information, if applicable
+  * return_metadata [bool]: Populate the metadata
+  * return_playtime_stats [uint32] (required): Return playtime stats for the specified number of days before today.
+  * return_details [bool] (required): By default, if none of the other 'return_*' fields are set, only some voting details are returned. Set this to true to return the default set of details.
+  * strip_description_bbcode [bool] (required): Strips BBCode from descriptions.
+  * desired_revision [{enum}]: Return the data for the specified revision.
+*/
+func (i *PublishedFileService) QueryFiles() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "QueryFiles",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PublishedFileServiceQueryFiles{},
+	}
+
+	return req, nil
+}
+
+/*
+RefreshVotingQueue creates a Request for interface method RefreshVotingQueue.
+
+This is an undocumented method.
+*/
+func (i *PublishedFileService) RefreshVotingQueue() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "RefreshVotingQueue",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PublishedFileServiceRefreshVotingQueue{},
+	}
+
+	return req, nil
+}
+
+/*
+SetDeveloperMetadata creates a Request for interface method SetDeveloperMetadata.
+
+This is an undocumented method.
+*/
+func (i *PublishedFileService) SetDeveloperMetadata() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "SetDeveloperMetadata",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PublishedFileServiceSetDeveloperMetadata{},
+	}
+
+	return req, nil
+}
+
+/*
+Subscribe creates a Request for interface method Subscribe.
+
+This is an undocumented method.
+*/
+func (i *PublishedFileService) Subscribe() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "Subscribe",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PublishedFileServiceSubscribe{},
+	}
+
+	return req, nil
+}
+
+/*
+Unsubscribe creates a Request for interface method Unsubscribe.
+
+This is an undocumented method.
+*/
+func (i *PublishedFileService) Unsubscribe() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "Unsubscribe",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PublishedFileServiceUnsubscribe{},
+	}
+
+	return req, nil
+}
+
+/*
+Update creates a Request for interface method Update.
+
+This is an undocumented method.
+*/
+func (i *PublishedFileService) Update() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "Update",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PublishedFileServiceUpdate{},
+	}
+
+	return req, nil
+}
+
+/*
+UpdateTags creates a Request for interface method UpdateTags.
+
+This is an undocumented method.
+*/
+func (i *PublishedFileService) UpdateTags() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "UpdateTags",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PublishedFileServiceUpdateTags{},
 	}
 
 	return req, nil

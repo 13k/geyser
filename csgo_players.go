@@ -8,7 +8,7 @@ import "net/http"
 // SchemaCSGOPlayers stores the SchemaInterfaces for interface ICSGOPlayers.
 var SchemaCSGOPlayers = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetNextMatchSharingCode",
@@ -32,16 +32,18 @@ var SchemaCSGOPlayers = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ICSGOPlayers_730",
+		Name:         "ICSGOPlayers_730",
+		Undocumented: false,
 	},
 )
 
 // CSGOPlayers represents interface ICSGOPlayers.
 //
-// Supported AppIDs: [730].
+// Supported AppIDs: 730.
 type CSGOPlayers struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -49,9 +51,12 @@ type CSGOPlayers struct {
 
 // NewCSGOPlayers creates a new CSGOPlayers interface.
 //
-// Supported AppIDs: [730].
+// Supported AppIDs: 730.
 func NewCSGOPlayers(c *Client, appID uint32) (*CSGOPlayers, error) {
-	si, err := SchemaCSGOPlayers.Get("ICSGOPlayers", appID)
+	si, err := SchemaCSGOPlayers.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "ICSGOPlayers",
+	})
 
 	if err != nil {
 		return nil, err
@@ -67,14 +72,25 @@ func NewCSGOPlayers(c *Client, appID uint32) (*CSGOPlayers, error) {
 
 // CSGOPlayers creates a new CSGOPlayers interface.
 //
-// Supported AppIDs: [730].
+// Supported AppIDs: 730.
 func (c *Client) CSGOPlayers(appID uint32) (*CSGOPlayers, error) {
 	return NewCSGOPlayers(c, appID)
 }
 
-// GetNextMatchSharingCode creates a Request for interface method GetNextMatchSharingCode.
+/*
+GetNextMatchSharingCode creates a Request for interface method GetNextMatchSharingCode.
+
+Parameters
+
+  * steamid [uint64] (required): The SteamID of the user
+  * steamidkey [string] (required): Authentication obtained from the SteamID
+  * knowncode [string] (required): Previously known match sharing code obtained from the SteamID
+*/
 func (i *CSGOPlayers) GetNextMatchSharingCode() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetNextMatchSharingCode", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetNextMatchSharingCode",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

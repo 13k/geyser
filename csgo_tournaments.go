@@ -8,7 +8,7 @@ import "net/http"
 // SchemaCSGOTournaments stores the SchemaInterfaces for interface ICSGOTournaments.
 var SchemaCSGOTournaments = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetTournamentFantasyLineup",
@@ -32,7 +32,8 @@ var SchemaCSGOTournaments = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -57,7 +58,8 @@ var SchemaCSGOTournaments = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -70,7 +72,8 @@ var SchemaCSGOTournaments = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -95,7 +98,8 @@ var SchemaCSGOTournaments = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -186,7 +190,8 @@ var SchemaCSGOTournaments = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -241,16 +246,18 @@ var SchemaCSGOTournaments = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ICSGOTournaments_730",
+		Name:         "ICSGOTournaments_730",
+		Undocumented: false,
 	},
 )
 
 // CSGOTournaments represents interface ICSGOTournaments.
 //
-// Supported AppIDs: [730].
+// Supported AppIDs: 730.
 type CSGOTournaments struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -258,9 +265,12 @@ type CSGOTournaments struct {
 
 // NewCSGOTournaments creates a new CSGOTournaments interface.
 //
-// Supported AppIDs: [730].
+// Supported AppIDs: 730.
 func NewCSGOTournaments(c *Client, appID uint32) (*CSGOTournaments, error) {
-	si, err := SchemaCSGOTournaments.Get("ICSGOTournaments", appID)
+	si, err := SchemaCSGOTournaments.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "ICSGOTournaments",
+	})
 
 	if err != nil {
 		return nil, err
@@ -276,32 +286,25 @@ func NewCSGOTournaments(c *Client, appID uint32) (*CSGOTournaments, error) {
 
 // CSGOTournaments creates a new CSGOTournaments interface.
 //
-// Supported AppIDs: [730].
+// Supported AppIDs: 730.
 func (c *Client) CSGOTournaments(appID uint32) (*CSGOTournaments, error) {
 	return NewCSGOTournaments(c, appID)
 }
 
-// UploadTournamentPredictions creates a Request for interface method UploadTournamentPredictions.
-func (i *CSGOTournaments) UploadTournamentPredictions() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("UploadTournamentPredictions", 1)
+/*
+GetTournamentFantasyLineup creates a Request for interface method GetTournamentFantasyLineup.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &CSGOTournamentsUploadTournamentPredictions{},
-	}
-
-	return req, nil
-}
-
-// GetTournamentFantasyLineup creates a Request for interface method GetTournamentFantasyLineup.
+  * event [uint32] (required): The event ID
+  * steamid [uint64] (required): The SteamID of the user inventory
+  * steamidkey [string] (required): Authentication obtained from the SteamID
+*/
 func (i *CSGOTournaments) GetTournamentFantasyLineup() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTournamentFantasyLineup", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTournamentFantasyLineup",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -317,9 +320,20 @@ func (i *CSGOTournaments) GetTournamentFantasyLineup() (*Request, error) {
 	return req, nil
 }
 
-// GetTournamentItems creates a Request for interface method GetTournamentItems.
+/*
+GetTournamentItems creates a Request for interface method GetTournamentItems.
+
+Parameters
+
+  * event [uint32] (required): The event ID
+  * steamid [uint64] (required): The SteamID of the user inventory
+  * steamidkey [string] (required): Authentication obtained from the SteamID
+*/
 func (i *CSGOTournaments) GetTournamentItems() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTournamentItems", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTournamentItems",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -335,9 +349,18 @@ func (i *CSGOTournaments) GetTournamentItems() (*Request, error) {
 	return req, nil
 }
 
-// GetTournamentLayout creates a Request for interface method GetTournamentLayout.
+/*
+GetTournamentLayout creates a Request for interface method GetTournamentLayout.
+
+Parameters
+
+  * event [uint32] (required): The event ID
+*/
 func (i *CSGOTournaments) GetTournamentLayout() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTournamentLayout", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTournamentLayout",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -353,9 +376,20 @@ func (i *CSGOTournaments) GetTournamentLayout() (*Request, error) {
 	return req, nil
 }
 
-// GetTournamentPredictions creates a Request for interface method GetTournamentPredictions.
+/*
+GetTournamentPredictions creates a Request for interface method GetTournamentPredictions.
+
+Parameters
+
+  * event [uint32] (required): The event ID
+  * steamid [uint64] (required): The SteamID of the user inventory
+  * steamidkey [string] (required): Authentication obtained from the SteamID
+*/
 func (i *CSGOTournaments) GetTournamentPredictions() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTournamentPredictions", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTournamentPredictions",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -371,9 +405,31 @@ func (i *CSGOTournaments) GetTournamentPredictions() (*Request, error) {
 	return req, nil
 }
 
-// UploadTournamentFantasyLineup creates a Request for interface method UploadTournamentFantasyLineup.
+/*
+UploadTournamentFantasyLineup creates a Request for interface method UploadTournamentFantasyLineup.
+
+Parameters
+
+  * event [uint32] (required): The event ID
+  * steamid [uint64] (required): The SteamID of the user inventory
+  * steamidkey [string] (required): Authentication obtained from the SteamID
+  * sectionid [uint32] (required): Event section id
+  * pickid0 [uint32] (required): PickID to select for the slot
+  * itemid0 [uint64] (required): ItemID to lock in for the pick
+  * pickid1 [uint32] (required): PickID to select for the slot
+  * itemid1 [uint64] (required): ItemID to lock in for the pick
+  * pickid2 [uint32] (required): PickID to select for the slot
+  * itemid2 [uint64] (required): ItemID to lock in for the pick
+  * pickid3 [uint32] (required): PickID to select for the slot
+  * itemid3 [uint64] (required): ItemID to lock in for the pick
+  * pickid4 [uint32] (required): PickID to select for the slot
+  * itemid4 [uint64] (required): ItemID to lock in for the pick
+*/
 func (i *CSGOTournaments) UploadTournamentFantasyLineup() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("UploadTournamentFantasyLineup", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "UploadTournamentFantasyLineup",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -384,6 +440,40 @@ func (i *CSGOTournaments) UploadTournamentFantasyLineup() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &CSGOTournamentsUploadTournamentFantasyLineup{},
+	}
+
+	return req, nil
+}
+
+/*
+UploadTournamentPredictions creates a Request for interface method UploadTournamentPredictions.
+
+Parameters
+
+  * event [uint32] (required): The event ID
+  * steamid [uint64] (required): The SteamID of the user inventory
+  * steamidkey [string] (required): Authentication obtained from the SteamID
+  * sectionid [uint32] (required): Event section id
+  * groupid [uint32] (required): Event group id
+  * index [uint32] (required): Index in group
+  * pickid [uint32] (required): Pick ID to select
+  * itemid [uint64] (required): ItemID to lock in for the pick
+*/
+func (i *CSGOTournaments) UploadTournamentPredictions() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "UploadTournamentPredictions",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &CSGOTournamentsUploadTournamentPredictions{},
 	}
 
 	return req, nil

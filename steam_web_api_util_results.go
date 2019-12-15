@@ -8,9 +8,5 @@ type SteamWebAPIUtilGetServerInfo struct {
 
 // SteamWebAPIUtilGetSupportedAPIList holds the result of the method ISteamWebAPIUtil/GetSupportedAPIList.
 type SteamWebAPIUtilGetSupportedAPIList struct {
-	API *SteamWebAPIUtilGetSupportedAPIListAPI `json:"apilist"`
-}
-
-type SteamWebAPIUtilGetSupportedAPIListAPI struct {
-	Interfaces *SchemaInterfaces `json:"interfaces"`
+	API *Schema `json:"apilist"`
 }

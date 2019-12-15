@@ -8,13 +8,7 @@ import "net/http"
 // SchemaDOTA2Match stores the SchemaInterfaces for interface IDOTA2Match.
 var SchemaDOTA2Match = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetLeagueListing",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
-			},
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetLiveLeagueGames",
@@ -32,268 +26,8 @@ var SchemaDOTA2Match = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetMatchDetails",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "Match id",
-						Name:        "match_id",
-						Optional:    false,
-						Type:        "uint64",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetMatchHistory",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The ID of the hero that must be in the matches being queried",
-						Name:        "hero_id",
-						Optional:    true,
-						Type:        "uint32",
-					},
-					&SchemaMethodParam{
-						Description: "Which game mode to return matches for",
-						Name:        "game_mode",
-						Optional:    true,
-						Type:        "uint32",
-					},
-					&SchemaMethodParam{
-						Description: "The average skill range of the match, these can be [1-3] with lower numbers being lower skill. Ignored if an account ID is specified",
-						Name:        "skill",
-						Optional:    true,
-						Type:        "uint32",
-					},
-					&SchemaMethodParam{
-						Description: "Minimum number of human players that must be in a match for it to be returned",
-						Name:        "min_players",
-						Optional:    true,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "An account ID to get matches from. This will fail if the user has their match history hidden",
-						Name:        "account_id",
-						Optional:    true,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "The league ID to return games from",
-						Name:        "league_id",
-						Optional:    true,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "The minimum match ID to start from",
-						Name:        "start_at_match_id",
-						Optional:    true,
-						Type:        "uint64",
-					},
-					&SchemaMethodParam{
-						Description: "The number of requested matches to return",
-						Name:        "matches_requested",
-						Optional:    true,
-						Type:        "string",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetMatchHistoryBySequenceNum",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "start_at_match_seq_num",
-						Optional:    true,
-						Type:        "uint64",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "matches_requested",
-						Optional:    true,
-						Type:        "uint32",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetTeamInfoByTeamID",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "start_at_team_id",
-						Optional:    true,
-						Type:        "uint64",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "teams_requested",
-						Optional:    true,
-						Type:        "uint32",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetTopLiveEventGame",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "Which partner's games to use.",
-						Name:        "partner",
-						Optional:    false,
-						Type:        "int32",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetTopLiveGame",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "Which partner's games to use.",
-						Name:        "partner",
-						Optional:    false,
-						Type:        "int32",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetTopWeekendTourneyGames",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "Which partner's games to use.",
-						Name:        "partner",
-						Optional:    false,
-						Type:        "int32",
-					},
-					&SchemaMethodParam{
-						Description: "Prefer matches from this division.",
-						Name:        "home_division",
-						Optional:    true,
-						Type:        "int32",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetTournamentPlayerStats",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "account_id",
-						Optional:    false,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "league_id",
-						Optional:    true,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "hero_id",
-						Optional:    true,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "time_frame",
-						Optional:    true,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "match_id",
-						Optional:    true,
-						Type:        "uint64",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "phase_id",
-						Optional:    true,
-						Type:        "uint32",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetTournamentPlayerStats",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "account_id",
-						Optional:    false,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "league_id",
-						Optional:    true,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "hero_id",
-						Optional:    true,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "time_frame",
-						Optional:    true,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "match_id",
-						Optional:    true,
-						Type:        "uint64",
-					},
-					&SchemaMethodParam{
-						Description: "",
-						Name:        "phase_id",
-						Optional:    true,
-						Type:        "uint32",
-					},
-				),
-				Version: 2,
-			},
-		),
-		Name: "IDOTA2Match_205790",
-	},
-	&SchemaInterface{
-		Methods: NewSchemaMethods(
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetLiveLeagueGames",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "Only show matches of the specified league id",
-						Name:        "league_id",
-						Optional:    true,
-						Type:        "uint32",
-					},
-					&SchemaMethodParam{
-						Description: "Only show matches of the specified match id",
-						Name:        "match_id",
-						Optional:    true,
-						Type:        "uint64",
-					},
-				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -312,7 +46,8 @@ var SchemaDOTA2Match = MustNewSchemaInterfaces(
 						Type:        "bool",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -367,7 +102,8 @@ var SchemaDOTA2Match = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -386,7 +122,8 @@ var SchemaDOTA2Match = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -405,7 +142,8 @@ var SchemaDOTA2Match = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -418,7 +156,8 @@ var SchemaDOTA2Match = MustNewSchemaInterfaces(
 						Type:        "int32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -431,7 +170,8 @@ var SchemaDOTA2Match = MustNewSchemaInterfaces(
 						Type:        "int32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -450,7 +190,8 @@ var SchemaDOTA2Match = MustNewSchemaInterfaces(
 						Type:        "int32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -487,7 +228,8 @@ var SchemaDOTA2Match = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -530,16 +272,297 @@ var SchemaDOTA2Match = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 2,
+				Undocumented: false,
+				Version:      2,
 			},
 		),
-		Name: "IDOTA2Match_570",
+		Name:         "IDOTA2Match_570",
+		Undocumented: false,
+	},
+	&SchemaInterface{
+		Methods: MustNewSchemaMethods(
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetLeagueListing",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetLiveLeagueGames",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "Only show matches of the specified league id",
+						Name:        "league_id",
+						Optional:    true,
+						Type:        "uint32",
+					},
+					&SchemaMethodParam{
+						Description: "Only show matches of the specified match id",
+						Name:        "match_id",
+						Optional:    true,
+						Type:        "uint64",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetMatchDetails",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "Match id",
+						Name:        "match_id",
+						Optional:    false,
+						Type:        "uint64",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetMatchHistory",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The ID of the hero that must be in the matches being queried",
+						Name:        "hero_id",
+						Optional:    true,
+						Type:        "uint32",
+					},
+					&SchemaMethodParam{
+						Description: "Which game mode to return matches for",
+						Name:        "game_mode",
+						Optional:    true,
+						Type:        "uint32",
+					},
+					&SchemaMethodParam{
+						Description: "The average skill range of the match, these can be [1-3] with lower numbers being lower skill. Ignored if an account ID is specified",
+						Name:        "skill",
+						Optional:    true,
+						Type:        "uint32",
+					},
+					&SchemaMethodParam{
+						Description: "Minimum number of human players that must be in a match for it to be returned",
+						Name:        "min_players",
+						Optional:    true,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "An account ID to get matches from. This will fail if the user has their match history hidden",
+						Name:        "account_id",
+						Optional:    true,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "The league ID to return games from",
+						Name:        "league_id",
+						Optional:    true,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "The minimum match ID to start from",
+						Name:        "start_at_match_id",
+						Optional:    true,
+						Type:        "uint64",
+					},
+					&SchemaMethodParam{
+						Description: "The number of requested matches to return",
+						Name:        "matches_requested",
+						Optional:    true,
+						Type:        "string",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetMatchHistoryBySequenceNum",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "start_at_match_seq_num",
+						Optional:    true,
+						Type:        "uint64",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "matches_requested",
+						Optional:    true,
+						Type:        "uint32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetTeamInfoByTeamID",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "start_at_team_id",
+						Optional:    true,
+						Type:        "uint64",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "teams_requested",
+						Optional:    true,
+						Type:        "uint32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetTopLiveEventGame",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "Which partner's games to use.",
+						Name:        "partner",
+						Optional:    false,
+						Type:        "int32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetTopLiveGame",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "Which partner's games to use.",
+						Name:        "partner",
+						Optional:    false,
+						Type:        "int32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetTopWeekendTourneyGames",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "Which partner's games to use.",
+						Name:        "partner",
+						Optional:    false,
+						Type:        "int32",
+					},
+					&SchemaMethodParam{
+						Description: "Prefer matches from this division.",
+						Name:        "home_division",
+						Optional:    true,
+						Type:        "int32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetTournamentPlayerStats",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "account_id",
+						Optional:    false,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "league_id",
+						Optional:    true,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "hero_id",
+						Optional:    true,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "time_frame",
+						Optional:    true,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "match_id",
+						Optional:    true,
+						Type:        "uint64",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "phase_id",
+						Optional:    true,
+						Type:        "uint32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetTournamentPlayerStats",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "account_id",
+						Optional:    false,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "league_id",
+						Optional:    true,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "hero_id",
+						Optional:    true,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "time_frame",
+						Optional:    true,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "match_id",
+						Optional:    true,
+						Type:        "uint64",
+					},
+					&SchemaMethodParam{
+						Description: "",
+						Name:        "phase_id",
+						Optional:    true,
+						Type:        "uint32",
+					},
+				),
+				Undocumented: false,
+				Version:      2,
+			},
+		),
+		Name:         "IDOTA2Match_205790",
+		Undocumented: false,
 	},
 )
 
 // DOTA2Match represents interface IDOTA2Match.
 //
-// Supported AppIDs: [205790 570].
+// Supported AppIDs: 570, 205790.
 type DOTA2Match struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -547,9 +570,12 @@ type DOTA2Match struct {
 
 // NewDOTA2Match creates a new DOTA2Match interface.
 //
-// Supported AppIDs: [205790 570].
+// Supported AppIDs: 570, 205790.
 func NewDOTA2Match(c *Client, appID uint32) (*DOTA2Match, error) {
-	si, err := SchemaDOTA2Match.Get("IDOTA2Match", appID)
+	si, err := SchemaDOTA2Match.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "IDOTA2Match",
+	})
 
 	if err != nil {
 		return nil, err
@@ -565,14 +591,17 @@ func NewDOTA2Match(c *Client, appID uint32) (*DOTA2Match, error) {
 
 // DOTA2Match creates a new DOTA2Match interface.
 //
-// Supported AppIDs: [205790 570].
+// Supported AppIDs: 570, 205790.
 func (c *Client) DOTA2Match(appID uint32) (*DOTA2Match, error) {
 	return NewDOTA2Match(c, appID)
 }
 
 // GetLeagueListing creates a Request for interface method GetLeagueListing.
 func (i *DOTA2Match) GetLeagueListing() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetLeagueListing", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetLeagueListing",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -588,119 +617,19 @@ func (i *DOTA2Match) GetLeagueListing() (*Request, error) {
 	return req, nil
 }
 
-// GetTournamentPlayerStats creates a Request for interface method GetTournamentPlayerStats.
-//
-// Supported versions: [1 2].
-func (i *DOTA2Match) GetTournamentPlayerStats(version int) (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTournamentPlayerStats", version)
+/*
+GetLiveLeagueGames creates a Request for interface method GetLiveLeagueGames.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &DOTA2MatchGetTournamentPlayerStats{},
-	}
-
-	return req, nil
-}
-
-// GetTopWeekendTourneyGames creates a Request for interface method GetTopWeekendTourneyGames.
-func (i *DOTA2Match) GetTopWeekendTourneyGames() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTopWeekendTourneyGames", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &DOTA2MatchGetTopWeekendTourneyGames{},
-	}
-
-	return req, nil
-}
-
-// GetMatchDetails creates a Request for interface method GetMatchDetails.
-func (i *DOTA2Match) GetMatchDetails() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetMatchDetails", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &DOTA2MatchGetMatchDetails{},
-	}
-
-	return req, nil
-}
-
-// GetTopLiveEventGame creates a Request for interface method GetTopLiveEventGame.
-func (i *DOTA2Match) GetTopLiveEventGame() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTopLiveEventGame", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &DOTA2MatchGetTopLiveEventGame{},
-	}
-
-	return req, nil
-}
-
-// GetTeamInfoByTeamID creates a Request for interface method GetTeamInfoByTeamID.
-func (i *DOTA2Match) GetTeamInfoByTeamID() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTeamInfoByTeamID", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &DOTA2MatchGetTeamInfoByTeamID{},
-	}
-
-	return req, nil
-}
-
-// GetTopLiveGame creates a Request for interface method GetTopLiveGame.
-func (i *DOTA2Match) GetTopLiveGame() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTopLiveGame", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &DOTA2MatchGetTopLiveGame{},
-	}
-
-	return req, nil
-}
-
-// GetLiveLeagueGames creates a Request for interface method GetLiveLeagueGames.
+  * league_id [uint32]: Only show matches of the specified league id
+  * match_id [uint64]: Only show matches of the specified match id
+*/
 func (i *DOTA2Match) GetLiveLeagueGames() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetLiveLeagueGames", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetLiveLeagueGames",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -716,9 +645,52 @@ func (i *DOTA2Match) GetLiveLeagueGames() (*Request, error) {
 	return req, nil
 }
 
-// GetMatchHistory creates a Request for interface method GetMatchHistory.
+/*
+GetMatchDetails creates a Request for interface method GetMatchDetails.
+
+Parameters
+
+  * match_id [uint64] (required): Match id
+*/
+func (i *DOTA2Match) GetMatchDetails() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetMatchDetails",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &DOTA2MatchGetMatchDetails{},
+	}
+
+	return req, nil
+}
+
+/*
+GetMatchHistory creates a Request for interface method GetMatchHistory.
+
+Parameters
+
+  * hero_id [uint32]: The ID of the hero that must be in the matches being queried
+  * game_mode [uint32]: Which game mode to return matches for
+  * skill [uint32]: The average skill range of the match, these can be [1-3] with lower numbers being lower skill. Ignored if an account ID is specified
+  * min_players [string]: Minimum number of human players that must be in a match for it to be returned
+  * account_id [string]: An account ID to get matches from. This will fail if the user has their match history hidden
+  * league_id [string]: The league ID to return games from
+  * start_at_match_id [uint64]: The minimum match ID to start from
+  * matches_requested [string]: The number of requested matches to return
+*/
 func (i *DOTA2Match) GetMatchHistory() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetMatchHistory", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetMatchHistory",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -734,9 +706,19 @@ func (i *DOTA2Match) GetMatchHistory() (*Request, error) {
 	return req, nil
 }
 
-// GetMatchHistoryBySequenceNum creates a Request for interface method GetMatchHistoryBySequenceNum.
+/*
+GetMatchHistoryBySequenceNum creates a Request for interface method GetMatchHistoryBySequenceNum.
+
+Parameters
+
+  * start_at_match_seq_num [uint64]
+  * matches_requested [uint32]
+*/
 func (i *DOTA2Match) GetMatchHistoryBySequenceNum() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetMatchHistoryBySequenceNum", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetMatchHistoryBySequenceNum",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -747,6 +729,159 @@ func (i *DOTA2Match) GetMatchHistoryBySequenceNum() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &DOTA2MatchGetMatchHistoryBySequenceNum{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTeamInfoByTeamID creates a Request for interface method GetTeamInfoByTeamID.
+
+Parameters
+
+  * start_at_team_id [uint64]
+  * teams_requested [uint32]
+*/
+func (i *DOTA2Match) GetTeamInfoByTeamID() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTeamInfoByTeamID",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &DOTA2MatchGetTeamInfoByTeamID{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTopLiveEventGame creates a Request for interface method GetTopLiveEventGame.
+
+Parameters
+
+  * partner [int32] (required): Which partner's games to use.
+*/
+func (i *DOTA2Match) GetTopLiveEventGame() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTopLiveEventGame",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &DOTA2MatchGetTopLiveEventGame{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTopLiveGame creates a Request for interface method GetTopLiveGame.
+
+Parameters
+
+  * partner [int32] (required): Which partner's games to use.
+*/
+func (i *DOTA2Match) GetTopLiveGame() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTopLiveGame",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &DOTA2MatchGetTopLiveGame{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTopWeekendTourneyGames creates a Request for interface method GetTopWeekendTourneyGames.
+
+Parameters
+
+  * partner [int32] (required): Which partner's games to use.
+  * home_division [int32]: Prefer matches from this division.
+*/
+func (i *DOTA2Match) GetTopWeekendTourneyGames() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTopWeekendTourneyGames",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &DOTA2MatchGetTopWeekendTourneyGames{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTournamentPlayerStats creates a Request for interface method GetTournamentPlayerStats.
+
+Supported versions: 1, 2.
+
+Parameters (v1)
+
+  * account_id [string] (required)
+  * league_id [string]
+  * hero_id [string]
+  * time_frame [string]
+  * match_id [uint64]
+  * phase_id [uint32]
+
+Parameters (v2)
+
+  * account_id [string] (required)
+  * league_id [string]
+  * hero_id [string]
+  * time_frame [string]
+  * match_id [uint64]
+  * phase_id [uint32]
+*/
+func (i *DOTA2Match) GetTournamentPlayerStats(version int) (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTournamentPlayerStats",
+		Version: version,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &DOTA2MatchGetTournamentPlayerStats{},
 	}
 
 	return req, nil

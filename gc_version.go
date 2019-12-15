@@ -8,106 +8,123 @@ import "net/http"
 // SchemaGCVersion stores the SchemaInterfaces for interface IGCVersion.
 var SchemaGCVersion = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetClientVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetClientVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetServerVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetServerVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IGCVersion_1046930",
+		Name:         "IGCVersion_440",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetClientVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetClientVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetServerVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetServerVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IGCVersion_205790",
+		Name:         "IGCVersion_570",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetClientVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetServerVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetServerVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IGCVersion_440",
+		Name:         "IGCVersion_730",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetClientVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetClientVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetServerVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetServerVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IGCVersion_570",
+		Name:         "IGCVersion_205790",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetClientVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetClientVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetServerVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetServerVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IGCVersion_583950",
+		Name:         "IGCVersion_583950",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetServerVersion",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetClientVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetServerVersion",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IGCVersion_730",
+		Name:         "IGCVersion_1046930",
+		Undocumented: false,
 	},
 )
 
 // GCVersion represents interface IGCVersion.
 //
-// Supported AppIDs: [205790 440 570 583950 730 1046930].
+// Supported AppIDs: 440, 570, 730, 205790, 583950, 1046930.
 type GCVersion struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -115,9 +132,12 @@ type GCVersion struct {
 
 // NewGCVersion creates a new GCVersion interface.
 //
-// Supported AppIDs: [205790 440 570 583950 730 1046930].
+// Supported AppIDs: 440, 570, 730, 205790, 583950, 1046930.
 func NewGCVersion(c *Client, appID uint32) (*GCVersion, error) {
-	si, err := SchemaGCVersion.Get("IGCVersion", appID)
+	si, err := SchemaGCVersion.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "IGCVersion",
+	})
 
 	if err != nil {
 		return nil, err
@@ -133,14 +153,17 @@ func NewGCVersion(c *Client, appID uint32) (*GCVersion, error) {
 
 // GCVersion creates a new GCVersion interface.
 //
-// Supported AppIDs: [205790 440 570 583950 730 1046930].
+// Supported AppIDs: 440, 570, 730, 205790, 583950, 1046930.
 func (c *Client) GCVersion(appID uint32) (*GCVersion, error) {
 	return NewGCVersion(c, appID)
 }
 
 // GetClientVersion creates a Request for interface method GetClientVersion.
 func (i *GCVersion) GetClientVersion() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetClientVersion", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetClientVersion",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -158,7 +181,10 @@ func (i *GCVersion) GetClientVersion() (*Request, error) {
 
 // GetServerVersion creates a Request for interface method GetServerVersion.
 func (i *GCVersion) GetServerVersion() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetServerVersion", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetServerVersion",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

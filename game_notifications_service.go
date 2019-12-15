@@ -8,7 +8,7 @@ import "net/http"
 // SchemaGameNotificationsService stores the SchemaInterfaces for interface IGameNotificationsService.
 var SchemaGameNotificationsService = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
 				Name:       "UserCreateSession",
@@ -44,7 +44,8 @@ var SchemaGameNotificationsService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -81,7 +82,8 @@ var SchemaGameNotificationsService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -106,10 +108,12 @@ var SchemaGameNotificationsService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IGameNotificationsService",
+		Name:         "IGameNotificationsService",
+		Undocumented: false,
 	},
 )
 
@@ -121,7 +125,7 @@ type GameNotificationsService struct {
 
 // NewGameNotificationsService creates a new GameNotificationsService interface.
 func NewGameNotificationsService(c *Client) (*GameNotificationsService, error) {
-	si, err := SchemaGameNotificationsService.Get("IGameNotificationsService", 0)
+	si, err := SchemaGameNotificationsService.Get(SchemaInterfaceKey{Name: "IGameNotificationsService"})
 
 	if err != nil {
 		return nil, err
@@ -140,9 +144,22 @@ func (c *Client) GameNotificationsService() (*GameNotificationsService, error) {
 	return NewGameNotificationsService(c)
 }
 
-// UserCreateSession creates a Request for interface method UserCreateSession.
+/*
+UserCreateSession creates a Request for interface method UserCreateSession.
+
+Parameters
+
+  * appid [uint32] (required): The appid to create the session for.
+  * context [uint64] (required): Game-specified context value the game can used to associate the session with some object on their backend.
+  * title [{message}] (required): The title of the session to be displayed within each user's list of sessions.
+  * users [{message}] (required): The initial state of all users in the session.
+  * steamid [uint64] (required): (Optional) steamid to make the request on behalf of -- if specified, the user must be in the session and all users being added to the session must be friends with the user.
+*/
 func (i *GameNotificationsService) UserCreateSession() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("UserCreateSession", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "UserCreateSession",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -158,27 +175,20 @@ func (i *GameNotificationsService) UserCreateSession() (*Request, error) {
 	return req, nil
 }
 
-// UserUpdateSession creates a Request for interface method UserUpdateSession.
-func (i *GameNotificationsService) UserUpdateSession() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("UserUpdateSession", 1)
+/*
+UserDeleteSession creates a Request for interface method UserDeleteSession.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &GameNotificationsServiceUserUpdateSession{},
-	}
-
-	return req, nil
-}
-
-// UserDeleteSession creates a Request for interface method UserDeleteSession.
+  * sessionid [uint64] (required): The sessionid to delete.
+  * appid [uint32] (required): The appid of the session to delete.
+  * steamid [uint64] (required): (Optional) steamid to make the request on behalf of -- if specified, the user must be in the session.
+*/
 func (i *GameNotificationsService) UserDeleteSession() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("UserDeleteSession", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "UserDeleteSession",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -189,6 +199,37 @@ func (i *GameNotificationsService) UserDeleteSession() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &GameNotificationsServiceUserDeleteSession{},
+	}
+
+	return req, nil
+}
+
+/*
+UserUpdateSession creates a Request for interface method UserUpdateSession.
+
+Parameters
+
+  * sessionid [uint64] (required): The sessionid to update.
+  * appid [uint32] (required): The appid of the session to update.
+  * title [{message}] (required): (Optional) The new title of the session.  If not specified, the title will not be changed.
+  * users [{message}] (required): (Optional) A list of users whose state will be updated to reflect the given state. If the users are not already in the session, they will be added to it.
+  * steamid [uint64] (required): (Optional) steamid to make the request on behalf of -- if specified, the user must be in the session and all users being added to the session must be friends with the user.
+*/
+func (i *GameNotificationsService) UserUpdateSession() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "UserUpdateSession",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &GameNotificationsServiceUserUpdateSession{},
 	}
 
 	return req, nil

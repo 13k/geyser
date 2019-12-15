@@ -8,7 +8,7 @@ import "net/http"
 // SchemaDOTA2MatchStats stores the SchemaInterfaces for interface IDOTA2MatchStats.
 var SchemaDOTA2MatchStats = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetRealtimeStats",
@@ -20,13 +20,15 @@ var SchemaDOTA2MatchStats = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IDOTA2MatchStats_205790",
+		Name:         "IDOTA2MatchStats_570",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetRealtimeStats",
@@ -38,16 +40,18 @@ var SchemaDOTA2MatchStats = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IDOTA2MatchStats_570",
+		Name:         "IDOTA2MatchStats_205790",
+		Undocumented: false,
 	},
 )
 
 // DOTA2MatchStats represents interface IDOTA2MatchStats.
 //
-// Supported AppIDs: [205790 570].
+// Supported AppIDs: 570, 205790.
 type DOTA2MatchStats struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -55,9 +59,12 @@ type DOTA2MatchStats struct {
 
 // NewDOTA2MatchStats creates a new DOTA2MatchStats interface.
 //
-// Supported AppIDs: [205790 570].
+// Supported AppIDs: 570, 205790.
 func NewDOTA2MatchStats(c *Client, appID uint32) (*DOTA2MatchStats, error) {
-	si, err := SchemaDOTA2MatchStats.Get("IDOTA2MatchStats", appID)
+	si, err := SchemaDOTA2MatchStats.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "IDOTA2MatchStats",
+	})
 
 	if err != nil {
 		return nil, err
@@ -73,14 +80,23 @@ func NewDOTA2MatchStats(c *Client, appID uint32) (*DOTA2MatchStats, error) {
 
 // DOTA2MatchStats creates a new DOTA2MatchStats interface.
 //
-// Supported AppIDs: [205790 570].
+// Supported AppIDs: 570, 205790.
 func (c *Client) DOTA2MatchStats(appID uint32) (*DOTA2MatchStats, error) {
 	return NewDOTA2MatchStats(c, appID)
 }
 
-// GetRealtimeStats creates a Request for interface method GetRealtimeStats.
+/*
+GetRealtimeStats creates a Request for interface method GetRealtimeStats.
+
+Parameters
+
+  * server_steam_id [uint64] (required)
+*/
 func (i *DOTA2MatchStats) GetRealtimeStats() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetRealtimeStats", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetRealtimeStats",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

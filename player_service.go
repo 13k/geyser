@@ -8,7 +8,7 @@ import "net/http"
 // SchemaPlayerService stores the SchemaInterfaces for interface IPlayerService.
 var SchemaPlayerService = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
 				Name:       "RecordOfflinePlaytime",
@@ -32,7 +32,8 @@ var SchemaPlayerService = MustNewSchemaInterfaces(
 						Type:        "{message}",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -57,7 +58,8 @@ var SchemaPlayerService = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -94,7 +96,8 @@ var SchemaPlayerService = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -113,7 +116,8 @@ var SchemaPlayerService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -132,7 +136,8 @@ var SchemaPlayerService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -157,7 +162,8 @@ var SchemaPlayerService = MustNewSchemaInterfaces(
 						Type:        "int32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -182,10 +188,47 @@ var SchemaPlayerService = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetSteamLevelDistribution",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetNicknameList",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "AddFriend",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "RemoveFriend",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "IgnoreFriend",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
 			},
 		),
-		Name: "IPlayerService",
+		Name:         "IPlayerService",
+		Undocumented: false,
 	},
 )
 
@@ -197,7 +240,7 @@ type PlayerService struct {
 
 // NewPlayerService creates a new PlayerService interface.
 func NewPlayerService(c *Client) (*PlayerService, error) {
-	si, err := SchemaPlayerService.Get("IPlayerService", 0)
+	si, err := SchemaPlayerService.Get(SchemaInterfaceKey{Name: "IPlayerService"})
 
 	if err != nil {
 		return nil, err
@@ -216,9 +259,16 @@ func (c *Client) PlayerService() (*PlayerService, error) {
 	return NewPlayerService(c)
 }
 
-// GetOwnedGames creates a Request for interface method GetOwnedGames.
-func (i *PlayerService) GetOwnedGames() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetOwnedGames", 1)
+/*
+AddFriend creates a Request for interface method AddFriend.
+
+This is an undocumented method.
+*/
+func (i *PlayerService) AddFriend() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "AddFriend",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -228,33 +278,25 @@ func (i *PlayerService) GetOwnedGames() (*Request, error) {
 		Client:    i.Client,
 		Interface: i.Interface,
 		Method:    sm,
-		Result:    &PlayerServiceGetOwnedGames{},
+		Result:    &PlayerServiceAddFriend{},
 	}
 
 	return req, nil
 }
 
-// GetSteamLevel creates a Request for interface method GetSteamLevel.
-func (i *PlayerService) GetSteamLevel() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSteamLevel", 1)
+/*
+GetBadges creates a Request for interface method GetBadges.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &PlayerServiceGetSteamLevel{},
-	}
-
-	return req, nil
-}
-
-// GetBadges creates a Request for interface method GetBadges.
+  * key [string] (required): Access key
+  * steamid [uint64] (required): The player we're asking about
+*/
 func (i *PlayerService) GetBadges() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetBadges", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetBadges",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -270,9 +312,20 @@ func (i *PlayerService) GetBadges() (*Request, error) {
 	return req, nil
 }
 
-// GetCommunityBadgeProgress creates a Request for interface method GetCommunityBadgeProgress.
+/*
+GetCommunityBadgeProgress creates a Request for interface method GetCommunityBadgeProgress.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid [uint64] (required): The player we're asking about
+  * badgeid [int32] (required): The badge we're asking about
+*/
 func (i *PlayerService) GetCommunityBadgeProgress() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetCommunityBadgeProgress", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetCommunityBadgeProgress",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -288,9 +341,183 @@ func (i *PlayerService) GetCommunityBadgeProgress() (*Request, error) {
 	return req, nil
 }
 
-// IsPlayingSharedGame creates a Request for interface method IsPlayingSharedGame.
+/*
+GetNicknameList creates a Request for interface method GetNicknameList.
+
+This is an undocumented method.
+*/
+func (i *PlayerService) GetNicknameList() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetNicknameList",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PlayerServiceGetNicknameList{},
+	}
+
+	return req, nil
+}
+
+/*
+GetOwnedGames creates a Request for interface method GetOwnedGames.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid [uint64] (required): The player we're asking about
+  * include_appinfo [bool] (required): true if we want additional details (name, icon) about each game
+  * include_played_free_games [bool] (required): Free games are excluded by default.  If this is set, free games the user has played will be returned.
+  * appids_filter [uint32] (required): if set, restricts result set to the passed in apps
+*/
+func (i *PlayerService) GetOwnedGames() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetOwnedGames",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PlayerServiceGetOwnedGames{},
+	}
+
+	return req, nil
+}
+
+/*
+GetRecentlyPlayedGames creates a Request for interface method GetRecentlyPlayedGames.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid [uint64] (required): The player we're asking about
+  * count [uint32] (required): The number of games to return (0/unset: all)
+*/
+func (i *PlayerService) GetRecentlyPlayedGames() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetRecentlyPlayedGames",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PlayerServiceGetRecentlyPlayedGames{},
+	}
+
+	return req, nil
+}
+
+/*
+GetSteamLevel creates a Request for interface method GetSteamLevel.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid [uint64] (required): The player we're asking about
+*/
+func (i *PlayerService) GetSteamLevel() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSteamLevel",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PlayerServiceGetSteamLevel{},
+	}
+
+	return req, nil
+}
+
+/*
+GetSteamLevelDistribution creates a Request for interface method GetSteamLevelDistribution.
+
+This is an undocumented method.
+*/
+func (i *PlayerService) GetSteamLevelDistribution() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSteamLevelDistribution",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PlayerServiceGetSteamLevelDistribution{},
+	}
+
+	return req, nil
+}
+
+/*
+IgnoreFriend creates a Request for interface method IgnoreFriend.
+
+This is an undocumented method.
+*/
+func (i *PlayerService) IgnoreFriend() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "IgnoreFriend",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &PlayerServiceIgnoreFriend{},
+	}
+
+	return req, nil
+}
+
+/*
+IsPlayingSharedGame creates a Request for interface method IsPlayingSharedGame.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid [uint64] (required): The player we're asking about
+  * appid_playing [uint32] (required): The game player is currently playing
+*/
 func (i *PlayerService) IsPlayingSharedGame() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("IsPlayingSharedGame", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "IsPlayingSharedGame",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -306,9 +533,20 @@ func (i *PlayerService) IsPlayingSharedGame() (*Request, error) {
 	return req, nil
 }
 
-// RecordOfflinePlaytime creates a Request for interface method RecordOfflinePlaytime.
+/*
+RecordOfflinePlaytime creates a Request for interface method RecordOfflinePlaytime.
+
+Parameters
+
+  * steamid [uint64] (required)
+  * ticket [string] (required)
+  * play_sessions [{message}] (required)
+*/
 func (i *PlayerService) RecordOfflinePlaytime() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("RecordOfflinePlaytime", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "RecordOfflinePlaytime",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -324,9 +562,16 @@ func (i *PlayerService) RecordOfflinePlaytime() (*Request, error) {
 	return req, nil
 }
 
-// GetRecentlyPlayedGames creates a Request for interface method GetRecentlyPlayedGames.
-func (i *PlayerService) GetRecentlyPlayedGames() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetRecentlyPlayedGames", 1)
+/*
+RemoveFriend creates a Request for interface method RemoveFriend.
+
+This is an undocumented method.
+*/
+func (i *PlayerService) RemoveFriend() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "RemoveFriend",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -336,7 +581,7 @@ func (i *PlayerService) GetRecentlyPlayedGames() (*Request, error) {
 		Client:    i.Client,
 		Interface: i.Interface,
 		Method:    sm,
-		Result:    &PlayerServiceGetRecentlyPlayedGames{},
+		Result:    &PlayerServiceRemoveFriend{},
 	}
 
 	return req, nil

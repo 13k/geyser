@@ -8,7 +8,7 @@ import "net/http"
 // SchemaEconDOTA2 stores the SchemaInterfaces for interface IEconDOTA2.
 var SchemaEconDOTA2 = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetEventStatsForAccount",
@@ -32,7 +32,8 @@ var SchemaEconDOTA2 = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -45,7 +46,8 @@ var SchemaEconDOTA2 = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -64,7 +66,116 @@ var SchemaEconDOTA2 = MustNewSchemaInterfaces(
 						Type:        "bool",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetItemCreators",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The item definition to get creator information for.",
+						Name:        "itemdef",
+						Optional:    false,
+						Type:        "uint32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetRarities",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The language to provide rarity names in.",
+						Name:        "language",
+						Optional:    true,
+						Type:        "string",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetTournamentPrizePool",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The ID of the league to get the prize pool of",
+						Name:        "leagueid",
+						Optional:    true,
+						Type:        "uint32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+		),
+		Name:         "IEconDOTA2_570",
+		Undocumented: false,
+	},
+	&SchemaInterface{
+		Methods: MustNewSchemaMethods(
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetEventStatsForAccount",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The League ID of the compendium you're looking for.",
+						Name:        "eventid",
+						Optional:    false,
+						Type:        "uint32",
+					},
+					&SchemaMethodParam{
+						Description: "The account ID to look up.",
+						Name:        "accountid",
+						Optional:    false,
+						Type:        "uint32",
+					},
+					&SchemaMethodParam{
+						Description: "The language to provide hero names in.",
+						Name:        "language",
+						Optional:    true,
+						Type:        "string",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetGameItems",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The language to provide item names in.",
+						Name:        "language",
+						Optional:    true,
+						Type:        "string",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetHeroes",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The language to provide hero names in.",
+						Name:        "language",
+						Optional:    true,
+						Type:        "string",
+					},
+					&SchemaMethodParam{
+						Description: "Return a list of itemized heroes only.",
+						Name:        "itemizedonly",
+						Optional:    true,
+						Type:        "bool",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -83,7 +194,8 @@ var SchemaEconDOTA2 = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -96,7 +208,8 @@ var SchemaEconDOTA2 = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -109,117 +222,18 @@ var SchemaEconDOTA2 = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IEconDOTA2_205790",
-	},
-	&SchemaInterface{
-		Methods: NewSchemaMethods(
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetEventStatsForAccount",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The League ID of the compendium you're looking for.",
-						Name:        "eventid",
-						Optional:    false,
-						Type:        "uint32",
-					},
-					&SchemaMethodParam{
-						Description: "The account ID to look up.",
-						Name:        "accountid",
-						Optional:    false,
-						Type:        "uint32",
-					},
-					&SchemaMethodParam{
-						Description: "The language to provide hero names in.",
-						Name:        "language",
-						Optional:    true,
-						Type:        "string",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetGameItems",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The language to provide item names in.",
-						Name:        "language",
-						Optional:    true,
-						Type:        "string",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetHeroes",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The language to provide hero names in.",
-						Name:        "language",
-						Optional:    true,
-						Type:        "string",
-					},
-					&SchemaMethodParam{
-						Description: "Return a list of itemized heroes only.",
-						Name:        "itemizedonly",
-						Optional:    true,
-						Type:        "bool",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetItemCreators",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The item definition to get creator information for.",
-						Name:        "itemdef",
-						Optional:    false,
-						Type:        "uint32",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetRarities",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The language to provide rarity names in.",
-						Name:        "language",
-						Optional:    true,
-						Type:        "string",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetTournamentPrizePool",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The ID of the league to get the prize pool of",
-						Name:        "leagueid",
-						Optional:    true,
-						Type:        "uint32",
-					},
-				),
-				Version: 1,
-			},
-		),
-		Name: "IEconDOTA2_570",
+		Name:         "IEconDOTA2_205790",
+		Undocumented: false,
 	},
 )
 
 // EconDOTA2 represents interface IEconDOTA2.
 //
-// Supported AppIDs: [570 205790].
+// Supported AppIDs: 570, 205790.
 type EconDOTA2 struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -227,9 +241,12 @@ type EconDOTA2 struct {
 
 // NewEconDOTA2 creates a new EconDOTA2 interface.
 //
-// Supported AppIDs: [570 205790].
+// Supported AppIDs: 570, 205790.
 func NewEconDOTA2(c *Client, appID uint32) (*EconDOTA2, error) {
-	si, err := SchemaEconDOTA2.Get("IEconDOTA2", appID)
+	si, err := SchemaEconDOTA2.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "IEconDOTA2",
+	})
 
 	if err != nil {
 		return nil, err
@@ -245,68 +262,25 @@ func NewEconDOTA2(c *Client, appID uint32) (*EconDOTA2, error) {
 
 // EconDOTA2 creates a new EconDOTA2 interface.
 //
-// Supported AppIDs: [570 205790].
+// Supported AppIDs: 570, 205790.
 func (c *Client) EconDOTA2(appID uint32) (*EconDOTA2, error) {
 	return NewEconDOTA2(c, appID)
 }
 
-// GetItemIconPath creates a Request for interface method GetItemIconPath.
-func (i *EconDOTA2) GetItemIconPath() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetItemIconPath", 1)
+/*
+GetEventStatsForAccount creates a Request for interface method GetEventStatsForAccount.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &EconDOTA2GetItemIconPath{},
-	}
-
-	return req, nil
-}
-
-// GetRarities creates a Request for interface method GetRarities.
-func (i *EconDOTA2) GetRarities() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetRarities", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &EconDOTA2GetRarities{},
-	}
-
-	return req, nil
-}
-
-// GetTournamentPrizePool creates a Request for interface method GetTournamentPrizePool.
-func (i *EconDOTA2) GetTournamentPrizePool() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetTournamentPrizePool", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &EconDOTA2GetTournamentPrizePool{},
-	}
-
-	return req, nil
-}
-
-// GetEventStatsForAccount creates a Request for interface method GetEventStatsForAccount.
+  * eventid [uint32] (required): The League ID of the compendium you're looking for.
+  * accountid [uint32] (required): The account ID to look up.
+  * language [string]: The language to provide hero names in.
+*/
 func (i *EconDOTA2) GetEventStatsForAccount() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetEventStatsForAccount", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetEventStatsForAccount",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -322,9 +296,18 @@ func (i *EconDOTA2) GetEventStatsForAccount() (*Request, error) {
 	return req, nil
 }
 
-// GetGameItems creates a Request for interface method GetGameItems.
+/*
+GetGameItems creates a Request for interface method GetGameItems.
+
+Parameters
+
+  * language [string]: The language to provide item names in.
+*/
 func (i *EconDOTA2) GetGameItems() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetGameItems", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetGameItems",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -340,9 +323,19 @@ func (i *EconDOTA2) GetGameItems() (*Request, error) {
 	return req, nil
 }
 
-// GetHeroes creates a Request for interface method GetHeroes.
+/*
+GetHeroes creates a Request for interface method GetHeroes.
+
+Parameters
+
+  * language [string]: The language to provide hero names in.
+  * itemizedonly [bool]: Return a list of itemized heroes only.
+*/
 func (i *EconDOTA2) GetHeroes() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetHeroes", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetHeroes",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -358,9 +351,18 @@ func (i *EconDOTA2) GetHeroes() (*Request, error) {
 	return req, nil
 }
 
-// GetItemCreators creates a Request for interface method GetItemCreators.
+/*
+GetItemCreators creates a Request for interface method GetItemCreators.
+
+Parameters
+
+  * itemdef [uint32] (required): The item definition to get creator information for.
+*/
 func (i *EconDOTA2) GetItemCreators() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetItemCreators", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetItemCreators",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -371,6 +373,88 @@ func (i *EconDOTA2) GetItemCreators() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &EconDOTA2GetItemCreators{},
+	}
+
+	return req, nil
+}
+
+/*
+GetItemIconPath creates a Request for interface method GetItemIconPath.
+
+Parameters
+
+  * iconname [string] (required): The item icon name to get the CDN path of
+  * icontype [uint32]: The type of image you want. 0 = normal, 1 = large, 2 = ingame
+*/
+func (i *EconDOTA2) GetItemIconPath() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetItemIconPath",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &EconDOTA2GetItemIconPath{},
+	}
+
+	return req, nil
+}
+
+/*
+GetRarities creates a Request for interface method GetRarities.
+
+Parameters
+
+  * language [string]: The language to provide rarity names in.
+*/
+func (i *EconDOTA2) GetRarities() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetRarities",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &EconDOTA2GetRarities{},
+	}
+
+	return req, nil
+}
+
+/*
+GetTournamentPrizePool creates a Request for interface method GetTournamentPrizePool.
+
+Parameters
+
+  * leagueid [uint32]: The ID of the league to get the prize pool of
+*/
+func (i *EconDOTA2) GetTournamentPrizePool() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetTournamentPrizePool",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &EconDOTA2GetTournamentPrizePool{},
 	}
 
 	return req, nil

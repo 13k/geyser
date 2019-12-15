@@ -2,11 +2,32 @@
 
 package geyser
 
+// PlayerServiceAddFriend holds the result of the method IPlayerService/AddFriend.
+type PlayerServiceAddFriend struct{}
+
 // PlayerServiceGetBadges holds the result of the method IPlayerService/GetBadges.
 type PlayerServiceGetBadges struct{}
 
 // PlayerServiceGetCommunityBadgeProgress holds the result of the method IPlayerService/GetCommunityBadgeProgress.
 type PlayerServiceGetCommunityBadgeProgress struct{}
+
+// PlayerServiceGetNicknameList holds the result of the method IPlayerService/GetNicknameList.
+type PlayerServiceGetNicknameList struct{}
+
+// PlayerServiceGetOwnedGames holds the result of the method IPlayerService/GetOwnedGames.
+type PlayerServiceGetOwnedGames struct{}
+
+// PlayerServiceGetRecentlyPlayedGames holds the result of the method IPlayerService/GetRecentlyPlayedGames.
+type PlayerServiceGetRecentlyPlayedGames struct{}
+
+// PlayerServiceGetSteamLevel holds the result of the method IPlayerService/GetSteamLevel.
+type PlayerServiceGetSteamLevel struct{}
+
+// PlayerServiceGetSteamLevelDistribution holds the result of the method IPlayerService/GetSteamLevelDistribution.
+type PlayerServiceGetSteamLevelDistribution struct{}
+
+// PlayerServiceIgnoreFriend holds the result of the method IPlayerService/IgnoreFriend.
+type PlayerServiceIgnoreFriend struct{}
 
 // PlayerServiceIsPlayingSharedGame holds the result of the method IPlayerService/IsPlayingSharedGame.
 type PlayerServiceIsPlayingSharedGame struct{}
@@ -14,11 +35,5 @@ type PlayerServiceIsPlayingSharedGame struct{}
 // PlayerServiceRecordOfflinePlaytime holds the result of the method IPlayerService/RecordOfflinePlaytime.
 type PlayerServiceRecordOfflinePlaytime struct{}
 
-// PlayerServiceGetRecentlyPlayedGames holds the result of the method IPlayerService/GetRecentlyPlayedGames.
-type PlayerServiceGetRecentlyPlayedGames struct{}
-
-// PlayerServiceGetOwnedGames holds the result of the method IPlayerService/GetOwnedGames.
-type PlayerServiceGetOwnedGames struct{}
-
-// PlayerServiceGetSteamLevel holds the result of the method IPlayerService/GetSteamLevel.
-type PlayerServiceGetSteamLevel struct{}
+// PlayerServiceRemoveFriend holds the result of the method IPlayerService/RemoveFriend.
+type PlayerServiceRemoveFriend struct{}

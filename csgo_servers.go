@@ -8,7 +8,7 @@ import "net/http"
 // SchemaCSGOServers stores the SchemaInterfaces for interface ICSGOServers.
 var SchemaCSGOServers = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetGameMapsPlaytime",
@@ -32,22 +32,25 @@ var SchemaCSGOServers = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetGameServersStatus",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetGameServersStatus",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ICSGOServers_730",
+		Name:         "ICSGOServers_730",
+		Undocumented: false,
 	},
 )
 
 // CSGOServers represents interface ICSGOServers.
 //
-// Supported AppIDs: [730].
+// Supported AppIDs: 730.
 type CSGOServers struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -55,9 +58,12 @@ type CSGOServers struct {
 
 // NewCSGOServers creates a new CSGOServers interface.
 //
-// Supported AppIDs: [730].
+// Supported AppIDs: 730.
 func NewCSGOServers(c *Client, appID uint32) (*CSGOServers, error) {
-	si, err := SchemaCSGOServers.Get("ICSGOServers", appID)
+	si, err := SchemaCSGOServers.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "ICSGOServers",
+	})
 
 	if err != nil {
 		return nil, err
@@ -73,32 +79,25 @@ func NewCSGOServers(c *Client, appID uint32) (*CSGOServers, error) {
 
 // CSGOServers creates a new CSGOServers interface.
 //
-// Supported AppIDs: [730].
+// Supported AppIDs: 730.
 func (c *Client) CSGOServers(appID uint32) (*CSGOServers, error) {
 	return NewCSGOServers(c, appID)
 }
 
-// GetGameServersStatus creates a Request for interface method GetGameServersStatus.
-func (i *CSGOServers) GetGameServersStatus() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetGameServersStatus", 1)
+/*
+GetGameMapsPlaytime creates a Request for interface method GetGameMapsPlaytime.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &CSGOServersGetGameServersStatus{},
-	}
-
-	return req, nil
-}
-
-// GetGameMapsPlaytime creates a Request for interface method GetGameMapsPlaytime.
+  * interval [string] (required): What recent interval is requested, possible values: day, week, month
+  * gamemode [string] (required): What game mode is requested, possible values: competitive, casual
+  * mapgroup [string] (required): What maps are requested, possible values: operation
+*/
 func (i *CSGOServers) GetGameMapsPlaytime() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetGameMapsPlaytime", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetGameMapsPlaytime",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -109,6 +108,27 @@ func (i *CSGOServers) GetGameMapsPlaytime() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &CSGOServersGetGameMapsPlaytime{},
+	}
+
+	return req, nil
+}
+
+// GetGameServersStatus creates a Request for interface method GetGameServersStatus.
+func (i *CSGOServers) GetGameServersStatus() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetGameServersStatus",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &CSGOServersGetGameServersStatus{},
 	}
 
 	return req, nil

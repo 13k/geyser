@@ -8,7 +8,7 @@ import "net/http"
 // SchemaGameServersService stores the SchemaInterfaces for interface IGameServersService.
 var SchemaGameServersService = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetAccountList",
@@ -20,7 +20,8 @@ var SchemaGameServersService = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -45,7 +46,8 @@ var SchemaGameServersService = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -70,7 +72,8 @@ var SchemaGameServersService = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -89,7 +92,8 @@ var SchemaGameServersService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -108,7 +112,8 @@ var SchemaGameServersService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -127,7 +132,8 @@ var SchemaGameServersService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -146,7 +152,8 @@ var SchemaGameServersService = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -165,7 +172,8 @@ var SchemaGameServersService = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -184,10 +192,19 @@ var SchemaGameServersService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetServerList",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: true,
+				Version:      1,
 			},
 		),
-		Name: "IGameServersService",
+		Name:         "IGameServersService",
+		Undocumented: false,
 	},
 )
 
@@ -199,7 +216,7 @@ type GameServersService struct {
 
 // NewGameServersService creates a new GameServersService interface.
 func NewGameServersService(c *Client) (*GameServersService, error) {
-	si, err := SchemaGameServersService.Get("IGameServersService", 0)
+	si, err := SchemaGameServersService.Get(SchemaInterfaceKey{Name: "IGameServersService"})
 
 	if err != nil {
 		return nil, err
@@ -218,27 +235,20 @@ func (c *Client) GameServersService() (*GameServersService, error) {
 	return NewGameServersService(c)
 }
 
-// QueryLoginToken creates a Request for interface method QueryLoginToken.
-func (i *GameServersService) QueryLoginToken() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("QueryLoginToken", 1)
+/*
+CreateAccount creates a Request for interface method CreateAccount.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &GameServersServiceQueryLoginToken{},
-	}
-
-	return req, nil
-}
-
-// CreateAccount creates a Request for interface method CreateAccount.
+  * key [string] (required): Access key
+  * appid [uint32] (required): The app to use the account for
+  * memo [string] (required): The memo to set on the new account
+*/
 func (i *GameServersService) CreateAccount() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("CreateAccount", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "CreateAccount",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -254,99 +264,19 @@ func (i *GameServersService) CreateAccount() (*Request, error) {
 	return req, nil
 }
 
-// ResetLoginToken creates a Request for interface method ResetLoginToken.
-func (i *GameServersService) ResetLoginToken() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("ResetLoginToken", 1)
+/*
+DeleteAccount creates a Request for interface method DeleteAccount.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &GameServersServiceResetLoginToken{},
-	}
-
-	return req, nil
-}
-
-// SetMemo creates a Request for interface method SetMemo.
-func (i *GameServersService) SetMemo() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("SetMemo", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &GameServersServiceSetMemo{},
-	}
-
-	return req, nil
-}
-
-// GetServerIPsBySteamID creates a Request for interface method GetServerIPsBySteamID.
-func (i *GameServersService) GetServerIPsBySteamID() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetServerIPsBySteamID", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &GameServersServiceGetServerIPsBySteamID{},
-	}
-
-	return req, nil
-}
-
-// GetAccountPublicInfo creates a Request for interface method GetAccountPublicInfo.
-func (i *GameServersService) GetAccountPublicInfo() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetAccountPublicInfo", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &GameServersServiceGetAccountPublicInfo{},
-	}
-
-	return req, nil
-}
-
-// GetServerSteamIDsByIP creates a Request for interface method GetServerSteamIDsByIP.
-func (i *GameServersService) GetServerSteamIDsByIP() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetServerSteamIDsByIP", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &GameServersServiceGetServerSteamIDsByIP{},
-	}
-
-	return req, nil
-}
-
-// DeleteAccount creates a Request for interface method DeleteAccount.
+  * key [string] (required): Access key
+  * steamid [uint64] (required): The SteamID of the game server account to delete
+*/
 func (i *GameServersService) DeleteAccount() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("DeleteAccount", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "DeleteAccount",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -362,9 +292,18 @@ func (i *GameServersService) DeleteAccount() (*Request, error) {
 	return req, nil
 }
 
-// GetAccountList creates a Request for interface method GetAccountList.
+/*
+GetAccountList creates a Request for interface method GetAccountList.
+
+Parameters
+
+  * key [string] (required): Access key
+*/
 func (i *GameServersService) GetAccountList() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetAccountList", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetAccountList",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -375,6 +314,200 @@ func (i *GameServersService) GetAccountList() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &GameServersServiceGetAccountList{},
+	}
+
+	return req, nil
+}
+
+/*
+GetAccountPublicInfo creates a Request for interface method GetAccountPublicInfo.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid [uint64] (required): The SteamID of the game server to get info on
+*/
+func (i *GameServersService) GetAccountPublicInfo() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetAccountPublicInfo",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &GameServersServiceGetAccountPublicInfo{},
+	}
+
+	return req, nil
+}
+
+/*
+GetServerIPsBySteamID creates a Request for interface method GetServerIPsBySteamID.
+
+Parameters
+
+  * key [string] (required): Access key
+  * server_steamids [uint64] (required)
+*/
+func (i *GameServersService) GetServerIPsBySteamID() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetServerIPsBySteamID",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &GameServersServiceGetServerIPsBySteamID{},
+	}
+
+	return req, nil
+}
+
+/*
+GetServerList creates a Request for interface method GetServerList.
+
+This is an undocumented method.
+*/
+func (i *GameServersService) GetServerList() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetServerList",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &GameServersServiceGetServerList{},
+	}
+
+	return req, nil
+}
+
+/*
+GetServerSteamIDsByIP creates a Request for interface method GetServerSteamIDsByIP.
+
+Parameters
+
+  * key [string] (required): Access key
+  * server_ips [string] (required)
+*/
+func (i *GameServersService) GetServerSteamIDsByIP() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetServerSteamIDsByIP",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &GameServersServiceGetServerSteamIDsByIP{},
+	}
+
+	return req, nil
+}
+
+/*
+QueryLoginToken creates a Request for interface method QueryLoginToken.
+
+Parameters
+
+  * key [string] (required): Access key
+  * login_token [string] (required): Login token to query
+*/
+func (i *GameServersService) QueryLoginToken() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "QueryLoginToken",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &GameServersServiceQueryLoginToken{},
+	}
+
+	return req, nil
+}
+
+/*
+ResetLoginToken creates a Request for interface method ResetLoginToken.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid [uint64] (required): The SteamID of the game server to reset the login token of
+*/
+func (i *GameServersService) ResetLoginToken() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "ResetLoginToken",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &GameServersServiceResetLoginToken{},
+	}
+
+	return req, nil
+}
+
+/*
+SetMemo creates a Request for interface method SetMemo.
+
+Parameters
+
+  * key [string] (required): Access key
+  * steamid [uint64] (required): The SteamID of the game server to set the memo on
+  * memo [string] (required): The memo to set on the new account
+*/
+func (i *GameServersService) SetMemo() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "SetMemo",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &GameServersServiceSetMemo{},
 	}
 
 	return req, nil

@@ -8,26 +8,7 @@ import "net/http"
 // SchemaEconItems stores the SchemaInterfaces for interface IEconItems.
 var SchemaEconItems = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetEquippedPlayerItems",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The Steam ID to fetch items for",
-						Name:        "steamid",
-						Optional:    false,
-						Type:        "uint64",
-					},
-					&SchemaMethodParam{
-						Description: "Return items equipped for this class id",
-						Name:        "class_id",
-						Optional:    false,
-						Type:        "uint32",
-					},
-				),
-				Version: 1,
-			},
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetPlayerItems",
@@ -39,80 +20,8 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetSchemaURL",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetStoreMetaData",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The language to results in.",
-						Name:        "language",
-						Optional:    true,
-						Type:        "string",
-					},
-				),
-				Version: 1,
-			},
-		),
-		Name: "IEconItems_205790",
-	},
-	&SchemaInterface{
-		Methods: NewSchemaMethods(
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetPlayerItems",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The Steam ID to fetch items for",
-						Name:        "steamid",
-						Optional:    false,
-						Type:        "uint64",
-					},
-				),
-				Version: 1,
-			},
-		),
-		Name: "IEconItems_221540",
-	},
-	&SchemaInterface{
-		Methods: NewSchemaMethods(
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetPlayerItems",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The Steam ID to fetch items for",
-						Name:        "steamid",
-						Optional:    false,
-						Type:        "uint64",
-					},
-				),
-				Version: 1,
-			},
-		),
-		Name: "IEconItems_238460",
-	},
-	&SchemaInterface{
-		Methods: NewSchemaMethods(
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetPlayerItems",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The Steam ID to fetch items for",
-						Name:        "steamid",
-						Optional:    false,
-						Type:        "uint64",
-					},
-				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -125,7 +34,8 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -144,7 +54,8 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "int32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -157,13 +68,15 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetSchemaURL",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetSchemaURL",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -176,19 +89,22 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetStoreStatus",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetStoreStatus",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IEconItems_440",
+		Name:         "IEconItems_440",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetEquippedPlayerItems",
@@ -206,7 +122,8 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -219,13 +136,15 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetSchemaURL",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetSchemaURL",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -238,13 +157,104 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IEconItems_570",
+		Name:         "IEconItems_570",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetPlayerItems",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The Steam ID to fetch items for",
+						Name:        "steamid",
+						Optional:    false,
+						Type:        "uint64",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetSchema",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The language to return the names in. Defaults to returning string keys.",
+						Name:        "language",
+						Optional:    true,
+						Type:        "string",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+		),
+		Name:         "IEconItems_620",
+		Undocumented: false,
+	},
+	&SchemaInterface{
+		Methods: MustNewSchemaMethods(
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetPlayerItems",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The Steam ID to fetch items for",
+						Name:        "steamid",
+						Optional:    false,
+						Type:        "uint64",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetSchema",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The language to return the names in. Defaults to returning string keys.",
+						Name:        "language",
+						Optional:    true,
+						Type:        "string",
+					},
+				),
+				Undocumented: false,
+				Version:      2,
+			},
+			&SchemaMethod{
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetSchemaURL",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      2,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetStoreMetaData",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The language to results in.",
+						Name:        "language",
+						Optional:    true,
+						Type:        "string",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+		),
+		Name:         "IEconItems_730",
+		Undocumented: false,
+	},
+	&SchemaInterface{
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetEquippedPlayerItems",
@@ -262,13 +272,9 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
-		),
-		Name: "IEconItems_583950",
-	},
-	&SchemaInterface{
-		Methods: NewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetPlayerItems",
@@ -280,57 +286,15 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetSchema",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The language to return the names in. Defaults to returning string keys.",
-						Name:        "language",
-						Optional:    true,
-						Type:        "string",
-					},
-				),
-				Version: 1,
-			},
-		),
-		Name: "IEconItems_620",
-	},
-	&SchemaInterface{
-		Methods: NewSchemaMethods(
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetPlayerItems",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The Steam ID to fetch items for",
-						Name:        "steamid",
-						Optional:    false,
-						Type:        "uint64",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetSchema",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The language to return the names in. Defaults to returning string keys.",
-						Name:        "language",
-						Optional:    true,
-						Type:        "string",
-					},
-				),
-				Version: 2,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetSchemaURL",
-				Params:     NewSchemaMethodParams(),
-				Version:    2,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetSchemaURL",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -343,16 +307,84 @@ var SchemaEconItems = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IEconItems_730",
+		Name:         "IEconItems_205790",
+		Undocumented: false,
+	},
+	&SchemaInterface{
+		Methods: MustNewSchemaMethods(
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetPlayerItems",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The Steam ID to fetch items for",
+						Name:        "steamid",
+						Optional:    false,
+						Type:        "uint64",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+		),
+		Name:         "IEconItems_221540",
+		Undocumented: false,
+	},
+	&SchemaInterface{
+		Methods: MustNewSchemaMethods(
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetPlayerItems",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The Steam ID to fetch items for",
+						Name:        "steamid",
+						Optional:    false,
+						Type:        "uint64",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+		),
+		Name:         "IEconItems_238460",
+		Undocumented: false,
+	},
+	&SchemaInterface{
+		Methods: MustNewSchemaMethods(
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetEquippedPlayerItems",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The Steam ID to fetch items for",
+						Name:        "steamid",
+						Optional:    false,
+						Type:        "uint64",
+					},
+					&SchemaMethodParam{
+						Description: "Return items equipped for this class id",
+						Name:        "class_id",
+						Optional:    false,
+						Type:        "uint32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+		),
+		Name:         "IEconItems_583950",
+		Undocumented: false,
 	},
 )
 
 // EconItems represents interface IEconItems.
 //
-// Supported AppIDs: [583950 620 730 205790 221540 238460 440 570].
+// Supported AppIDs: 440, 570, 620, 730, 205790, 221540, 238460, 583950.
 type EconItems struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -360,9 +392,12 @@ type EconItems struct {
 
 // NewEconItems creates a new EconItems interface.
 //
-// Supported AppIDs: [583950 620 730 205790 221540 238460 440 570].
+// Supported AppIDs: 440, 570, 620, 730, 205790, 221540, 238460, 583950.
 func NewEconItems(c *Client, appID uint32) (*EconItems, error) {
-	si, err := SchemaEconItems.Get("IEconItems", appID)
+	si, err := SchemaEconItems.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "IEconItems",
+	})
 
 	if err != nil {
 		return nil, err
@@ -378,14 +413,51 @@ func NewEconItems(c *Client, appID uint32) (*EconItems, error) {
 
 // EconItems creates a new EconItems interface.
 //
-// Supported AppIDs: [583950 620 730 205790 221540 238460 440 570].
+// Supported AppIDs: 440, 570, 620, 730, 205790, 221540, 238460, 583950.
 func (c *Client) EconItems(appID uint32) (*EconItems, error) {
 	return NewEconItems(c, appID)
 }
 
-// GetPlayerItems creates a Request for interface method GetPlayerItems.
+/*
+GetEquippedPlayerItems creates a Request for interface method GetEquippedPlayerItems.
+
+Parameters
+
+  * steamid [uint64] (required): The Steam ID to fetch items for
+  * class_id [uint32] (required): Return items equipped for this class id
+*/
+func (i *EconItems) GetEquippedPlayerItems() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetEquippedPlayerItems",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &EconItemsGetEquippedPlayerItems{},
+	}
+
+	return req, nil
+}
+
+/*
+GetPlayerItems creates a Request for interface method GetPlayerItems.
+
+Parameters
+
+  * steamid [uint64] (required): The Steam ID to fetch items for
+*/
 func (i *EconItems) GetPlayerItems() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetPlayerItems", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetPlayerItems",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -401,49 +473,24 @@ func (i *EconItems) GetPlayerItems() (*Request, error) {
 	return req, nil
 }
 
-// GetSchemaURL creates a Request for interface method GetSchemaURL.
-//
-// Supported versions: [1 2].
-func (i *EconItems) GetSchemaURL(version int) (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSchemaURL", version)
+/*
+GetSchema creates a Request for interface method GetSchema.
 
-	if err != nil {
-		return nil, err
-	}
+Supported versions: 1, 2.
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &EconItemsGetSchemaURL{},
-	}
+Parameters (v1)
 
-	return req, nil
-}
+  * language [string]: The language to return the names in. Defaults to returning string keys.
 
-// GetStoreMetaData creates a Request for interface method GetStoreMetaData.
-func (i *EconItems) GetStoreMetaData() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetStoreMetaData", 1)
+Parameters (v2)
 
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &EconItemsGetStoreMetaData{},
-	}
-
-	return req, nil
-}
-
-// GetSchema creates a Request for interface method GetSchema.
-//
-// Supported versions: [1 2].
+  * language [string]: The language to return the names in. Defaults to returning string keys.
+*/
 func (i *EconItems) GetSchema(version int) (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSchema", version)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSchema",
+		Version: version,
+	})
 
 	if err != nil {
 		return nil, err
@@ -459,9 +506,19 @@ func (i *EconItems) GetSchema(version int) (*Request, error) {
 	return req, nil
 }
 
-// GetSchemaItems creates a Request for interface method GetSchemaItems.
+/*
+GetSchemaItems creates a Request for interface method GetSchemaItems.
+
+Parameters
+
+  * language [string]: The language to return the names in. Defaults to returning string keys.
+  * start [int32]: The first item id to return. Defaults to 0. Response will indicate next value to query if applicable.
+*/
 func (i *EconItems) GetSchemaItems() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSchemaItems", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSchemaItems",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -477,9 +534,18 @@ func (i *EconItems) GetSchemaItems() (*Request, error) {
 	return req, nil
 }
 
-// GetSchemaOverview creates a Request for interface method GetSchemaOverview.
+/*
+GetSchemaOverview creates a Request for interface method GetSchemaOverview.
+
+Parameters
+
+  * language [string]: The language to return the names in. Defaults to returning string keys.
+*/
 func (i *EconItems) GetSchemaOverview() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSchemaOverview", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSchemaOverview",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -495,9 +561,64 @@ func (i *EconItems) GetSchemaOverview() (*Request, error) {
 	return req, nil
 }
 
+/*
+GetSchemaURL creates a Request for interface method GetSchemaURL.
+
+Supported versions: 1, 2.
+*/
+func (i *EconItems) GetSchemaURL(version int) (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSchemaURL",
+		Version: version,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &EconItemsGetSchemaURL{},
+	}
+
+	return req, nil
+}
+
+/*
+GetStoreMetaData creates a Request for interface method GetStoreMetaData.
+
+Parameters
+
+  * language [string]: The language to results in.
+*/
+func (i *EconItems) GetStoreMetaData() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetStoreMetaData",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &EconItemsGetStoreMetaData{},
+	}
+
+	return req, nil
+}
+
 // GetStoreStatus creates a Request for interface method GetStoreStatus.
 func (i *EconItems) GetStoreStatus() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetStoreStatus", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetStoreStatus",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -508,24 +629,6 @@ func (i *EconItems) GetStoreStatus() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &EconItemsGetStoreStatus{},
-	}
-
-	return req, nil
-}
-
-// GetEquippedPlayerItems creates a Request for interface method GetEquippedPlayerItems.
-func (i *EconItems) GetEquippedPlayerItems() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetEquippedPlayerItems", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &EconItemsGetEquippedPlayerItems{},
 	}
 
 	return req, nil

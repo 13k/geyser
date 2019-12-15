@@ -8,18 +8,20 @@ import "net/http"
 // SchemaSteamApps stores the SchemaInterfaces for interface ISteamApps.
 var SchemaSteamApps = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetAppList",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetAppList",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetAppList",
-				Params:     NewSchemaMethodParams(),
-				Version:    2,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetAppList",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      2,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -38,7 +40,8 @@ var SchemaSteamApps = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -51,7 +54,8 @@ var SchemaSteamApps = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -70,10 +74,12 @@ var SchemaSteamApps = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ISteamApps",
+		Name:         "ISteamApps",
+		Undocumented: false,
 	},
 )
 
@@ -85,7 +91,7 @@ type SteamApps struct {
 
 // NewSteamApps creates a new SteamApps interface.
 func NewSteamApps(c *Client) (*SteamApps, error) {
-	si, err := SchemaSteamApps.Get("ISteamApps", 0)
+	si, err := SchemaSteamApps.Get(SchemaInterfaceKey{Name: "ISteamApps"})
 
 	if err != nil {
 		return nil, err
@@ -104,47 +110,16 @@ func (c *Client) SteamApps() (*SteamApps, error) {
 	return NewSteamApps(c)
 }
 
-// GetServersAtAddress creates a Request for interface method GetServersAtAddress.
-func (i *SteamApps) GetServersAtAddress() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetServersAtAddress", 1)
+/*
+GetAppList creates a Request for interface method GetAppList.
 
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &SteamAppsGetServersAtAddress{},
-	}
-
-	return req, nil
-}
-
-// UpToDateCheck creates a Request for interface method UpToDateCheck.
-func (i *SteamApps) UpToDateCheck() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("UpToDateCheck", 1)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &SteamAppsUpToDateCheck{},
-	}
-
-	return req, nil
-}
-
-// GetAppList creates a Request for interface method GetAppList.
-//
-// Supported versions: [1 2].
+Supported versions: 1, 2.
+*/
 func (i *SteamApps) GetAppList(version int) (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetAppList", version)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetAppList",
+		Version: version,
+	})
 
 	if err != nil {
 		return nil, err
@@ -160,9 +135,19 @@ func (i *SteamApps) GetAppList(version int) (*Request, error) {
 	return req, nil
 }
 
-// GetSDRConfig creates a Request for interface method GetSDRConfig.
+/*
+GetSDRConfig creates a Request for interface method GetSDRConfig.
+
+Parameters
+
+  * appid [uint32] (required): AppID of game
+  * partner [string]: Partner type
+*/
 func (i *SteamApps) GetSDRConfig() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSDRConfig", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSDRConfig",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -173,6 +158,61 @@ func (i *SteamApps) GetSDRConfig() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &SteamAppsGetSDRConfig{},
+	}
+
+	return req, nil
+}
+
+/*
+GetServersAtAddress creates a Request for interface method GetServersAtAddress.
+
+Parameters
+
+  * addr [string] (required): IP or IP:queryport to list
+*/
+func (i *SteamApps) GetServersAtAddress() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetServersAtAddress",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamAppsGetServersAtAddress{},
+	}
+
+	return req, nil
+}
+
+/*
+UpToDateCheck creates a Request for interface method UpToDateCheck.
+
+Parameters
+
+  * appid [uint32] (required): AppID of game
+  * version [uint32] (required): The installed version of the game
+*/
+func (i *SteamApps) UpToDateCheck() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "UpToDateCheck",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &SteamAppsUpToDateCheck{},
 	}
 
 	return req, nil

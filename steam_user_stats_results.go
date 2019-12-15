@@ -2,12 +2,6 @@
 
 package geyser
 
-// SteamUserStatsGetSchemaForGame holds the result of the method ISteamUserStats/GetSchemaForGame.
-type SteamUserStatsGetSchemaForGame struct{}
-
-// SteamUserStatsGetUserStatsForGame holds the result of the method ISteamUserStats/GetUserStatsForGame.
-type SteamUserStatsGetUserStatsForGame struct{}
-
 // SteamUserStatsGetGlobalAchievementPercentagesForApp holds the result of the method ISteamUserStats/GetGlobalAchievementPercentagesForApp.
 type SteamUserStatsGetGlobalAchievementPercentagesForApp struct{}
 
@@ -19,3 +13,9 @@ type SteamUserStatsGetNumberOfCurrentPlayers struct{}
 
 // SteamUserStatsGetPlayerAchievements holds the result of the method ISteamUserStats/GetPlayerAchievements.
 type SteamUserStatsGetPlayerAchievements struct{}
+
+// SteamUserStatsGetSchemaForGame holds the result of the method ISteamUserStats/GetSchemaForGame.
+type SteamUserStatsGetSchemaForGame struct{}
+
+// SteamUserStatsGetUserStatsForGame holds the result of the method ISteamUserStats/GetUserStatsForGame.
+type SteamUserStatsGetUserStatsForGame struct{}

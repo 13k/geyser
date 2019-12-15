@@ -8,27 +8,30 @@ import "net/http"
 // SchemaTFItems stores the SchemaInterfaces for interface ITFItems.
 var SchemaTFItems = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetGoldenWrenches",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetGoldenWrenches",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetGoldenWrenches",
-				Params:     NewSchemaMethodParams(),
-				Version:    2,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetGoldenWrenches",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      2,
 			},
 		),
-		Name: "ITFItems_440",
+		Name:         "ITFItems_440",
+		Undocumented: false,
 	},
 )
 
 // TFItems represents interface ITFItems.
 //
-// Supported AppIDs: [440].
+// Supported AppIDs: 440.
 type TFItems struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -36,9 +39,12 @@ type TFItems struct {
 
 // NewTFItems creates a new TFItems interface.
 //
-// Supported AppIDs: [440].
+// Supported AppIDs: 440.
 func NewTFItems(c *Client, appID uint32) (*TFItems, error) {
-	si, err := SchemaTFItems.Get("ITFItems", appID)
+	si, err := SchemaTFItems.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "ITFItems",
+	})
 
 	if err != nil {
 		return nil, err
@@ -54,16 +60,21 @@ func NewTFItems(c *Client, appID uint32) (*TFItems, error) {
 
 // TFItems creates a new TFItems interface.
 //
-// Supported AppIDs: [440].
+// Supported AppIDs: 440.
 func (c *Client) TFItems(appID uint32) (*TFItems, error) {
 	return NewTFItems(c, appID)
 }
 
-// GetGoldenWrenches creates a Request for interface method GetGoldenWrenches.
-//
-// Supported versions: [1 2].
+/*
+GetGoldenWrenches creates a Request for interface method GetGoldenWrenches.
+
+Supported versions: 1, 2.
+*/
 func (i *TFItems) GetGoldenWrenches(version int) (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetGoldenWrenches", version)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetGoldenWrenches",
+		Version: version,
+	})
 
 	if err != nil {
 		return nil, err

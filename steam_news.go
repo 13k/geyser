@@ -8,7 +8,7 @@ import "net/http"
 // SchemaSteamNews stores the SchemaInterfaces for interface ISteamNews.
 var SchemaSteamNews = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetNewsForApp",
@@ -44,7 +44,8 @@ var SchemaSteamNews = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -87,10 +88,12 @@ var SchemaSteamNews = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 2,
+				Undocumented: false,
+				Version:      2,
 			},
 		),
-		Name: "ISteamNews",
+		Name:         "ISteamNews",
+		Undocumented: false,
 	},
 )
 
@@ -102,7 +105,7 @@ type SteamNews struct {
 
 // NewSteamNews creates a new SteamNews interface.
 func NewSteamNews(c *Client) (*SteamNews, error) {
-	si, err := SchemaSteamNews.Get("ISteamNews", 0)
+	si, err := SchemaSteamNews.Get(SchemaInterfaceKey{Name: "ISteamNews"})
 
 	if err != nil {
 		return nil, err
@@ -121,11 +124,33 @@ func (c *Client) SteamNews() (*SteamNews, error) {
 	return NewSteamNews(c)
 }
 
-// GetNewsForApp creates a Request for interface method GetNewsForApp.
-//
-// Supported versions: [1 2].
+/*
+GetNewsForApp creates a Request for interface method GetNewsForApp.
+
+Supported versions: 1, 2.
+
+Parameters (v1)
+
+  * appid [uint32] (required): AppID to retrieve news for
+  * maxlength [uint32]: Maximum length for the content to return, if this is 0 the full content is returned, if it's less then a blurb is generated to fit.
+  * enddate [uint32]: Retrieve posts earlier than this date (unix epoch timestamp)
+  * count [uint32]: # of posts to retrieve (default 20)
+  * tags [string]: Comma-separated list of tags to filter by (e.g. 'patchnodes')
+
+Parameters (v2)
+
+  * appid [uint32] (required): AppID to retrieve news for
+  * maxlength [uint32]: Maximum length for the content to return, if this is 0 the full content is returned, if it's less then a blurb is generated to fit.
+  * enddate [uint32]: Retrieve posts earlier than this date (unix epoch timestamp)
+  * count [uint32]: # of posts to retrieve (default 20)
+  * feeds [string]: Comma-separated list of feed names to return news for
+  * tags [string]: Comma-separated list of tags to filter by (e.g. 'patchnodes')
+*/
 func (i *SteamNews) GetNewsForApp(version int) (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetNewsForApp", version)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetNewsForApp",
+		Version: version,
+	})
 
 	if err != nil {
 		return nil, err

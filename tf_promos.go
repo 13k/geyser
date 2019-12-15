@@ -8,7 +8,7 @@ import "net/http"
 // SchemaTFPromos stores the SchemaInterfaces for interface ITFPromos.
 var SchemaTFPromos = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetItemID",
@@ -26,7 +26,8 @@ var SchemaTFPromos = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -45,13 +46,15 @@ var SchemaTFPromos = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ITFPromos_205790",
+		Name:         "ITFPromos_440",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetItemID",
@@ -69,7 +72,8 @@ var SchemaTFPromos = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -88,56 +92,15 @@ var SchemaTFPromos = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ITFPromos_440",
+		Name:         "ITFPromos_570",
+		Undocumented: false,
 	},
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
-			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetItemID",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The Steam ID to fetch items for",
-						Name:        "steamid",
-						Optional:    false,
-						Type:        "uint64",
-					},
-					&SchemaMethodParam{
-						Description: "The promo ID to grant an item for",
-						Name:        "promoid",
-						Optional:    false,
-						Type:        "uint32",
-					},
-				),
-				Version: 1,
-			},
-			&SchemaMethod{
-				HTTPMethod: http.MethodPost,
-				Name:       "GrantItem",
-				Params: NewSchemaMethodParams(
-					&SchemaMethodParam{
-						Description: "The Steam ID to fetch items for",
-						Name:        "steamid",
-						Optional:    false,
-						Type:        "uint64",
-					},
-					&SchemaMethodParam{
-						Description: "The promo ID to grant an item for",
-						Name:        "promoid",
-						Optional:    false,
-						Type:        "uint32",
-					},
-				),
-				Version: 1,
-			},
-		),
-		Name: "ITFPromos_570",
-	},
-	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetItemID",
@@ -155,7 +118,8 @@ var SchemaTFPromos = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodPost,
@@ -174,16 +138,64 @@ var SchemaTFPromos = MustNewSchemaInterfaces(
 						Type:        "uint32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ITFPromos_620",
+		Name:         "ITFPromos_620",
+		Undocumented: false,
+	},
+	&SchemaInterface{
+		Methods: MustNewSchemaMethods(
+			&SchemaMethod{
+				HTTPMethod: http.MethodGet,
+				Name:       "GetItemID",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The Steam ID to fetch items for",
+						Name:        "steamid",
+						Optional:    false,
+						Type:        "uint64",
+					},
+					&SchemaMethodParam{
+						Description: "The promo ID to grant an item for",
+						Name:        "promoid",
+						Optional:    false,
+						Type:        "uint32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+			&SchemaMethod{
+				HTTPMethod: http.MethodPost,
+				Name:       "GrantItem",
+				Params: NewSchemaMethodParams(
+					&SchemaMethodParam{
+						Description: "The Steam ID to fetch items for",
+						Name:        "steamid",
+						Optional:    false,
+						Type:        "uint64",
+					},
+					&SchemaMethodParam{
+						Description: "The promo ID to grant an item for",
+						Name:        "promoid",
+						Optional:    false,
+						Type:        "uint32",
+					},
+				),
+				Undocumented: false,
+				Version:      1,
+			},
+		),
+		Name:         "ITFPromos_205790",
+		Undocumented: false,
 	},
 )
 
 // TFPromos represents interface ITFPromos.
 //
-// Supported AppIDs: [205790 440 570 620].
+// Supported AppIDs: 440, 570, 620, 205790.
 type TFPromos struct {
 	Client    *Client
 	Interface *SchemaInterface
@@ -191,9 +203,12 @@ type TFPromos struct {
 
 // NewTFPromos creates a new TFPromos interface.
 //
-// Supported AppIDs: [205790 440 570 620].
+// Supported AppIDs: 440, 570, 620, 205790.
 func NewTFPromos(c *Client, appID uint32) (*TFPromos, error) {
-	si, err := SchemaTFPromos.Get("ITFPromos", appID)
+	si, err := SchemaTFPromos.Get(SchemaInterfaceKey{
+		AppID: appID,
+		Name:  "ITFPromos",
+	})
 
 	if err != nil {
 		return nil, err
@@ -209,14 +224,24 @@ func NewTFPromos(c *Client, appID uint32) (*TFPromos, error) {
 
 // TFPromos creates a new TFPromos interface.
 //
-// Supported AppIDs: [205790 440 570 620].
+// Supported AppIDs: 440, 570, 620, 205790.
 func (c *Client) TFPromos(appID uint32) (*TFPromos, error) {
 	return NewTFPromos(c, appID)
 }
 
-// GetItemID creates a Request for interface method GetItemID.
+/*
+GetItemID creates a Request for interface method GetItemID.
+
+Parameters
+
+  * steamid [uint64] (required): The Steam ID to fetch items for
+  * promoid [uint32] (required): The promo ID to grant an item for
+*/
 func (i *TFPromos) GetItemID() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetItemID", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetItemID",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -232,9 +257,19 @@ func (i *TFPromos) GetItemID() (*Request, error) {
 	return req, nil
 }
 
-// GrantItem creates a Request for interface method GrantItem.
+/*
+GrantItem creates a Request for interface method GrantItem.
+
+Parameters
+
+  * steamid [uint64] (required): The Steam ID to fetch items for
+  * promoid [uint32] (required): The promo ID to grant an item for
+*/
 func (i *TFPromos) GrantItem() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GrantItem", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GrantItem",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err

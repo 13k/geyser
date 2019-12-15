@@ -8,7 +8,7 @@ import "net/http"
 // SchemaContentServerDirectoryService stores the SchemaInterfaces for interface IContentServerDirectoryService.
 var SchemaContentServerDirectoryService = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
 				Name:       "GetServersForSteamPipe",
@@ -38,7 +38,8 @@ var SchemaContentServerDirectoryService = MustNewSchemaInterfaces(
 						Type:        "int32",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -69,10 +70,12 @@ var SchemaContentServerDirectoryService = MustNewSchemaInterfaces(
 						Type:        "uint64",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "IContentServerDirectoryService",
+		Name:         "IContentServerDirectoryService",
+		Undocumented: false,
 	},
 )
 
@@ -84,7 +87,7 @@ type ContentServerDirectoryService struct {
 
 // NewContentServerDirectoryService creates a new ContentServerDirectoryService interface.
 func NewContentServerDirectoryService(c *Client) (*ContentServerDirectoryService, error) {
-	si, err := SchemaContentServerDirectoryService.Get("IContentServerDirectoryService", 0)
+	si, err := SchemaContentServerDirectoryService.Get(SchemaInterfaceKey{Name: "IContentServerDirectoryService"})
 
 	if err != nil {
 		return nil, err
@@ -103,27 +106,21 @@ func (c *Client) ContentServerDirectoryService() (*ContentServerDirectoryService
 	return NewContentServerDirectoryService(c)
 }
 
-// GetServersForSteamPipe creates a Request for interface method GetServersForSteamPipe.
-func (i *ContentServerDirectoryService) GetServersForSteamPipe() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetServersForSteamPipe", 1)
+/*
+GetDepotPatchInfo creates a Request for interface method GetDepotPatchInfo.
 
-	if err != nil {
-		return nil, err
-	}
+Parameters
 
-	req := &Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-		Result:    &ContentServerDirectoryServiceGetServersForSteamPipe{},
-	}
-
-	return req, nil
-}
-
-// GetDepotPatchInfo creates a Request for interface method GetDepotPatchInfo.
+  * appid [uint32] (required)
+  * depotid [uint32] (required)
+  * source_manifestid [uint64] (required)
+  * target_manifestid [uint64] (required)
+*/
 func (i *ContentServerDirectoryService) GetDepotPatchInfo() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetDepotPatchInfo", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetDepotPatchInfo",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -134,6 +131,36 @@ func (i *ContentServerDirectoryService) GetDepotPatchInfo() (*Request, error) {
 		Interface: i.Interface,
 		Method:    sm,
 		Result:    &ContentServerDirectoryServiceGetDepotPatchInfo{},
+	}
+
+	return req, nil
+}
+
+/*
+GetServersForSteamPipe creates a Request for interface method GetServersForSteamPipe.
+
+Parameters
+
+  * cell_id [uint32] (required): client Cell ID
+  * max_servers [uint32]: max servers in response list
+  * ip_override [string]: client IP address
+  * launcher_type [int32]: launcher type
+*/
+func (i *ContentServerDirectoryService) GetServersForSteamPipe() (*Request, error) {
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetServersForSteamPipe",
+		Version: 1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	req := &Request{
+		Client:    i.Client,
+		Interface: i.Interface,
+		Method:    sm,
+		Result:    &ContentServerDirectoryServiceGetServersForSteamPipe{},
 	}
 
 	return req, nil

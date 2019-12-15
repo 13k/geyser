@@ -8,12 +8,13 @@ import "net/http"
 // SchemaSteamWebAPIUtil stores the SchemaInterfaces for interface ISteamWebAPIUtil.
 var SchemaSteamWebAPIUtil = MustNewSchemaInterfaces(
 	&SchemaInterface{
-		Methods: NewSchemaMethods(
+		Methods: MustNewSchemaMethods(
 			&SchemaMethod{
-				HTTPMethod: http.MethodGet,
-				Name:       "GetServerInfo",
-				Params:     NewSchemaMethodParams(),
-				Version:    1,
+				HTTPMethod:   http.MethodGet,
+				Name:         "GetServerInfo",
+				Params:       NewSchemaMethodParams(),
+				Undocumented: false,
+				Version:      1,
 			},
 			&SchemaMethod{
 				HTTPMethod: http.MethodGet,
@@ -26,10 +27,12 @@ var SchemaSteamWebAPIUtil = MustNewSchemaInterfaces(
 						Type:        "string",
 					},
 				),
-				Version: 1,
+				Undocumented: false,
+				Version:      1,
 			},
 		),
-		Name: "ISteamWebAPIUtil",
+		Name:         "ISteamWebAPIUtil",
+		Undocumented: false,
 	},
 )
 
@@ -41,7 +44,7 @@ type SteamWebAPIUtil struct {
 
 // NewSteamWebAPIUtil creates a new SteamWebAPIUtil interface.
 func NewSteamWebAPIUtil(c *Client) (*SteamWebAPIUtil, error) {
-	si, err := SchemaSteamWebAPIUtil.Get("ISteamWebAPIUtil", 0)
+	si, err := SchemaSteamWebAPIUtil.Get(SchemaInterfaceKey{Name: "ISteamWebAPIUtil"})
 
 	if err != nil {
 		return nil, err
@@ -62,7 +65,10 @@ func (c *Client) SteamWebAPIUtil() (*SteamWebAPIUtil, error) {
 
 // GetServerInfo creates a Request for interface method GetServerInfo.
 func (i *SteamWebAPIUtil) GetServerInfo() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetServerInfo", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetServerInfo",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
@@ -78,9 +84,18 @@ func (i *SteamWebAPIUtil) GetServerInfo() (*Request, error) {
 	return req, nil
 }
 
-// GetSupportedAPIList creates a Request for interface method GetSupportedAPIList.
+/*
+GetSupportedAPIList creates a Request for interface method GetSupportedAPIList.
+
+Parameters
+
+  * key [string]: access key
+*/
 func (i *SteamWebAPIUtil) GetSupportedAPIList() (*Request, error) {
-	sm, err := i.Interface.Methods.Get("GetSupportedAPIList", 1)
+	sm, err := i.Interface.Methods.Get(SchemaMethodKey{
+		Name:    "GetSupportedAPIList",
+		Version: 1,
+	})
 
 	if err != nil {
 		return nil, err
