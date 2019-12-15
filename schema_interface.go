@@ -71,6 +71,15 @@ func (i *SchemaInterface) Validate() error {
 
 // Key returns the key identifying the interface.
 //
+// Interface names are formed by a base name and an optional AppID part, in the format
+// `<BaseName>_<AppID>`. Interfaces can be non app-specific and omit the "_<AppID>" part, in these
+// cases Key returns a key with AppID = 0.
+//
+// For example in "IDOTAMatch_570", the base name is "IDOTAMatch" and AppID is 570. In "ISteamApps",
+// the base name is "ISteamApps" and AppID is 0.
+//
+// Key parses the interface name and extracts the base name and the AppID from the name.
+//
 // Returns errors described in `Validate`.
 func (i *SchemaInterface) Key() (SchemaInterfaceKey, error) {
 	err := i.parse()

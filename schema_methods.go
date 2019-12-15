@@ -43,14 +43,18 @@ func (c SchemaMethods) Validate() error {
 // Get returns the method with the given key.
 //
 // Returns an error of type `*InterfaceMethodNotFoundError` if none was found.
+//
+// Returns errors described in `SchemaMethod.Key`.
 func (c SchemaMethods) Get(key SchemaMethodKey) (*SchemaMethod, error) {
 	for _, sm := range c {
-		if k, err := sm.Key(); err != nil {
+		k, err := sm.Key()
+
+		if err != nil {
 			return nil, err
-		} else {
-			if k == key {
-				return sm, nil
-			}
+		}
+
+		if k == key {
+			return sm, nil
 		}
 	}
 
@@ -80,19 +84,28 @@ func (c SchemaMethods) GroupByName() (map[string]SchemaMethodsGroup, error) {
 	return result, nil
 }
 
-// SchemaMethodsGroup is a group of `SchemaMethod`s with the same name.
+/*
+SchemaMethodsGroup is a group of `SchemaMethod`s with the same name.
+
+It's a regular map and therefore provides no guarantees on consistency:
+
+* Keys are not guaranteed to be correctly associated to their respective methods
+* Methods are not guaranteed to be unique for each key
+* Methods are not guaranteed to have the same name
+
+The group creator is responsible for ensuring consistency. Group consumers can assume it's
+consistent.
+
+Behavior of inconsistent groups is undefined.
+*/
 type SchemaMethodsGroup map[SchemaMethodKey]*SchemaMethod
 
-// Versions collects the unique versions of all methods in the group.
+// Versions collects the versions of all methods in the group.
 func (g SchemaMethodsGroup) Versions() []int {
 	var versions []int
 
-	visited := make(map[int]bool)
-
 	for key := range g {
-		if !visited[key.Version] {
-			versions = append(versions, key.Version)
-		}
+		versions = append(versions, key.Version)
 	}
 
 	return versions

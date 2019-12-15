@@ -55,12 +55,12 @@ func jTestingTIdPtr(id string) *j.Statement {
 	return j.Id(id).Op("*").Qual(pkgPathTesting, "T")
 }
 
-func jTestifyAssert(assertion, tID string, args ...j.Code) *j.Statement {
+func jTestifyAssert(assertion, tID string, args ...j.Code) *j.Statement { //nolint:unparam
 	args = append([]j.Code{j.Id(tID)}, args...)
 	return j.Qual(pkgPathTestifyAssert, assertion).Call(args...)
 }
 
-func jTestifyRequire(assertion, tID string, args ...j.Code) *j.Statement {
+func jTestifyRequire(assertion, tID string, args ...j.Code) *j.Statement { //nolint:unparam
 	args = append([]j.Code{j.Id(tID)}, args...)
 	return j.Qual(pkgPathTestifyRequire, assertion).Call(args...)
 }
@@ -158,16 +158,4 @@ func jClientAddr(pkgPath string) *j.Statement {
 
 func jClientPtr(pkgPath string) *j.Statement {
 	return jClientOp("*", pkgPath)
-}
-
-func (g *APIGen) jQual(id string) *j.Statement {
-	return j.Qual(g.pkgPath, id)
-}
-
-func (g *APIGen) jQualOp(op, id string) *j.Statement {
-	return j.Op(op).Add(g.jQual(id))
-}
-
-func (g *APIGen) jQualPtr(id string) *j.Statement {
-	return g.jQualOp("*", id)
 }

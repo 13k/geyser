@@ -47,12 +47,14 @@ func (c SchemaInterfaces) Validate() error {
 // Returns errors described in `SchemaInterface.Key`.
 func (c SchemaInterfaces) Get(key SchemaInterfaceKey) (*SchemaInterface, error) {
 	for _, si := range c {
-		if k, err := si.Key(); err != nil {
+		k, err := si.Key()
+
+		if err != nil {
 			return nil, err
-		} else {
-			if k == key {
-				return si, nil
-			}
+		}
+
+		if k == key {
+			return si, nil
 		}
 	}
 
@@ -60,6 +62,8 @@ func (c SchemaInterfaces) Get(key SchemaInterfaceKey) (*SchemaInterface, error) 
 }
 
 // GroupByName groups the interfaces by base name.
+//
+// The definition of base name is described in `SchemaInterface.Key`.
 //
 // Returns errors described in `SchemaInterface.Key`.
 func (c SchemaInterfaces) GroupByBaseName() (map[string]SchemaInterfacesGroup, error) {
@@ -82,10 +86,27 @@ func (c SchemaInterfaces) GroupByBaseName() (map[string]SchemaInterfacesGroup, e
 	return result, nil
 }
 
-// SchemaInterfacesGroup is a group of `SchemaInterface`s with the same base name.
+/*
+SchemaInterfacesGroup is a group of `SchemaInterface`s with the same base name.
+
+The definition of base name is described in `SchemaInterface.Key`.
+
+It's a regular map and therefore provides no guarantees on consistency:
+
+* Keys are not guaranteed to be correctly associated to their respective interfaces
+* Interfaces are not guaranteed to be unique for each key
+* Interfaces are not guaranteed to have the same base name
+
+The group creator is responsible for ensuring consistency. Group consumers can assume it's
+consistent.
+
+Behavior of inconsistent groups is undefined.
+*/
 type SchemaInterfacesGroup map[SchemaInterfaceKey]*SchemaInterface
 
-// Name returns the common name of all interfaces in the group.
+// Name returns the common base name of all interfaces in the group.
+//
+// The definition of base name is described in `SchemaInterface.Key`.
 func (g SchemaInterfacesGroup) Name() (name string) {
 	for key := range g {
 		name = key.Name
@@ -96,6 +117,8 @@ func (g SchemaInterfacesGroup) Name() (name string) {
 }
 
 // AppIDs collects the AppID of all interfaces in the group.
+//
+// Interfaces with no AppID (0) are omitted.
 func (g SchemaInterfacesGroup) AppIDs() []uint32 {
 	var appIDs []uint32
 
