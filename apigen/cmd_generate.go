@@ -26,6 +26,7 @@ func (cmd *GenerateCommand) Run(schemas ...*Schema) error {
 
 			g, err := NewAPIGen(
 				group,
+				schema.pkgPath,
 				schema.pkgName,
 				outputDir,
 				baseFilename,
@@ -40,6 +41,10 @@ func (cmd *GenerateCommand) Run(schemas ...*Schema) error {
 			}
 
 			if err := cmd.gen(baseName, g.GenerateResultsFile); err != nil {
+				return err
+			}
+
+			if err := cmd.gen(baseName, g.GenerateTestsFile); err != nil {
 				return err
 			}
 

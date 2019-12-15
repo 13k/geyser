@@ -2,12 +2,9 @@ package main
 
 import (
 	"bufio"
-	"bytes"
-	"go/format"
 	"os"
 	"regexp"
 
-	"github.com/dave/jennifer/jen"
 	j "github.com/dave/jennifer/jen"
 )
 
@@ -96,7 +93,7 @@ func (f *GeneratedFile) Update(gen GeneratorFunc) (etest EGenerated, err error) 
 	etest, err = f.Test()
 
 	if err == nil && etest != EGeneratedModified {
-		var jf *jen.File
+		var jf *j.File
 
 		jf, err = gen()
 
@@ -121,27 +118,11 @@ func (f *GeneratedFile) Remove() (EGenerated, error) {
 }
 
 func (f *GeneratedFile) WriteJenFile(jf *j.File) error {
-	buf := bytes.Buffer{}
-
-	if err := jf.Render(&buf); err != nil {
-		return err
-	}
-
-	formatted, err := format.Source(buf.Bytes())
-
-	if err != nil {
-		return err
-	}
-
-	err = f.create()
-
-	if err != nil {
+	if err := f.create(); err != nil {
 		return err
 	}
 
 	defer f.file.Close()
 
-	_, err = f.file.Write(formatted)
-
-	return err
+	return jf.Render(f.file)
 }

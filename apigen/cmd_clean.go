@@ -26,6 +26,7 @@ func (cmd *CleanCommand) Run(schemas ...*Schema) error {
 
 			g, err := NewAPIGen(
 				group,
+				schema.pkgPath,
 				schema.pkgName,
 				outputDir,
 				baseFilename,
@@ -40,6 +41,10 @@ func (cmd *CleanCommand) Run(schemas ...*Schema) error {
 			}
 
 			if err := cmd.clean(baseName, g.RemoveResultsFile); err != nil {
+				return err
+			}
+
+			if err := cmd.clean(baseName, g.RemoveTestsFile); err != nil {
 				return err
 			}
 

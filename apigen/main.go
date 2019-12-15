@@ -169,6 +169,6 @@ func fatal(log logrus.FieldLogger, err error) {
 			"http_method": e.Method.HTTPMethod,
 		}).Fatal()
 	default:
-		l.Fatal()
+		log.Fatal(e)
 	}
 }

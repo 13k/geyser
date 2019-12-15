@@ -9,5 +9,6 @@ require (
 	github.com/golang/protobuf v1.3.2 // indirect
 	github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334
 	github.com/sirupsen/logrus v1.4.2
+	github.com/stretchr/testify v1.4.0
 	golang.org/x/net v0.0.0-20190923162816-aa69164e4478 // indirect
 )

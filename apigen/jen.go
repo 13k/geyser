@@ -9,102 +9,115 @@ import (
 
 var (
 	jenImportNames = map[string]string{
-		pkgPathGeyser: srcPkgGeyser,
+		pkgPathGeyser:         srcPkgGeyser,
+		pkgPathGeyserDota2:    srcPkgGeyserDota2,
+		pkgPathTestifyAssert:  srcPkgTestifyAssert,
+		pkgPathTestifyRequire: srcPkgTestifyRequire,
 	}
 )
 
-func jenFile(pkgName string) *j.File {
-	f := j.NewFile(pkgName)
+func jFile(pkgPath, pkgName string) *j.File {
+	f := j.NewFilePathName(pkgPath, pkgName)
 
 	f.ImportNames(jenImportNames)
 
 	return f
 }
 
-func jenIfErrRet(values ...j.Code) *j.Statement {
+func jVarErrError() *j.Statement {
+	return j.Var().Err().Error()
+}
+
+func jIfErrRet(values ...j.Code) *j.Statement {
 	return j.If(j.Err().Op("!=").Nil()).Block(j.Return(values...))
 }
 
-func jenIfErrRetNilErr() *j.Statement {
-	return jenIfErrRet(j.Nil(), j.Err())
+func jIfErrRetNilErr() *j.Statement {
+	return jIfErrRet(j.Nil(), j.Err())
 }
 
-func jenHTTPMethod(method string) j.Code {
+func jHTTPMethod(method string) *j.Statement {
 	method = strings.ToUpper(method)
 
 	switch method {
 	case http.MethodGet:
-		return j.Qual(srcPkgNetHTTP, "MethodGet")
+		return j.Qual(pkgPathNetHTTP, "MethodGet")
 	case http.MethodPost:
-		return j.Qual(srcPkgNetHTTP, "MethodPost")
+		return j.Qual(pkgPathNetHTTP, "MethodPost")
 	case http.MethodPut:
-		return j.Qual(srcPkgNetHTTP, "MethodPut")
+		return j.Qual(pkgPathNetHTTP, "MethodPut")
 	default:
 		return nil
 	}
 }
 
-func (g *APIGen) jenGeyserID(id string) *j.Statement {
-	if g.externalPkg {
-		return j.Qual(pkgPathGeyser, id)
-	}
-
-	return j.Id(id)
+func jTestingTIdPtr(id string) *j.Statement {
+	return j.Id(id).Op("*").Qual(pkgPathTesting, "T")
 }
 
-func (g *APIGen) jenGeyserTypeOp(op, id string) *j.Statement {
-	return j.Op(op).Add(g.jenGeyserID(id))
+func jTestifyAssert(assertion, tID string, args ...j.Code) *j.Statement {
+	args = append([]j.Code{j.Id(tID)}, args...)
+	return j.Qual(pkgPathTestifyAssert, assertion).Call(args...)
 }
 
-func (g *APIGen) jenGeyserTypeAddr(id string) *j.Statement {
-	return g.jenGeyserTypeOp("&", id)
+func jTestifyRequire(assertion, tID string, args ...j.Code) *j.Statement {
+	args = append([]j.Code{j.Id(tID)}, args...)
+	return j.Qual(pkgPathTestifyRequire, assertion).Call(args...)
 }
 
-func (g *APIGen) jenGeyserTypePtr(id string) *j.Statement {
-	return g.jenGeyserTypeOp("*", id)
+func jGeyserID(id string) *j.Statement {
+	return j.Qual(pkgPathGeyser, id)
 }
 
-func (g *APIGen) jenSchemaInterfaceAddr() *j.Statement {
-	return g.jenGeyserTypeAddr(srcSchemaInterface)
+func jGeyserTypeOp(op, id string) *j.Statement {
+	return j.Op(op).Add(jGeyserID(id))
 }
 
-func (g *APIGen) jenSchemaInterfacePtr() *j.Statement {
-	return g.jenGeyserTypePtr(srcSchemaInterface)
+func jGeyserTypeAddr(id string) *j.Statement {
+	return jGeyserTypeOp("&", id)
 }
 
-func (g *APIGen) jenSchemaMethodAddr() *j.Statement {
-	return g.jenGeyserTypeAddr(srcSchemaMethod)
+func jGeyserTypePtr(id string) *j.Statement {
+	return jGeyserTypeOp("*", id)
 }
 
-func (g *APIGen) jenSchemaMethodParamAddr() *j.Statement {
-	return g.jenGeyserTypeAddr(srcSchemaMethodParam)
+func jSchemaInterfaceAddr() *j.Statement {
+	return jGeyserTypeAddr(srcSchemaInterface)
 }
 
-func (g *APIGen) jenUnqualiClientPtr() *j.Statement {
-	return j.Op("*").Id(srcClient)
+func jSchemaInterfacePtr() *j.Statement {
+	return jGeyserTypePtr(srcSchemaInterface)
 }
 
-func (g *APIGen) jenRequestAddr() *j.Statement {
-	return g.jenGeyserTypeAddr(srcRequest)
+func jSchemaMethodAddr() *j.Statement {
+	return jGeyserTypeAddr(srcSchemaMethod)
 }
 
-func (g *APIGen) jenRequestPtr() *j.Statement {
-	return g.jenGeyserTypePtr(srcRequest)
+func jSchemaMethodParamAddr() *j.Statement {
+	return jGeyserTypeAddr(srcSchemaMethodParam)
 }
 
-func (g *APIGen) jenSchemaInterfacesCtorID() *j.Statement {
-	return g.jenGeyserID(srcSchemaInterfacesCtor)
+func jRequestAddr() *j.Statement {
+	return jGeyserTypeAddr(srcRequest)
 }
 
-func (g *APIGen) jenSchemaMethodsCtorID() *j.Statement {
-	return g.jenGeyserID(srcSchemaMethodsCtor)
+func jRequestPtr() *j.Statement {
+	return jGeyserTypePtr(srcRequest)
 }
 
-func (g *APIGen) jenSchemaMethodParamsCtor() *j.Statement {
-	return g.jenGeyserID(srcSchemaMethodParamsCtor)
+func jSchemaInterfacesCtorID() *j.Statement {
+	return jGeyserID(srcSchemaInterfacesCtor)
 }
 
-func (g *APIGen) jenSchemaInterfaceKey(name string, appID j.Code) *j.Statement {
+func jSchemaMethodsCtorID() *j.Statement {
+	return jGeyserID(srcSchemaMethodsCtor)
+}
+
+func jSchemaMethodParamsCtor() *j.Statement {
+	return jGeyserID(srcSchemaMethodParamsCtor)
+}
+
+func jSchemaInterfaceKey(name string, appID j.Code) *j.Statement {
 	keyValues := j.Dict{
 		j.Id("Name"): j.Lit(name),
 	}
@@ -113,12 +126,48 @@ func (g *APIGen) jenSchemaInterfaceKey(name string, appID j.Code) *j.Statement {
 		keyValues[j.Id("AppID")] = appID
 	}
 
-	return g.jenGeyserID(srcSchemaInterfaceKey).Values(keyValues)
+	return jGeyserID(srcSchemaInterfaceKey).Values(keyValues)
 }
 
-func (g *APIGen) jenSchemaMethodKey(name string, version j.Code) *j.Statement {
-	return g.jenGeyserID(srcSchemaMethodKey).Values(j.Dict{
+func jSchemaMethodKey(name string, version j.Code) *j.Statement {
+	return jGeyserID(srcSchemaMethodKey).Values(j.Dict{
 		j.Id("Name"):    j.Lit(name),
 		j.Id("Version"): version,
 	})
+}
+
+func jInterfaceMethodNotFoundErrorPtr() *j.Statement {
+	return jGeyserTypePtr(srcIntefaceMethodNotFoundError)
+}
+
+func jClientID(pkgPath string) *j.Statement {
+	if pkgPath != "" {
+		return j.Qual(pkgPath, srcClient)
+	}
+
+	return j.Id(srcClient)
+}
+
+func jClientOp(op, pkgPath string) *j.Statement {
+	return j.Op(op).Add(jClientID(pkgPath))
+}
+
+func jClientAddr(pkgPath string) *j.Statement {
+	return jClientOp("&", pkgPath)
+}
+
+func jClientPtr(pkgPath string) *j.Statement {
+	return jClientOp("*", pkgPath)
+}
+
+func (g *APIGen) jQual(id string) *j.Statement {
+	return j.Qual(g.pkgPath, id)
+}
+
+func (g *APIGen) jQualOp(op, id string) *j.Statement {
+	return j.Op(op).Add(g.jQual(id))
+}
+
+func (g *APIGen) jQualPtr(id string) *j.Statement {
+	return g.jQualOp("*", id)
 }

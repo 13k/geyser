@@ -61,6 +61,7 @@ type Schema struct {
 	API *geyser.Schema `json:"apilist"`
 
 	relPath     string
+	pkgPath     string
 	pkgName     string
 	filenames   map[string]string
 	keyedByName map[string]*geyser.SchemaInterface
@@ -126,6 +127,7 @@ func NewSteamSchema(cacheFile string, apiKey string) (*Schema, error) {
 	}
 
 	schema.filenames = filenamesSteam
+	schema.pkgPath = pkgPathGeyser
 	schema.pkgName = "geyser"
 
 	return schema, nil
@@ -143,6 +145,7 @@ func NewDotaSchema(cacheFile string) (*Schema, error) {
 	}
 
 	schema.filenames = filenamesDota
+	schema.pkgPath = pkgPathGeyserDota2
 	schema.relPath = "dota2"
 	schema.pkgName = "dota2"
 
