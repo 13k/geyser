@@ -6,9 +6,9 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/faceit/go-steam"
-	"github.com/faceit/go-steam/cryptoutil"
-	"github.com/faceit/go-steam/protocol/steamlang"
+	"github.com/13k/go-steam"
+	"github.com/13k/go-steam-resources/steamlang"
+	"github.com/13k/go-steam/cryptoutil"
 )
 
 func SteamUserAuthAuthenticateUserFormData(steamID uint64, loginKey string) (url.Values, error) {
@@ -18,7 +18,11 @@ func SteamUserAuthAuthenticateUserFormData(steamID uint64, loginKey string) (url
 		return nil, err
 	}
 
-	encryptedSessionKey := cryptoutil.RSAEncrypt(steam.GetPublicKey(steamlang.EUniverse_Public), sessionKey)
+	encryptedSessionKey, err := cryptoutil.RSAEncrypt(steam.GetPublicKey(steamlang.EUniverse_Public), sessionKey)
+
+	if err != nil {
+		return nil, err
+	}
 
 	ciph, err := aes.NewCipher(sessionKey)
 
@@ -26,7 +30,11 @@ func SteamUserAuthAuthenticateUserFormData(steamID uint64, loginKey string) (url
 		return nil, err
 	}
 
-	encryptedLoginKey := cryptoutil.SymmetricEncrypt(ciph, []byte(loginKey))
+	encryptedLoginKey, err := cryptoutil.SymmetricEncrypt(ciph, []byte(loginKey))
+
+	if err != nil {
+		return nil, err
+	}
 
 	values := url.Values{}
 
