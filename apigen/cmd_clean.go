@@ -18,7 +18,7 @@ type CleanCommand struct {
 
 func (cmd *CleanCommand) Run(schemas ...*Schema) error {
 	for _, s := range schemas {
-		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.SchemaInterfacesGroup) error {
+		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.InterfacesGroup) error {
 			baseFilename := s.Filename(group)
 
 			if baseFilename == "" {

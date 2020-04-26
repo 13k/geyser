@@ -104,7 +104,7 @@ func (g *APIGen) genTestMethods() j.Code {
 	return code
 }
 
-func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.SchemaMethodsGroup) j.Code {
+func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.MethodsGroup) j.Code {
 	structFuncName := g.methodFuncName(name)
 	testName := fmt.Sprintf("Test%s_%s", g.structName, structFuncName)
 	// 	resultStructName := g.methodResultStructName(name)
@@ -125,11 +125,11 @@ func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.Schema
 	}
 
 	for _, appID := range appIDs {
-		siKey := schema.SchemaInterfaceKey{Name: g.baseName, AppID: appID}
+		siKey := schema.InterfaceKey{Name: g.baseName, AppID: appID}
 		si := g.interfaces[siKey]
 
 		for _, version := range versions {
-			smKey := schema.SchemaMethodKey{Name: name, Version: version}
+			smKey := schema.MethodKey{Name: name, Version: version}
 			_, err := si.Methods.Get(smKey)
 
 			if err != nil {

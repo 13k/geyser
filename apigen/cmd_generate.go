@@ -18,7 +18,7 @@ type GenerateCommand struct {
 
 func (cmd *GenerateCommand) Run(schemas ...*Schema) error {
 	for _, s := range schemas {
-		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.SchemaInterfacesGroup) error {
+		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.InterfacesGroup) error {
 			baseFilename := s.Filename(group)
 
 			if baseFilename == "" {

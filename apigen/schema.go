@@ -65,7 +65,7 @@ type Schema struct {
 	pkgPath     string
 	pkgName     string
 	filenames   map[string]string
-	keyedByName map[string]*schema.SchemaInterface
+	keyedByName map[string]*schema.Interface
 }
 
 func NewSchema(cacheFile string, remotes ...*RemoteSchemaRequest) (*Schema, error) {
@@ -207,7 +207,7 @@ func NewCachedSchema(cacheFile string) (*Schema, error) {
 }
 
 func (s *Schema) buildIndex() error {
-	s.keyedByName = make(map[string]*schema.SchemaInterface)
+	s.keyedByName = make(map[string]*schema.Interface)
 
 	for _, sif := range s.API.Interfaces {
 		if _, ok := s.keyedByName[sif.Name]; ok {
@@ -224,7 +224,7 @@ func (s *Schema) Validate() error {
 	return s.API.Validate()
 }
 
-func (s *Schema) Filename(group schema.SchemaInterfacesGroup) string {
+func (s *Schema) Filename(group schema.InterfacesGroup) string {
 	return s.filenames[group.Name()]
 }
 
@@ -251,7 +251,7 @@ func (s *Schema) Merge(other *Schema) error {
 		return err
 	}
 
-	var result []*schema.SchemaInterface
+	var result []*schema.Interface
 
 	// append all interfaces in `s` that are not in `other`
 	for _, si := range s.API.Interfaces {
@@ -271,7 +271,7 @@ func (s *Schema) Merge(other *Schema) error {
 
 		// merge interface that belongs to both
 
-		var oMethods []*schema.SchemaMethod
+		var oMethods []*schema.Method
 
 		// append all methods in `other` that are not in `s`
 		for _, om := range oi.Methods {
@@ -291,14 +291,14 @@ func (s *Schema) Merge(other *Schema) error {
 		}
 
 		// prepend all methods in `s`
-		methods, err := schema.NewSchemaMethods(append(si.Methods, oMethods...)...)
+		methods, err := schema.NewMethods(append(si.Methods, oMethods...)...)
 
 		if err != nil {
 			return err
 		}
 
 		// create a new interface with merged methods
-		mergedInterface := &schema.SchemaInterface{
+		mergedInterface := &schema.Interface{
 			Name:    si.Name,
 			Methods: methods,
 		}
@@ -306,7 +306,7 @@ func (s *Schema) Merge(other *Schema) error {
 		result = append(result, mergedInterface)
 	}
 
-	interfaces, err := schema.NewSchemaInterfaces(result...)
+	interfaces, err := schema.NewInterfaces(result...)
 
 	if err != nil {
 		return err
@@ -331,7 +331,7 @@ func (s *Schema) Dump(cacheFile string) error {
 	return enc.Encode(s)
 }
 
-type interfaceGroupIterator func(string, schema.SchemaInterfacesGroup) error
+type interfaceGroupIterator func(string, schema.InterfacesGroup) error
 
 func (s *Schema) eachSortedInterfaceGroup(fn interfaceGroupIterator) error {
 	groups, err := s.API.Interfaces.GroupByBaseName()

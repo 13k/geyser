@@ -24,7 +24,7 @@ func (cmd *FilenamesCommand) Run(schemas ...*Schema) error {
 	for _, s := range schemas {
 		fmt.Printf("%s\n%s\n", path.Join("geyser", s.relPath), sep)
 
-		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.SchemaInterfacesGroup) error {
+		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.InterfacesGroup) error {
 			var comment string
 			var missing bool
 
