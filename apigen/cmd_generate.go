@@ -43,9 +43,9 @@ func (cmd *GenerateCommand) Run(schemas ...*Schema) error {
 				return err
 			}
 
-			if err := cmd.gen(baseName, g.GenerateResultsFile); err != nil {
-				return err
-			}
+			// if err := cmd.gen(baseName, g.GenerateResultsFile); err != nil {
+			// 	return err
+			// }
 
 			if err := cmd.gen(baseName, g.GenerateTestsFile); err != nil {
 				return err

@@ -49,13 +49,13 @@ func (g *APIGen) genTestCtor() j.Code {
 	}
 
 	testCaseBlock := []j.Code{
-		j.List(j.Id("i"), j.Err()).Op(":=").Add(g.jQual(g.structCtorName)).Call(ctorArgs...),
+		j.List(j.Id("iface"), j.Err()).Op(":=").Add(g.jQual(g.structCtorName)).Call(ctorArgs...),
 		j.Line(),
 		jTestifyRequire("NoError", "t", j.Err()),
-		jTestifyRequire("NotNil", "t", j.Id("i")),
+		jTestifyRequire("NotNil", "t", j.Id("iface")),
 		j.Line(),
-		jTestifyAssert("Same", "t", j.Id("client"), j.Id("i").Dot("Client")),
-		jTestifyAssert("NotNil", "t", j.Id("i").Dot("Interface")),
+		jTestifyAssert("Same", "t", j.Id("client"), j.Id("iface").Dot("Client")),
+		jTestifyAssert("NotNil", "t", j.Id("iface").Dot("Interface")),
 	}
 
 	if g.requiredAppID {
@@ -107,19 +107,20 @@ func (g *APIGen) genTestMethods() j.Code {
 func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.SchemaMethodsGroup) j.Code {
 	structFuncName := g.methodFuncName(name)
 	testName := fmt.Sprintf("Test%s_%s", g.structName, structFuncName)
-	resultStructName := g.methodResultStructName(name)
+	// 	resultStructName := g.methodResultStructName(name)
 	versions := group.Versions()
 	requiredVersion := len(versions) > 1
 
 	sort.Ints(versions)
 
+	vars := jBag{
+		{"iface", j.Var().Id("iface").Add(g.jQualPtr(g.structName))},
+		{"err", jVarErrError()},
+		{"req", j.Var().Id("req").Add(jRequestPtr())},
+		// {"result", j.Var().Id("result").Add(g.jQualPtr(resultStructName))},
+	}
+
 	body := []j.Code{
-		j.Var().Id("i").Add(g.jQualPtr(g.structName)),
-		jVarErrError(),
-		j.Var().Id("req").Add(jRequestPtr()),
-		j.Var().Id("result").Add(g.jQualPtr(resultStructName)),
-		j.Var().Id("ok").Bool(),
-		j.Line(),
 		j.Id("client").Op(":=").Add(jClientAddr(g.pkgPath)).Values(),
 	}
 
@@ -152,12 +153,12 @@ func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.Schema
 			body = append(
 				body,
 				j.Line(),
-				j.List(j.Id("i"), j.Err()).Op("=").Add(g.jQual(g.structCtorName)).Call(ctorArgs...),
+				j.List(j.Id("iface"), j.Err()).Op("=").Add(g.jQual(g.structCtorName)).Call(ctorArgs...),
 				j.Line(),
 				jTestifyRequire("NoError", "t", j.Err()),
-				jTestifyRequire("NotNil", "t", j.Id("i")),
+				jTestifyRequire("NotNil", "t", j.Id("iface")),
 				j.Line(),
-				j.List(j.Id("req"), j.Err()).Op("=").Id("i").Dot(structFuncName).Call(methodArgs...),
+				j.List(j.Id("req"), j.Err()).Op("=").Id("iface").Dot(structFuncName).Call(methodArgs...),
 				j.Line(),
 			)
 
@@ -168,20 +169,22 @@ func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.Schema
 					jTestifyRequire("NotNil", "t", j.Id("req")),
 					j.Line(),
 					jTestifyAssert("Same", "t", j.Id("client"), j.Id("req").Dot("Client")),
-					jTestifyAssert("Same", "t", j.Id("i").Dot("Interface"), j.Id("req").Dot("Interface")),
+					jTestifyAssert("Same", "t", j.Id("iface").Dot("Interface"), j.Id("req").Dot("Interface")),
 					j.Line(),
 					j.If(jTestifyAssert("NotNil", "t", j.Id("req").Dot("Method"))).Block(
 						jTestifyAssert("Equal", "t", j.Lit(name), j.Id("req").Dot("Method").Dot("Name")),
 						jTestifyAssert("Equal", "t", j.Lit(version), j.Id("req").Dot("Method").Dot("Version")),
 					),
-					j.Line(),
-					j.List(j.Id("result"), j.Id("ok")).Op("=").Id("req").Dot("Result").Assert(g.jQualPtr(resultStructName)),
-					j.Line(),
-					j.If(jTestifyAssert("Truef", "t", j.Id("ok"), j.Lit(testfInvalidResultType), j.Id("result"))).Block(
-						jTestifyAssert("NotNil", "t", j.Id("result")),
-					),
+					// j.Line(),
+					// j.List(j.Id("result"), j.Id("ok")).Op("=").Id("req").Dot("Result").Assert(g.jQualPtr(resultStructName)),
+					// j.Line(),
+					// j.If(jTestifyAssert("Truef", "t", j.Id("ok"), j.Lit(testfInvalidResultType), j.Id("result"))).Block(
+					// 	jTestifyAssert("NotNil", "t", j.Id("result")),
+					// ),
 				)
 			} else {
+				vars.Declare("ok", j.Var().Id("ok").Bool())
+
 				body = append(
 					body,
 					jTestifyRequire("Error", "t", j.Err()),
@@ -193,6 +196,9 @@ func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.Schema
 			}
 		}
 	}
+
+	jvars := append(vars.Codes(), j.Line())
+	body = append(jvars, body...)
 
 	return j.Line().Func().Id(testName).Call(jTestingTIdPtr("t")).Block(body...)
 }

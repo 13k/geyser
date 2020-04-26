@@ -293,7 +293,7 @@ func (g *APIGen) genMethod(methodName string, group schema.SchemaMethodsGroup) j
 	versions := group.Versions()
 	requiredVersion := len(versions) > 1
 	funcName := g.methodFuncName(methodName)
-	resultStructName := g.methodResultStructName(methodName)
+	// 	resultStructName := g.methodResultStructName(methodName)
 
 	sort.Ints(versions)
 
@@ -371,7 +371,7 @@ func (g *APIGen) genMethod(methodName string, group schema.SchemaMethodsGroup) j
 		j.Id("Client"):    j.Id("i").Dot("Client"),
 		j.Id("Interface"): j.Id("i").Dot("Interface"),
 		j.Id("Method"):    j.Id("sm"),
-		j.Id("Result"):    j.Op("&").Id(resultStructName).Values(),
+		// j.Id("Result"):    j.Op("&").Id(resultStructName).Values(),
 	})
 
 	body := []j.Code{

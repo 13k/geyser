@@ -127,9 +127,12 @@ func NewSteamSchema(cacheFile string, apiKey string) (*Schema, error) {
 		return nil, err
 	}
 
-	schema.filenames = filenamesSteam
-	schema.pkgPath = pkgPathGeyser
-	schema.pkgName = "geyser"
+	spec := schemaSpecs["steam"]
+
+	schema.pkgPath = spec.PkgPath
+	schema.pkgName = spec.PkgName
+	schema.filenames = spec.Filenames
+	schema.relPath = spec.RelPath
 
 	return schema, nil
 }
@@ -145,10 +148,12 @@ func NewDotaSchema(cacheFile string) (*Schema, error) {
 		return nil, err
 	}
 
-	schema.filenames = filenamesDota
-	schema.pkgPath = pkgPathGeyserDota2
-	schema.relPath = "dota2"
-	schema.pkgName = "dota2"
+	spec := schemaSpecs["dota2"]
+
+	schema.pkgPath = spec.PkgPath
+	schema.pkgName = spec.PkgName
+	schema.filenames = spec.Filenames
+	schema.relPath = spec.RelPath
 
 	return schema, nil
 }
