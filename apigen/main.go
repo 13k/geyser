@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/13k/geyser"
 	"github.com/sirupsen/logrus"
+
+	"github.com/13k/geyser/schema"
 )
 
 const (
@@ -192,26 +193,26 @@ func fatal(log logrus.FieldLogger, err error) {
 	l := log.WithError(err)
 
 	switch e := err.(type) {
-	case *geyser.InterfaceNotFoundError:
+	case *schema.InterfaceNotFoundError:
 		l.WithField("key", e.Key).Fatal()
-	case *geyser.InvalidInterfaceNameError:
+	case *schema.InvalidInterfaceNameError:
 		l.WithFields(logrus.Fields{
 			"interface": e.Interface.Name,
 			"err":       e.Err,
 		}).Fatal()
-	case *geyser.InterfaceMethodNotFoundError:
+	case *schema.InterfaceMethodNotFoundError:
 		l.WithField("key", e.Key).Fatal()
-	case *geyser.InvalidMethodNameError:
+	case *schema.InvalidMethodNameError:
 		l.WithFields(logrus.Fields{
 			"method":  e.Method.Name,
 			"version": e.Method.Version,
 		}).Fatal()
-	case *geyser.InvalidMethodVersionError:
+	case *schema.InvalidMethodVersionError:
 		l.WithFields(logrus.Fields{
 			"method":  e.Method.Name,
 			"version": e.Method.Version,
 		}).Fatal()
-	case *geyser.InvalidMethodHTTPMethodError:
+	case *schema.InvalidMethodHTTPMethodError:
 		l.WithFields(logrus.Fields{
 			"method":      e.Method.Name,
 			"version":     e.Method.Version,

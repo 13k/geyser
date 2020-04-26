@@ -5,8 +5,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/13k/geyser"
 	j "github.com/dave/jennifer/jen"
+
+	"github.com/13k/geyser/schema"
 )
 
 func (g *APIGen) GenerateInterfaceFile() (string, EGenerated, error) {
@@ -51,7 +52,7 @@ func (g *APIGen) genSchemaDecl() (j.Code, error) {
 	siDecls[len(siDecls)-1] = j.Line()
 
 	for i, appID := range appIDs {
-		key := geyser.SchemaInterfaceKey{Name: g.baseName, AppID: appID}
+		key := schema.SchemaInterfaceKey{Name: g.baseName, AppID: appID}
 		si := g.interfaces[key]
 		siDecl, err := g.genSIDecl(si)
 
@@ -76,7 +77,7 @@ func (g *APIGen) genSchemaDecl() (j.Code, error) {
 	return schemaDecl, nil
 }
 
-func (g *APIGen) genSIDecl(si *geyser.SchemaInterface) (j.Code, error) {
+func (g *APIGen) genSIDecl(si *schema.SchemaInterface) (j.Code, error) {
 	methodDecls := make([]j.Code, len(si.Methods)+1)
 	methodDecls[len(methodDecls)-1] = j.Line()
 
@@ -101,7 +102,7 @@ func (g *APIGen) genSIDecl(si *geyser.SchemaInterface) (j.Code, error) {
 	return code, nil
 }
 
-func (g *APIGen) genSMDecl(si *geyser.SchemaInterface, sm *geyser.SchemaMethod) (j.Code, error) {
+func (g *APIGen) genSMDecl(si *schema.SchemaInterface, sm *schema.SchemaMethod) (j.Code, error) {
 	httpMethod := jHTTPMethod(sm.HTTPMethod)
 
 	if httpMethod == nil {
@@ -131,9 +132,9 @@ func (g *APIGen) genSMDecl(si *geyser.SchemaInterface, sm *geyser.SchemaMethod) 
 }
 
 func (g *APIGen) genSMPDecl(
-	_ *geyser.SchemaInterface,
-	_ *geyser.SchemaMethod,
-	smp *geyser.SchemaMethodParam,
+	_ *schema.SchemaInterface,
+	_ *schema.SchemaMethod,
+	smp *schema.SchemaMethodParam,
 ) j.Code {
 	return jSchemaMethodParamAddr().Values(j.Dict{
 		j.Id("Name"):        j.Lit(smp.Name),
@@ -288,7 +289,7 @@ func (g *APIGen) genMethods() j.Code {
 	return code
 }
 
-func (g *APIGen) genMethod(methodName string, group geyser.SchemaMethodsGroup) j.Code {
+func (g *APIGen) genMethod(methodName string, group schema.SchemaMethodsGroup) j.Code {
 	versions := group.Versions()
 	requiredVersion := len(versions) > 1
 	funcName := g.methodFuncName(methodName)
@@ -321,7 +322,7 @@ func (g *APIGen) genMethod(methodName string, group geyser.SchemaMethodsGroup) j
 	}
 
 	for _, version := range versions {
-		key := geyser.SchemaMethodKey{Name: methodName, Version: version}
+		key := schema.SchemaMethodKey{Name: methodName, Version: version}
 		sm := group[key]
 
 		if len(sm.Params) == 0 {
@@ -390,7 +391,7 @@ func (g *APIGen) genMethod(methodName string, group geyser.SchemaMethodsGroup) j
 	return code
 }
 
-func (g *APIGen) paramComment(param *geyser.SchemaMethodParam) string {
+func (g *APIGen) paramComment(param *schema.SchemaMethodParam) string {
 	var b strings.Builder
 
 	b.WriteString("  * ")

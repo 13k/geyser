@@ -6,8 +6,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/13k/geyser"
 	"github.com/iancoleman/strcase"
+
+	"github.com/13k/geyser/schema"
 )
 
 const (
@@ -65,8 +66,8 @@ const (
 
 type APIGen struct {
 	baseName       string
-	interfaces     geyser.SchemaInterfacesGroup
-	groupedMethods map[string]geyser.SchemaMethodsGroup
+	interfaces     schema.SchemaInterfacesGroup
+	groupedMethods map[string]schema.SchemaMethodsGroup
 	methodsNames   []string
 	appIDs         []uint32
 	requiredAppID  bool
@@ -82,7 +83,7 @@ type APIGen struct {
 	testsFile      *GeneratedFile
 }
 
-func NewAPIGen(interfaces geyser.SchemaInterfacesGroup, pkgPath, pkgName, outputDir, basefile string) (*APIGen, error) {
+func NewAPIGen(interfaces schema.SchemaInterfacesGroup, pkgPath, pkgName, outputDir, basefile string) (*APIGen, error) {
 	baseName := interfaces.Name()
 	appIDs := interfaces.AppIDs()
 	groupedMethods, err := interfaces.GroupMethods()

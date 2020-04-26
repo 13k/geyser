@@ -10,8 +10,9 @@ import (
 	"os"
 	"sort"
 
-	"github.com/13k/geyser"
 	"github.com/go-resty/resty/v2"
+
+	"github.com/13k/geyser/schema"
 )
 
 const (
@@ -58,13 +59,13 @@ func remoteSchemaReqSteam(apiKey string) *RemoteSchemaRequest {
 }
 
 type Schema struct {
-	API *geyser.Schema `json:"apilist"`
+	API *schema.Schema `json:"apilist"`
 
 	relPath     string
 	pkgPath     string
 	pkgName     string
 	filenames   map[string]string
-	keyedByName map[string]*geyser.SchemaInterface
+	keyedByName map[string]*schema.SchemaInterface
 }
 
 func NewSchema(cacheFile string, remotes ...*RemoteSchemaRequest) (*Schema, error) {
@@ -201,7 +202,7 @@ func NewCachedSchema(cacheFile string) (*Schema, error) {
 }
 
 func (s *Schema) buildIndex() error {
-	s.keyedByName = make(map[string]*geyser.SchemaInterface)
+	s.keyedByName = make(map[string]*schema.SchemaInterface)
 
 	for _, sif := range s.API.Interfaces {
 		if _, ok := s.keyedByName[sif.Name]; ok {
@@ -218,7 +219,7 @@ func (s *Schema) Validate() error {
 	return s.API.Validate()
 }
 
-func (s *Schema) Filename(group geyser.SchemaInterfacesGroup) string {
+func (s *Schema) Filename(group schema.SchemaInterfacesGroup) string {
 	return s.filenames[group.Name()]
 }
 
@@ -245,7 +246,7 @@ func (s *Schema) Merge(other *Schema) error {
 		return err
 	}
 
-	var result []*geyser.SchemaInterface
+	var result []*schema.SchemaInterface
 
 	// append all interfaces in `s` that are not in `other`
 	for _, si := range s.API.Interfaces {
@@ -265,7 +266,7 @@ func (s *Schema) Merge(other *Schema) error {
 
 		// merge interface that belongs to both
 
-		var oMethods []*geyser.SchemaMethod
+		var oMethods []*schema.SchemaMethod
 
 		// append all methods in `other` that are not in `s`
 		for _, om := range oi.Methods {
@@ -285,14 +286,14 @@ func (s *Schema) Merge(other *Schema) error {
 		}
 
 		// prepend all methods in `s`
-		methods, err := geyser.NewSchemaMethods(append(si.Methods, oMethods...)...)
+		methods, err := schema.NewSchemaMethods(append(si.Methods, oMethods...)...)
 
 		if err != nil {
 			return err
 		}
 
 		// create a new interface with merged methods
-		mergedInterface := &geyser.SchemaInterface{
+		mergedInterface := &schema.SchemaInterface{
 			Name:    si.Name,
 			Methods: methods,
 		}
@@ -300,7 +301,7 @@ func (s *Schema) Merge(other *Schema) error {
 		result = append(result, mergedInterface)
 	}
 
-	interfaces, err := geyser.NewSchemaInterfaces(result...)
+	interfaces, err := schema.NewSchemaInterfaces(result...)
 
 	if err != nil {
 		return err
@@ -325,7 +326,7 @@ func (s *Schema) Dump(cacheFile string) error {
 	return enc.Encode(s)
 }
 
-type interfaceGroupIterator func(string, geyser.SchemaInterfacesGroup) error
+type interfaceGroupIterator func(string, schema.SchemaInterfacesGroup) error
 
 func (s *Schema) eachSortedInterfaceGroup(fn interfaceGroupIterator) error {
 	groups, err := s.API.Interfaces.GroupByBaseName()

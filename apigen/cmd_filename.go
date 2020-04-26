@@ -5,8 +5,9 @@ import (
 	"path"
 	"strings"
 
-	"github.com/13k/geyser"
 	"github.com/iancoleman/strcase"
+
+	"github.com/13k/geyser/schema"
 )
 
 var _ Command = (*FilenamesCommand)(nil)
@@ -20,14 +21,14 @@ func (cmd *FilenamesCommand) Run(schemas ...*Schema) error {
 
 	fmt.Println(sep)
 
-	for _, schema := range schemas {
-		fmt.Printf("%s\n%s\n", path.Join("geyser", schema.relPath), sep)
+	for _, s := range schemas {
+		fmt.Printf("%s\n%s\n", path.Join("geyser", s.relPath), sep)
 
-		err := schema.eachSortedInterfaceGroup(func(baseName string, group geyser.SchemaInterfacesGroup) error {
+		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.SchemaInterfacesGroup) error {
 			var comment string
 			var missing bool
 
-			filename := schema.Filename(group)
+			filename := s.Filename(group)
 
 			if filename == "" {
 				missing = true

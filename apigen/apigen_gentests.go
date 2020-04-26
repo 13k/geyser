@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/13k/geyser"
 	j "github.com/dave/jennifer/jen"
+
+	"github.com/13k/geyser/schema"
 )
 
 func (g *APIGen) GenerateTestsFile() (string, EGenerated, error) {
@@ -103,7 +104,7 @@ func (g *APIGen) genTestMethods() j.Code {
 	return code
 }
 
-func (g *APIGen) genTestMethod(appIDs []uint32, name string, group geyser.SchemaMethodsGroup) j.Code {
+func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.SchemaMethodsGroup) j.Code {
 	structFuncName := g.methodFuncName(name)
 	testName := fmt.Sprintf("Test%s_%s", g.structName, structFuncName)
 	resultStructName := g.methodResultStructName(name)
@@ -123,15 +124,15 @@ func (g *APIGen) genTestMethod(appIDs []uint32, name string, group geyser.Schema
 	}
 
 	for _, appID := range appIDs {
-		siKey := geyser.SchemaInterfaceKey{Name: g.baseName, AppID: appID}
+		siKey := schema.SchemaInterfaceKey{Name: g.baseName, AppID: appID}
 		si := g.interfaces[siKey]
 
 		for _, version := range versions {
-			smKey := geyser.SchemaMethodKey{Name: name, Version: version}
+			smKey := schema.SchemaMethodKey{Name: name, Version: version}
 			_, err := si.Methods.Get(smKey)
 
 			if err != nil {
-				if _, ok := err.(*geyser.InterfaceMethodNotFoundError); !ok {
+				if _, ok := err.(*schema.InterfaceMethodNotFoundError); !ok {
 					panic(err)
 				}
 			}

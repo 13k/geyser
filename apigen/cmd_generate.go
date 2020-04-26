@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/13k/geyser"
 	"github.com/sirupsen/logrus"
+
+	"github.com/13k/geyser/schema"
 )
 
 var _ Command = (*GenerateCommand)(nil)
@@ -16,20 +17,20 @@ type GenerateCommand struct {
 }
 
 func (cmd *GenerateCommand) Run(schemas ...*Schema) error {
-	for _, schema := range schemas {
-		err := schema.eachSortedInterfaceGroup(func(baseName string, group geyser.SchemaInterfacesGroup) error {
-			baseFilename := schema.Filename(group)
+	for _, s := range schemas {
+		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.SchemaInterfacesGroup) error {
+			baseFilename := s.Filename(group)
 
 			if baseFilename == "" {
 				return fmt.Errorf(errfUnknownInterfaceFilename, baseName)
 			}
 
-			outputDir := filepath.Join(cmd.OutputDir, schema.relPath)
+			outputDir := filepath.Join(cmd.OutputDir, s.relPath)
 
 			g, err := NewAPIGen(
 				group,
-				schema.pkgPath,
-				schema.pkgName,
+				s.pkgPath,
+				s.pkgName,
 				outputDir,
 				baseFilename,
 			)
