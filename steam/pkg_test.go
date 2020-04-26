@@ -1,4 +1,4 @@
-package geyser_test
+package steam_test
 
 import (
 	"fmt"
@@ -7,10 +7,11 @@ import (
 	"testing"
 
 	"github.com/13k/geyser"
+	"github.com/13k/geyser/steam"
 )
 
 func Example_basic() {
-	client, err := geyser.New(
+	client, err := steam.New(
 		geyser.WithDebug(),
 		geyser.WithKey("<steam_api_key>"),
 		geyser.WithLanguage("en_US"),
@@ -20,7 +21,7 @@ func Example_basic() {
 		log.Fatal(err)
 	}
 
-	dota2match, err := client.DOTA2Match(570)
+	dota2match, err := client.IDOTA2Match(570)
 
 	if err != nil {
 		log.Fatal(err)
@@ -53,5 +54,5 @@ func Example_basic() {
 }
 
 func TestImport(t *testing.T) {
-	_, _ = geyser.New()
+	_, _ = steam.New()
 }

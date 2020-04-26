@@ -6,11 +6,11 @@ import (
 	"time"
 
 	"github.com/go-resty/resty/v2"
+
+	"github.com/13k/geyser/schema"
 )
 
 const (
-	HostURL = "https://api.steampowered.com"
-
 	pathTemplate = "/{interface}/{method}/{version}"
 )
 
@@ -145,17 +145,13 @@ func New(options ...ClientOption) (*Client, error) {
 		}
 	}
 
-	if rclient.HostURL == "" {
-		rclient.SetHostURL(HostURL)
-	}
-
 	return client, nil
 }
 
 // ClientRequest wraps request arguments.
 type ClientRequest struct {
-	Interface *SchemaInterface
-	Method    *SchemaMethod
+	Interface *schema.Interface
+	Method    *schema.Method
 	Options   RequestOptions
 	Result    interface{}
 }
@@ -181,7 +177,7 @@ func (c *Client) Request(creq ClientRequest) (*resty.Response, error) {
 	pathParams := map[string]string{
 		"interface": creq.Interface.Name,
 		"method":    creq.Method.Name,
-		"version":   creq.Method.versionPathParam(),
+		"version":   creq.Method.FormatVersion(),
 	}
 
 	req := c.client.R().

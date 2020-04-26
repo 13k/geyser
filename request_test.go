@@ -5,9 +5,11 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/13k/geyser"
 	"github.com/go-resty/resty/v2"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/13k/geyser"
+	"github.com/13k/geyser/schema"
 )
 
 func TestRequest_SetOptions(t *testing.T) {
@@ -68,8 +70,8 @@ func (c *testRequestClient) Request(req geyser.ClientRequest) (*resty.Response, 
 
 func TestRequest_Execute(t *testing.T) {
 	c := &testRequestClient{}
-	si := &geyser.SchemaInterface{}
-	sm := &geyser.SchemaMethod{}
+	si := &schema.Interface{}
+	sm := &schema.Method{}
 	result := &struct{ Field int }{}
 
 	req := &geyser.Request{

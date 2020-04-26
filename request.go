@@ -5,6 +5,8 @@ import (
 	"net/url"
 
 	"github.com/go-resty/resty/v2"
+
+	"github.com/13k/geyser/schema"
 )
 
 // Requester is the minimal interface for a `Request` to `Execute`.
@@ -26,8 +28,8 @@ type RequestOptions struct {
 // Request represents a "bound" request with client, interface and method.
 type Request struct {
 	Client    Requester
-	Interface *SchemaInterface
-	Method    *SchemaMethod
+	Interface *schema.Interface
+	Method    *schema.Method
 	Options   RequestOptions
 	Result    interface{}
 }
