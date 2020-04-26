@@ -1,9 +1,9 @@
 package schema
 
-// SchemaMethodParam holds the specification of an API interface method parameter.
+// MethodParam holds the specification of an API interface method parameter.
 //
 // The struct should be read-only.
-type SchemaMethodParam struct {
+type MethodParam struct {
 	Name        string `json:"name"`
 	Type        string `json:"type"`
 	Optional    bool   `json:"optional"`
@@ -14,7 +14,7 @@ type SchemaMethodParam struct {
 //
 // Returns an error of type `*RequiredParameterError` if the parameter is required and the value is
 // empty.
-func (p *SchemaMethodParam) ValidateValue(value string) error {
+func (p *MethodParam) ValidateValue(value string) error {
 	if !p.Optional && value == "" {
 		return &RequiredParameterError{Param: p}
 	}

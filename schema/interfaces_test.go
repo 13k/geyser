@@ -10,51 +10,51 @@ import (
 	"github.com/13k/geyser/schema"
 )
 
-func schemaInterfacesValid() schema.SchemaInterfaces {
-	return schema.SchemaInterfaces{schemaInterfaceValid()}
+func createInterfacesValid() schema.Interfaces {
+	return schema.Interfaces{createInterfaceValid()}
 }
 
-func schemaInterfacesAppID() schema.SchemaInterfaces {
-	return schema.SchemaInterfaces{schemaInterfaceAppID()}
+func createInterfacesAppID() schema.Interfaces {
+	return schema.Interfaces{createInterfaceAppID()}
 }
 
-func schemaInterfacesMethods() schema.SchemaInterfaces {
-	return schema.SchemaInterfaces{schemaInterfaceMethods()}
+func createInterfacesMethods() schema.Interfaces {
+	return schema.Interfaces{createInterfaceMethods()}
 }
 
-func schemaInterfacesInvalidName() schema.SchemaInterfaces {
-	return schema.SchemaInterfaces{schemaInterfaceInvalidName()}
+func createInterfacesInvalidName() schema.Interfaces {
+	return schema.Interfaces{createInterfaceInvalidName()}
 }
 
-func schemaInterfacesMethodsInvalidName() schema.SchemaInterfaces {
-	return schema.SchemaInterfaces{schemaInterfaceMethodsInvalidName()}
+func createInterfacesMethodsInvalidName() schema.Interfaces {
+	return schema.Interfaces{createInterfaceMethodsInvalidName()}
 }
 
-func schemaInterfacesMethodsInvalidVersion() schema.SchemaInterfaces {
-	return schema.SchemaInterfaces{schemaInterfaceMethodsInvalidVersion()}
+func createInterfacesMethodsInvalidVersion() schema.Interfaces {
+	return schema.Interfaces{createInterfaceMethodsInvalidVersion()}
 }
 
-func schemaInterfacesMethodsInvalidHTTPMethod() schema.SchemaInterfaces {
-	return schema.SchemaInterfaces{schemaInterfaceMethodsInvalidHTTPMethod()}
+func createInterfacesMethodsInvalidHTTPMethod() schema.Interfaces {
+	return schema.Interfaces{createInterfaceMethodsInvalidHTTPMethod()}
 }
 
-func TestNewSchemaInterfaces(t *testing.T) {
-	subject, err := schema.NewSchemaInterfaces()
+func TestNewInterfaces(t *testing.T) {
+	subject, err := schema.NewInterfaces()
 
 	assert.NoError(t, err)
 	assert.Len(t, subject, 0)
 
-	subject, err = schema.NewSchemaInterfaces(schemaInterfaceValid())
+	subject, err = schema.NewInterfaces(createInterfaceValid())
 
 	assert.NoError(t, err)
 	assert.Len(t, subject, 1)
 
-	subject, err = schema.NewSchemaInterfaces(schemaInterfaceMethods())
+	subject, err = schema.NewInterfaces(createInterfaceMethods())
 
 	assert.NoError(t, err)
 	assert.Len(t, subject, 1)
 
-	subject, err = schema.NewSchemaInterfaces(schemaInterfaceInvalidName())
+	subject, err = schema.NewInterfaces(createInterfaceInvalidName())
 
 	if assert.Error(t, err) {
 		_, ok := err.(*schema.InvalidInterfaceNameError)
@@ -63,7 +63,7 @@ func TestNewSchemaInterfaces(t *testing.T) {
 		assert.Nil(t, subject)
 	}
 
-	subject, err = schema.NewSchemaInterfaces(schemaInterfaceMethodsInvalidName())
+	subject, err = schema.NewInterfaces(createInterfaceMethodsInvalidName())
 
 	if assert.Error(t, err) {
 		_, ok := err.(*schema.InvalidMethodNameError)
@@ -72,7 +72,7 @@ func TestNewSchemaInterfaces(t *testing.T) {
 		assert.Nil(t, subject)
 	}
 
-	subject, err = schema.NewSchemaInterfaces(schemaInterfaceMethodsInvalidVersion())
+	subject, err = schema.NewInterfaces(createInterfaceMethodsInvalidVersion())
 
 	if assert.Error(t, err) {
 		_, ok := err.(*schema.InvalidMethodVersionError)
@@ -81,7 +81,7 @@ func TestNewSchemaInterfaces(t *testing.T) {
 		assert.Nil(t, subject)
 	}
 
-	subject, err = schema.NewSchemaInterfaces(schemaInterfaceMethodsInvalidHTTPMethod())
+	subject, err = schema.NewInterfaces(createInterfaceMethodsInvalidHTTPMethod())
 
 	if assert.Error(t, err) {
 		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
@@ -91,52 +91,52 @@ func TestNewSchemaInterfaces(t *testing.T) {
 	}
 }
 
-func TestMustNewSchemaInterfaces(t *testing.T) {
-	var subject schema.SchemaInterfaces
+func TestMustNewInterfaces(t *testing.T) {
+	var subject schema.Interfaces
 
 	require.NotPanics(t, func() {
-		subject = schema.MustNewSchemaInterfaces()
+		subject = schema.MustNewInterfaces()
 	})
 
 	assert.Len(t, subject, 0)
 
 	require.NotPanics(t, func() {
-		subject = schema.MustNewSchemaInterfaces(schemaInterfaceValid())
+		subject = schema.MustNewInterfaces(createInterfaceValid())
 	})
 
 	assert.Len(t, subject, 1)
 
 	require.NotPanics(t, func() {
-		subject = schema.MustNewSchemaInterfaces(schemaInterfaceMethods())
+		subject = schema.MustNewInterfaces(createInterfaceMethods())
 	})
 
 	assert.Len(t, subject, 1)
 
 	require.Panics(t, func() {
-		subject = schema.MustNewSchemaInterfaces(schemaInterfaceInvalidName())
+		subject = schema.MustNewInterfaces(createInterfaceInvalidName())
 	})
 
 	require.Panics(t, func() {
-		subject = schema.MustNewSchemaInterfaces(schemaInterfaceMethodsInvalidName())
+		subject = schema.MustNewInterfaces(createInterfaceMethodsInvalidName())
 	})
 
 	require.Panics(t, func() {
-		subject = schema.MustNewSchemaInterfaces(schemaInterfaceMethodsInvalidVersion())
+		subject = schema.MustNewInterfaces(createInterfaceMethodsInvalidVersion())
 	})
 
 	require.Panics(t, func() {
-		subject = schema.MustNewSchemaInterfaces(schemaInterfaceMethodsInvalidHTTPMethod())
+		subject = schema.MustNewInterfaces(createInterfaceMethodsInvalidHTTPMethod())
 	})
 }
 
-func TestSchemaInterfaces_Validate(t *testing.T) {
-	subject := schemaInterfacesValid()
+func TestInterfaces_Validate(t *testing.T) {
+	subject := createInterfacesValid()
 
 	err := subject.Validate()
 
 	assert.NoError(t, err)
 
-	subject = schemaInterfacesInvalidName()
+	subject = createInterfacesInvalidName()
 
 	err = subject.Validate()
 
@@ -145,13 +145,13 @@ func TestSchemaInterfaces_Validate(t *testing.T) {
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
-	subject = schemaInterfacesMethods()
+	subject = createInterfacesMethods()
 
 	err = subject.Validate()
 
 	assert.NoError(t, err)
 
-	subject = schemaInterfacesMethodsInvalidName()
+	subject = createInterfacesMethodsInvalidName()
 
 	err = subject.Validate()
 
@@ -160,7 +160,7 @@ func TestSchemaInterfaces_Validate(t *testing.T) {
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
-	subject = schemaInterfacesMethodsInvalidVersion()
+	subject = createInterfacesMethodsInvalidVersion()
 
 	err = subject.Validate()
 
@@ -169,7 +169,7 @@ func TestSchemaInterfaces_Validate(t *testing.T) {
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
-	subject = schemaInterfacesMethodsInvalidHTTPMethod()
+	subject = createInterfacesMethodsInvalidHTTPMethod()
 
 	err = subject.Validate()
 
@@ -179,9 +179,9 @@ func TestSchemaInterfaces_Validate(t *testing.T) {
 	}
 }
 
-func TestSchemaInterfaces_Get(t *testing.T) {
-	key := schema.SchemaInterfaceKey{Name: "IFace", AppID: 0}
-	subject := schemaInterfacesInvalidName()
+func TestInterfaces_Get(t *testing.T) {
+	key := schema.InterfaceKey{Name: "IFace", AppID: 0}
+	subject := createInterfacesInvalidName()
 	si, err := subject.Get(key)
 
 	if assert.Error(t, err) {
@@ -191,8 +191,8 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 		assert.Nil(t, si)
 	}
 
-	key = schema.SchemaInterfaceKey{Name: "IFace", AppID: 0}
-	subject = schemaInterfacesValid()
+	key = schema.InterfaceKey{Name: "IFace", AppID: 0}
+	subject = createInterfacesValid()
 	si, err = subject.Get(key)
 
 	if assert.NoError(t, err) {
@@ -200,8 +200,8 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 		assert.Equal(t, "IFace", si.Name)
 	}
 
-	key = schema.SchemaInterfaceKey{Name: "IFace", AppID: 123}
-	subject = schemaInterfacesAppID()
+	key = schema.InterfaceKey{Name: "IFace", AppID: 123}
+	subject = createInterfacesAppID()
 	si, err = subject.Get(key)
 
 	if assert.NoError(t, err) {
@@ -209,8 +209,8 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 		assert.Equal(t, "IFace_123", si.Name)
 	}
 
-	key = schema.SchemaInterfaceKey{Name: "IFace", AppID: 0}
-	subject = schemaInterfacesMethodsInvalidName()
+	key = schema.InterfaceKey{Name: "IFace", AppID: 0}
+	subject = createInterfacesMethodsInvalidName()
 	si, err = subject.Get(key)
 
 	if assert.NoError(t, err) {
@@ -218,8 +218,8 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 		assert.Equal(t, "IFace", si.Name)
 	}
 
-	key = schema.SchemaInterfaceKey{Name: "IFace", AppID: 0}
-	subject = schemaInterfacesMethodsInvalidVersion()
+	key = schema.InterfaceKey{Name: "IFace", AppID: 0}
+	subject = createInterfacesMethodsInvalidVersion()
 	si, err = subject.Get(key)
 
 	if assert.NoError(t, err) {
@@ -227,8 +227,8 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 		assert.Equal(t, "IFace", si.Name)
 	}
 
-	key = schema.SchemaInterfaceKey{Name: "IFace", AppID: 0}
-	subject = schemaInterfacesMethodsInvalidHTTPMethod()
+	key = schema.InterfaceKey{Name: "IFace", AppID: 0}
+	subject = createInterfacesMethodsInvalidHTTPMethod()
 	si, err = subject.Get(key)
 
 	if assert.NoError(t, err) {
@@ -236,19 +236,19 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 		assert.Equal(t, "IFace", si.Name)
 	}
 
-	key1, si1 := schemaInterface("IFace1", 111)
-	key2, si2 := schemaInterface("IFace1", 222)
-	key3, si3 := schemaInterface("IFace2", 0)
-	key4, si4 := schemaInterface("IFace3", 0)
-	key5, si5 := schemaInterface("IFace4", 444)
-	key6 := schema.SchemaInterfaceKey{Name: "IFace1", AppID: 0}
-	key7 := schema.SchemaInterfaceKey{Name: "IFace1", AppID: 333}
-	key8 := schema.SchemaInterfaceKey{Name: "IFace2", AppID: 222}
-	key9 := schema.SchemaInterfaceKey{Name: "IFace3", AppID: 333}
-	key10 := schema.SchemaInterfaceKey{Name: "IFace4", AppID: 0}
+	key1, si1 := createInterface("IFace1", 111)
+	key2, si2 := createInterface("IFace1", 222)
+	key3, si3 := createInterface("IFace2", 0)
+	key4, si4 := createInterface("IFace3", 0)
+	key5, si5 := createInterface("IFace4", 444)
+	key6 := schema.InterfaceKey{Name: "IFace1", AppID: 0}
+	key7 := schema.InterfaceKey{Name: "IFace1", AppID: 333}
+	key8 := schema.InterfaceKey{Name: "IFace2", AppID: 222}
+	key9 := schema.InterfaceKey{Name: "IFace3", AppID: 333}
+	key10 := schema.InterfaceKey{Name: "IFace4", AppID: 0}
 
 	require.NotPanics(t, func() {
-		subject = schema.MustNewSchemaInterfaces(si1, si2, si3, si4, si5)
+		subject = schema.MustNewInterfaces(si1, si2, si3, si4, si5)
 	})
 
 	si, err = subject.Get(key1)
@@ -327,8 +327,8 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 	}
 }
 
-func TestSchemaInterfaces_GroupByBaseName(t *testing.T) {
-	subject := schemaInterfacesInvalidName()
+func TestInterfaces_GroupByBaseName(t *testing.T) {
+	subject := createInterfacesInvalidName()
 	groups, err := subject.GroupByBaseName()
 
 	if assert.Error(t, err) {
@@ -339,12 +339,12 @@ func TestSchemaInterfaces_GroupByBaseName(t *testing.T) {
 	}
 
 	require.NotPanics(t, func() {
-		subject = schema.MustNewSchemaInterfaces(
-			&schema.SchemaInterface{Name: "IFace1_111"},
-			&schema.SchemaInterface{Name: "IFace1_222"},
-			&schema.SchemaInterface{Name: "IFace2"},
-			&schema.SchemaInterface{Name: "IFace3_A"},
-			&schema.SchemaInterface{Name: "IFace4_444"},
+		subject = schema.MustNewInterfaces(
+			&schema.Interface{Name: "IFace1_111"},
+			&schema.Interface{Name: "IFace1_222"},
+			&schema.Interface{Name: "IFace2"},
+			&schema.Interface{Name: "IFace3_A"},
+			&schema.Interface{Name: "IFace4_444"},
 		)
 	})
 
@@ -387,14 +387,14 @@ func TestSchemaInterfaces_GroupByBaseName(t *testing.T) {
 	}
 }
 
-func TestSchemaInterfacesGroup_Name(t *testing.T) {
-	interfaces := schema.SchemaInterfaces{
-		&schema.SchemaInterface{Name: "Interface_1"},
-		&schema.SchemaInterface{Name: "Interface_2"},
-		&schema.SchemaInterface{Name: "Interface_3"},
+func TestInterfacesGroup_Name(t *testing.T) {
+	interfaces := schema.Interfaces{
+		&schema.Interface{Name: "Interface_1"},
+		&schema.Interface{Name: "Interface_2"},
+		&schema.Interface{Name: "Interface_3"},
 	}
 
-	subject := schema.SchemaInterfacesGroup{}
+	subject := schema.InterfacesGroup{}
 
 	for _, si := range interfaces {
 		key, err := si.Key()
@@ -409,14 +409,14 @@ func TestSchemaInterfacesGroup_Name(t *testing.T) {
 	assert.Equal(t, "Interface", name)
 }
 
-func TestSchemaInterfacesGroup_AppIDs(t *testing.T) {
-	interfaces := schema.SchemaInterfaces{
-		&schema.SchemaInterface{Name: "Interface_1"},
-		&schema.SchemaInterface{Name: "Interface_2"},
-		&schema.SchemaInterface{Name: "Interface_3"},
+func TestInterfacesGroup_AppIDs(t *testing.T) {
+	interfaces := schema.Interfaces{
+		&schema.Interface{Name: "Interface_1"},
+		&schema.Interface{Name: "Interface_2"},
+		&schema.Interface{Name: "Interface_3"},
 	}
 
-	subject := schema.SchemaInterfacesGroup{}
+	subject := schema.InterfacesGroup{}
 
 	for _, si := range interfaces {
 		key, err := si.Key()
@@ -436,39 +436,39 @@ func TestSchemaInterfacesGroup_AppIDs(t *testing.T) {
 	assert.NotContains(t, appIDs, uint32(4))
 }
 
-func TestSchemaInterfacesGroup_GroupMethods(t *testing.T) {
-	var interfaces schema.SchemaInterfaces
+func TestInterfacesGroup_GroupMethods(t *testing.T) {
+	var interfaces schema.Interfaces
 
 	require.NotPanics(t, func() {
-		interfaces = schema.SchemaInterfaces{
-			&schema.SchemaInterface{
+		interfaces = schema.Interfaces{
+			&schema.Interface{
 				Name: "Interface_1",
-				Methods: schema.MustNewSchemaMethods(
-					&schema.SchemaMethod{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
-					&schema.SchemaMethod{Name: "Method2", Version: 1, HTTPMethod: http.MethodGet},
-					&schema.SchemaMethod{Name: "Method3", Version: 1, HTTPMethod: http.MethodGet},
+				Methods: schema.MustNewMethods(
+					&schema.Method{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
+					&schema.Method{Name: "Method2", Version: 1, HTTPMethod: http.MethodGet},
+					&schema.Method{Name: "Method3", Version: 1, HTTPMethod: http.MethodGet},
 				),
 			},
-			&schema.SchemaInterface{
+			&schema.Interface{
 				Name: "Interface_2",
-				Methods: schema.MustNewSchemaMethods(
-					&schema.SchemaMethod{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
-					&schema.SchemaMethod{Name: "Method1", Version: 2, HTTPMethod: http.MethodGet},
-					&schema.SchemaMethod{Name: "Method1", Version: 3, HTTPMethod: http.MethodGet},
+				Methods: schema.MustNewMethods(
+					&schema.Method{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
+					&schema.Method{Name: "Method1", Version: 2, HTTPMethod: http.MethodGet},
+					&schema.Method{Name: "Method1", Version: 3, HTTPMethod: http.MethodGet},
 				),
 			},
-			&schema.SchemaInterface{
+			&schema.Interface{
 				Name: "Interface_3",
-				Methods: schema.MustNewSchemaMethods(
-					&schema.SchemaMethod{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
-					&schema.SchemaMethod{Name: "Method2", Version: 2, HTTPMethod: http.MethodGet},
-					&schema.SchemaMethod{Name: "Method3", Version: 3, HTTPMethod: http.MethodGet},
+				Methods: schema.MustNewMethods(
+					&schema.Method{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
+					&schema.Method{Name: "Method2", Version: 2, HTTPMethod: http.MethodGet},
+					&schema.Method{Name: "Method3", Version: 3, HTTPMethod: http.MethodGet},
 				),
 			},
 		}
 	})
 
-	subject := schema.SchemaInterfacesGroup{}
+	subject := schema.InterfacesGroup{}
 
 	for _, si := range interfaces {
 		key, err := si.Key()
@@ -493,21 +493,21 @@ func TestSchemaInterfacesGroup_GroupMethods(t *testing.T) {
 	require.Truef(t, ok, "method group %q not found", "Method1")
 	require.Len(t, group, 3)
 
-	key := schema.SchemaMethodKey{Name: "Method1", Version: 1}
+	key := schema.MethodKey{Name: "Method1", Version: 1}
 	sm, ok := group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method1")
 	require.Equal(t, "Method1", sm.Name)
 	require.Equal(t, 1, sm.Version)
 
-	key = schema.SchemaMethodKey{Name: "Method1", Version: 2}
+	key = schema.MethodKey{Name: "Method1", Version: 2}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method1")
 	require.Equal(t, "Method1", sm.Name)
 	require.Equal(t, 2, sm.Version)
 
-	key = schema.SchemaMethodKey{Name: "Method1", Version: 3}
+	key = schema.MethodKey{Name: "Method1", Version: 3}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method1")
@@ -519,14 +519,14 @@ func TestSchemaInterfacesGroup_GroupMethods(t *testing.T) {
 	require.Truef(t, ok, "method group %q not found", "Method2")
 	require.Len(t, group, 2)
 
-	key = schema.SchemaMethodKey{Name: "Method2", Version: 1}
+	key = schema.MethodKey{Name: "Method2", Version: 1}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method2")
 	require.Equal(t, "Method2", sm.Name)
 	require.Equal(t, 1, sm.Version)
 
-	key = schema.SchemaMethodKey{Name: "Method2", Version: 2}
+	key = schema.MethodKey{Name: "Method2", Version: 2}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method2")
@@ -538,14 +538,14 @@ func TestSchemaInterfacesGroup_GroupMethods(t *testing.T) {
 	require.Truef(t, ok, "method group %q not found", "Method3")
 	require.Len(t, group, 2)
 
-	key = schema.SchemaMethodKey{Name: "Method3", Version: 1}
+	key = schema.MethodKey{Name: "Method3", Version: 1}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method3")
 	require.Equal(t, "Method3", sm.Name)
 	require.Equal(t, 1, sm.Version)
 
-	key = schema.SchemaMethodKey{Name: "Method3", Version: 3}
+	key = schema.MethodKey{Name: "Method3", Version: 3}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method3")

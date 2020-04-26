@@ -10,54 +10,54 @@ import (
 	"github.com/13k/geyser/schema"
 )
 
-func schemaMethod(name string, version int) (schema.SchemaMethodKey, *schema.SchemaMethod) {
-	key := schema.SchemaMethodKey{Name: name, Version: version}
-	sm := &schema.SchemaMethod{Name: name, Version: version, HTTPMethod: http.MethodGet}
+func createMethod(name string, version int) (schema.MethodKey, *schema.Method) {
+	key := schema.MethodKey{Name: name, Version: version}
+	sm := &schema.Method{Name: name, Version: version, HTTPMethod: http.MethodGet}
 	return key, sm
 }
 
-func schemaMethodValid() *schema.SchemaMethod {
-	return &schema.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: http.MethodGet}
+func createMethodValid() *schema.Method {
+	return &schema.Method{Name: "Method", Version: 1, HTTPMethod: http.MethodGet}
 }
 
-func schemaMethodInvalidName() *schema.SchemaMethod {
-	return &schema.SchemaMethod{Name: "9Method", Version: 1, HTTPMethod: http.MethodGet}
+func createMethodInvalidName() *schema.Method {
+	return &schema.Method{Name: "9Method", Version: 1, HTTPMethod: http.MethodGet}
 }
 
-func schemaMethodInvalidVersion() *schema.SchemaMethod {
-	return &schema.SchemaMethod{Name: "Method", Version: 0, HTTPMethod: http.MethodGet}
+func createMethodInvalidVersion() *schema.Method {
+	return &schema.Method{Name: "Method", Version: 0, HTTPMethod: http.MethodGet}
 }
 
-func schemaMethodInvalidHTTPMethod() *schema.SchemaMethod {
-	return &schema.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: "xyz"}
+func createMethodInvalidHTTPMethod() *schema.Method {
+	return &schema.Method{Name: "Method", Version: 1, HTTPMethod: "xyz"}
 }
 
-func schemaMethodWithParams() *schema.SchemaMethod {
-	return &schema.SchemaMethod{
+func createMethodWithParams() *schema.Method {
+	return &schema.Method{
 		Name:       "MyMethod",
 		Version:    1,
 		HTTPMethod: http.MethodGet,
-		Params:     schemaMethodParams(),
+		Params:     createMethodParams(),
 	}
 }
 
-func schemaMethodWithRequiredParams() *schema.SchemaMethod {
-	return &schema.SchemaMethod{
+func createMethodWithRequiredParams() *schema.Method {
+	return &schema.Method{
 		Name:       "MyMethod",
 		Version:    1,
 		HTTPMethod: http.MethodGet,
-		Params:     schemaMethodParamsRequired(),
+		Params:     createMethodParamsRequired(),
 	}
 }
 
-func TestSchemaMethod_Validate(t *testing.T) {
-	subject := schemaMethodValid()
+func TestMethod_Validate(t *testing.T) {
+	subject := createMethodValid()
 
 	err := subject.Validate()
 
 	assert.NoError(t, err)
 
-	subject = schemaMethodInvalidName()
+	subject = createMethodInvalidName()
 
 	err = subject.Validate()
 
@@ -66,7 +66,7 @@ func TestSchemaMethod_Validate(t *testing.T) {
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
-	subject = schemaMethodInvalidVersion()
+	subject = createMethodInvalidVersion()
 
 	err = subject.Validate()
 
@@ -75,7 +75,7 @@ func TestSchemaMethod_Validate(t *testing.T) {
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
-	subject = schemaMethodInvalidHTTPMethod()
+	subject = createMethodInvalidHTTPMethod()
 
 	err = subject.Validate()
 
@@ -85,9 +85,9 @@ func TestSchemaMethod_Validate(t *testing.T) {
 	}
 }
 
-func TestSchemaMethod_Key(t *testing.T) {
-	expectedKey := schema.SchemaMethodKey{Name: "Method", Version: 1}
-	subject := schemaMethodValid()
+func TestMethod_Key(t *testing.T) {
+	expectedKey := schema.MethodKey{Name: "Method", Version: 1}
+	subject := createMethodValid()
 
 	key, err := subject.Key()
 
@@ -96,7 +96,7 @@ func TestSchemaMethod_Key(t *testing.T) {
 
 	key.Name = ""
 	key.Version = 0
-	subject = schemaMethodInvalidName()
+	subject = createMethodInvalidName()
 
 	key, err = subject.Key()
 
@@ -108,7 +108,7 @@ func TestSchemaMethod_Key(t *testing.T) {
 		assert.Equal(t, 0, key.Version)
 	}
 
-	subject = schemaMethodInvalidVersion()
+	subject = createMethodInvalidVersion()
 
 	key, err = subject.Key()
 
@@ -120,7 +120,7 @@ func TestSchemaMethod_Key(t *testing.T) {
 		assert.Equal(t, 0, key.Version)
 	}
 
-	subject = schemaMethodInvalidHTTPMethod()
+	subject = createMethodInvalidHTTPMethod()
 
 	key, err = subject.Key()
 
@@ -133,11 +133,11 @@ func TestSchemaMethod_Key(t *testing.T) {
 	}
 }
 
-func TestSchemaMethod_ValidateParams(t *testing.T) {
+func TestMethod_ValidateParams(t *testing.T) {
 	missingParams := url.Values{"param": []string{""}}
 	params := url.Values{"param": []string{"value"}}
 
-	subject := schemaMethodValid()
+	subject := createMethodValid()
 
 	err := subject.ValidateParams(missingParams)
 
@@ -147,7 +147,7 @@ func TestSchemaMethod_ValidateParams(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	subject = schemaMethodWithParams()
+	subject = createMethodWithParams()
 
 	err = subject.ValidateParams(missingParams)
 
@@ -157,7 +157,7 @@ func TestSchemaMethod_ValidateParams(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	subject = schemaMethodWithRequiredParams()
+	subject = createMethodWithRequiredParams()
 
 	err = subject.ValidateParams(missingParams)
 

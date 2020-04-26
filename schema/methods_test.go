@@ -10,34 +10,34 @@ import (
 	"github.com/13k/geyser/schema"
 )
 
-func schemaMethods() schema.SchemaMethods {
-	return schema.SchemaMethods{schemaMethodValid()}
+func createMethods() schema.Methods {
+	return schema.Methods{createMethodValid()}
 }
 
-func schemaMethodsInvalidName() schema.SchemaMethods {
-	return schema.SchemaMethods{schemaMethodInvalidName()}
+func createMethodsInvalidName() schema.Methods {
+	return schema.Methods{createMethodInvalidName()}
 }
 
-func schemaMethodsInvalidVersion() schema.SchemaMethods {
-	return schema.SchemaMethods{schemaMethodInvalidVersion()}
+func createMethodsInvalidVersion() schema.Methods {
+	return schema.Methods{createMethodInvalidVersion()}
 }
 
-func schemaMethodsInvalidHTTPMethod() schema.SchemaMethods {
-	return schema.SchemaMethods{schemaMethodInvalidHTTPMethod()}
+func createMethodsInvalidHTTPMethod() schema.Methods {
+	return schema.Methods{createMethodInvalidHTTPMethod()}
 }
 
-func TestNewSchemaMethods(t *testing.T) {
-	subject, err := schema.NewSchemaMethods()
+func TestNewMethods(t *testing.T) {
+	subject, err := schema.NewMethods()
 
 	assert.NoError(t, err)
 	assert.Len(t, subject, 0)
 
-	subject, err = schema.NewSchemaMethods(schemaMethodValid())
+	subject, err = schema.NewMethods(createMethodValid())
 
 	assert.NoError(t, err)
 	assert.Len(t, subject, 1)
 
-	subject, err = schema.NewSchemaMethods(schemaMethodInvalidName())
+	subject, err = schema.NewMethods(createMethodInvalidName())
 
 	if assert.Error(t, err) {
 		_, ok := err.(*schema.InvalidMethodNameError)
@@ -46,7 +46,7 @@ func TestNewSchemaMethods(t *testing.T) {
 		assert.Nil(t, subject)
 	}
 
-	subject, err = schema.NewSchemaMethods(schemaMethodInvalidVersion())
+	subject, err = schema.NewMethods(createMethodInvalidVersion())
 
 	if assert.Error(t, err) {
 		_, ok := err.(*schema.InvalidMethodVersionError)
@@ -55,7 +55,7 @@ func TestNewSchemaMethods(t *testing.T) {
 		assert.Nil(t, subject)
 	}
 
-	subject, err = schema.NewSchemaMethods(schemaMethodInvalidHTTPMethod())
+	subject, err = schema.NewMethods(createMethodInvalidHTTPMethod())
 
 	if assert.Error(t, err) {
 		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
@@ -65,42 +65,42 @@ func TestNewSchemaMethods(t *testing.T) {
 	}
 }
 
-func TestMustNewSchemaMethods(t *testing.T) {
-	var subject schema.SchemaMethods
+func TestMustNewMethods(t *testing.T) {
+	var subject schema.Methods
 
 	require.NotPanics(t, func() {
-		subject = schema.MustNewSchemaMethods()
+		subject = schema.MustNewMethods()
 	})
 
 	assert.Len(t, subject, 0)
 
 	require.NotPanics(t, func() {
-		subject = schema.MustNewSchemaMethods(schemaMethodValid())
+		subject = schema.MustNewMethods(createMethodValid())
 	})
 
 	assert.Len(t, subject, 1)
 
 	require.Panics(t, func() {
-		subject = schema.MustNewSchemaMethods(schemaMethodInvalidName())
+		subject = schema.MustNewMethods(createMethodInvalidName())
 	})
 
 	require.Panics(t, func() {
-		subject = schema.MustNewSchemaMethods(schemaMethodInvalidVersion())
+		subject = schema.MustNewMethods(createMethodInvalidVersion())
 	})
 
 	require.Panics(t, func() {
-		subject = schema.MustNewSchemaMethods(schemaMethodInvalidHTTPMethod())
+		subject = schema.MustNewMethods(createMethodInvalidHTTPMethod())
 	})
 }
 
-func TestSchemaMethods_Validate(t *testing.T) {
-	subject := schemaMethods()
+func TestMethods_Validate(t *testing.T) {
+	subject := createMethods()
 
 	err := subject.Validate()
 
 	assert.NoError(t, err)
 
-	subject = schemaMethodsInvalidName()
+	subject = createMethodsInvalidName()
 
 	err = subject.Validate()
 
@@ -109,7 +109,7 @@ func TestSchemaMethods_Validate(t *testing.T) {
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
-	subject = schemaMethodsInvalidVersion()
+	subject = createMethodsInvalidVersion()
 
 	err = subject.Validate()
 
@@ -118,7 +118,7 @@ func TestSchemaMethods_Validate(t *testing.T) {
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
-	subject = schemaMethodsInvalidHTTPMethod()
+	subject = createMethodsInvalidHTTPMethod()
 
 	err = subject.Validate()
 
@@ -128,9 +128,9 @@ func TestSchemaMethods_Validate(t *testing.T) {
 	}
 }
 
-func TestSchemaMethods_Get(t *testing.T) {
-	key := schema.SchemaMethodKey{Name: "Method", Version: 1}
-	subject := schemaMethodsInvalidName()
+func TestMethods_Get(t *testing.T) {
+	key := schema.MethodKey{Name: "Method", Version: 1}
+	subject := createMethodsInvalidName()
 
 	sm, err := subject.Get(key)
 
@@ -141,7 +141,7 @@ func TestSchemaMethods_Get(t *testing.T) {
 		assert.Nil(t, sm)
 	}
 
-	subject = schemaMethodsInvalidVersion()
+	subject = createMethodsInvalidVersion()
 
 	sm, err = subject.Get(key)
 
@@ -152,7 +152,7 @@ func TestSchemaMethods_Get(t *testing.T) {
 		assert.Nil(t, sm)
 	}
 
-	subject = schemaMethodsInvalidHTTPMethod()
+	subject = createMethodsInvalidHTTPMethod()
 
 	sm, err = subject.Get(key)
 
@@ -163,18 +163,18 @@ func TestSchemaMethods_Get(t *testing.T) {
 		assert.Nil(t, sm)
 	}
 
-	key1, sm1 := schemaMethod("Method1", 1)
-	key2, sm2 := schemaMethod("Method1", 2)
-	key3, sm3 := schemaMethod("Method1", 3)
-	key4, sm4 := schemaMethod("Method2", 2)
-	key5, sm5 := schemaMethod("Method2", 3)
-	key6, sm6 := schemaMethod("Method3", 3)
-	key7 := schema.SchemaMethodKey{Name: "Method1", Version: 0}
-	key8 := schema.SchemaMethodKey{Name: "Method2", Version: 1}
-	key9 := schema.SchemaMethodKey{Name: "Method3", Version: 2}
+	key1, sm1 := createMethod("Method1", 1)
+	key2, sm2 := createMethod("Method1", 2)
+	key3, sm3 := createMethod("Method1", 3)
+	key4, sm4 := createMethod("Method2", 2)
+	key5, sm5 := createMethod("Method2", 3)
+	key6, sm6 := createMethod("Method3", 3)
+	key7 := schema.MethodKey{Name: "Method1", Version: 0}
+	key8 := schema.MethodKey{Name: "Method2", Version: 1}
+	key9 := schema.MethodKey{Name: "Method3", Version: 2}
 
 	require.NotPanics(t, func() {
-		subject = schema.MustNewSchemaMethods(sm1, sm2, sm3, sm4, sm5, sm6)
+		subject = schema.MustNewMethods(sm1, sm2, sm3, sm4, sm5, sm6)
 	})
 
 	sm, err = subject.Get(key1)
@@ -241,8 +241,8 @@ func TestSchemaMethods_Get(t *testing.T) {
 	}
 }
 
-func TestSchemaMethods_GroupByName(t *testing.T) {
-	subject := schemaMethodsInvalidName()
+func TestMethods_GroupByName(t *testing.T) {
+	subject := createMethodsInvalidName()
 	groups, err := subject.GroupByName()
 
 	if assert.Error(t, err) {
@@ -252,7 +252,7 @@ func TestSchemaMethods_GroupByName(t *testing.T) {
 		assert.Nil(t, groups)
 	}
 
-	subject = schemaMethodsInvalidVersion()
+	subject = createMethodsInvalidVersion()
 	groups, err = subject.GroupByName()
 
 	if assert.Error(t, err) {
@@ -262,7 +262,7 @@ func TestSchemaMethods_GroupByName(t *testing.T) {
 		assert.Nil(t, groups)
 	}
 
-	subject = schemaMethodsInvalidHTTPMethod()
+	subject = createMethodsInvalidHTTPMethod()
 	groups, err = subject.GroupByName()
 
 	if assert.Error(t, err) {
@@ -272,13 +272,13 @@ func TestSchemaMethods_GroupByName(t *testing.T) {
 		assert.Nil(t, groups)
 	}
 
-	subject = []*schema.SchemaMethod{
-		&schema.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: http.MethodGet},
-		&schema.SchemaMethod{Name: "Method", Version: 2, HTTPMethod: http.MethodGet},
-		&schema.SchemaMethod{Name: "Method", Version: 3, HTTPMethod: http.MethodGet},
-		&schema.SchemaMethod{Name: "Method2", Version: 1, HTTPMethod: http.MethodGet},
-		&schema.SchemaMethod{Name: "Method3", Version: 1, HTTPMethod: http.MethodGet},
-		&schema.SchemaMethod{Name: "Method3", Version: 2, HTTPMethod: http.MethodGet},
+	subject = []*schema.Method{
+		{Name: "Method", Version: 1, HTTPMethod: http.MethodGet},
+		{Name: "Method", Version: 2, HTTPMethod: http.MethodGet},
+		{Name: "Method", Version: 3, HTTPMethod: http.MethodGet},
+		{Name: "Method2", Version: 1, HTTPMethod: http.MethodGet},
+		{Name: "Method3", Version: 1, HTTPMethod: http.MethodGet},
+		{Name: "Method3", Version: 2, HTTPMethod: http.MethodGet},
 	}
 
 	groups, err = subject.GroupByName()
@@ -307,14 +307,14 @@ func TestSchemaMethods_GroupByName(t *testing.T) {
 	require.Len(t, group, 2)
 }
 
-func TestSchemaMethodsGroup_Versions(t *testing.T) {
-	methods := schema.SchemaMethods{
-		&schema.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: http.MethodGet},
-		&schema.SchemaMethod{Name: "Method", Version: 2, HTTPMethod: http.MethodGet},
-		&schema.SchemaMethod{Name: "Method", Version: 3, HTTPMethod: http.MethodGet},
+func TestMethodsGroup_Versions(t *testing.T) {
+	methods := schema.Methods{
+		&schema.Method{Name: "Method", Version: 1, HTTPMethod: http.MethodGet},
+		&schema.Method{Name: "Method", Version: 2, HTTPMethod: http.MethodGet},
+		&schema.Method{Name: "Method", Version: 3, HTTPMethod: http.MethodGet},
 	}
 
-	subject := schema.SchemaMethodsGroup{}
+	subject := schema.MethodsGroup{}
 
 	for _, method := range methods {
 		key, err := method.Key()

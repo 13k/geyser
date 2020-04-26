@@ -1,11 +1,11 @@
 package schema
 
-// SchemaInterfaces is a collection of `SchemaInterface`.
-type SchemaInterfaces []*SchemaInterface
+// Interfaces is a collection of `Interface`s.
+type Interfaces []*Interface
 
-// MustNewSchemaInterfaces is like `NewSchemaInterfaces` but panics if it returned an error.
-func MustNewSchemaInterfaces(interfaces ...*SchemaInterface) SchemaInterfaces {
-	c, err := NewSchemaInterfaces(interfaces...)
+// MustNewInterfaces is like `NewInterfaces` but panics if it returned an error.
+func MustNewInterfaces(interfaces ...*Interface) Interfaces {
+	c, err := NewInterfaces(interfaces...)
 
 	if err != nil {
 		panic(err)
@@ -14,11 +14,11 @@ func MustNewSchemaInterfaces(interfaces ...*SchemaInterface) SchemaInterfaces {
 	return c
 }
 
-// NewSchemaInterfaces creates a new collection.
+// NewInterfaces creates a new collection.
 //
-// Returns errors described in `SchemaInterface.Validate`.
-func NewSchemaInterfaces(interfaces ...*SchemaInterface) (SchemaInterfaces, error) {
-	c := SchemaInterfaces(interfaces)
+// Returns errors described in `Interface.Validate`.
+func NewInterfaces(interfaces ...*Interface) (Interfaces, error) {
+	c := Interfaces(interfaces)
 
 	if err := c.Validate(); err != nil {
 		return nil, err
@@ -29,8 +29,8 @@ func NewSchemaInterfaces(interfaces ...*SchemaInterface) (SchemaInterfaces, erro
 
 // Validate checks if all contained interfaces are valid.
 //
-// Returns errors described in `SchemaInterface.Validate`.
-func (c SchemaInterfaces) Validate() error {
+// Returns errors described in `Interface.Validate`.
+func (c Interfaces) Validate() error {
 	for _, si := range c {
 		if err := si.Validate(); err != nil {
 			return err
@@ -44,8 +44,8 @@ func (c SchemaInterfaces) Validate() error {
 //
 // Returns an error of type `*InterfaceNotFoundError` if none was found.
 //
-// Returns errors described in `SchemaInterface.Key`.
-func (c SchemaInterfaces) Get(key SchemaInterfaceKey) (*SchemaInterface, error) {
+// Returns errors described in `Interface.Key`.
+func (c Interfaces) Get(key InterfaceKey) (*Interface, error) {
 	for _, si := range c {
 		k, err := si.Key()
 
@@ -63,11 +63,11 @@ func (c SchemaInterfaces) Get(key SchemaInterfaceKey) (*SchemaInterface, error) 
 
 // GroupByName groups the interfaces by base name.
 //
-// The definition of base name is described in `SchemaInterface.Key`.
+// The definition of base name is described in `Interface.Key`.
 //
-// Returns errors described in `SchemaInterface.Key`.
-func (c SchemaInterfaces) GroupByBaseName() (map[string]SchemaInterfacesGroup, error) {
-	result := make(map[string]SchemaInterfacesGroup)
+// Returns errors described in `Interface.Key`.
+func (c Interfaces) GroupByBaseName() (map[string]InterfacesGroup, error) {
+	result := make(map[string]InterfacesGroup)
 
 	for _, si := range c {
 		key, err := si.Key()
@@ -77,7 +77,7 @@ func (c SchemaInterfaces) GroupByBaseName() (map[string]SchemaInterfacesGroup, e
 		}
 
 		if result[key.Name] == nil {
-			result[key.Name] = make(SchemaInterfacesGroup)
+			result[key.Name] = make(InterfacesGroup)
 		}
 
 		result[key.Name][key] = si
@@ -87,9 +87,9 @@ func (c SchemaInterfaces) GroupByBaseName() (map[string]SchemaInterfacesGroup, e
 }
 
 /*
-SchemaInterfacesGroup is a group of `SchemaInterface`s with the same base name.
+InterfacesGroup is a group of `Interface`s with the same base name.
 
-The definition of base name is described in `SchemaInterface.Key`.
+The definition of base name is described in `Interface.Key`.
 
 It's a regular map and therefore provides no guarantees on consistency:
 
@@ -102,12 +102,12 @@ consistent.
 
 Behavior of inconsistent groups is undefined.
 */
-type SchemaInterfacesGroup map[SchemaInterfaceKey]*SchemaInterface
+type InterfacesGroup map[InterfaceKey]*Interface
 
 // Name returns the common base name of all interfaces in the group.
 //
-// The definition of base name is described in `SchemaInterface.Key`.
-func (g SchemaInterfacesGroup) Name() (name string) {
+// The definition of base name is described in `Interface.Key`.
+func (g InterfacesGroup) Name() (name string) {
 	for key := range g {
 		name = key.Name
 		break
@@ -119,7 +119,7 @@ func (g SchemaInterfacesGroup) Name() (name string) {
 // AppIDs collects the AppID of all interfaces in the group.
 //
 // Interfaces with no AppID (0) are omitted.
-func (g SchemaInterfacesGroup) AppIDs() []uint32 {
+func (g InterfacesGroup) AppIDs() []uint32 {
 	var appIDs []uint32
 
 	for key := range g {
@@ -133,9 +133,9 @@ func (g SchemaInterfacesGroup) AppIDs() []uint32 {
 
 // GroupMethods groups interfaces methods by method name.
 //
-// Returns errors described in `SchemaMethods.GroupByName`.
-func (g SchemaInterfacesGroup) GroupMethods() (map[string]SchemaMethodsGroup, error) {
-	var result map[string]SchemaMethodsGroup
+// Returns errors described in `Methods.GroupByName`.
+func (g InterfacesGroup) GroupMethods() (map[string]MethodsGroup, error) {
+	var result map[string]MethodsGroup
 
 	for _, si := range g {
 		grouped, err := si.Methods.GroupByName()

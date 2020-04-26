@@ -15,13 +15,13 @@ func TestSchema_Validate(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	subject.Interfaces = schemaInterfacesValid()
+	subject.Interfaces = createInterfacesValid()
 
 	err = subject.Validate()
 
 	assert.NoError(t, err)
 
-	subject.Interfaces = schemaInterfacesInvalidName()
+	subject.Interfaces = createInterfacesInvalidName()
 
 	err = subject.Validate()
 
@@ -30,13 +30,13 @@ func TestSchema_Validate(t *testing.T) {
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
-	subject.Interfaces = schemaInterfacesMethods()
+	subject.Interfaces = createInterfacesMethods()
 
 	err = subject.Validate()
 
 	assert.NoError(t, err)
 
-	subject.Interfaces = schemaInterfacesMethodsInvalidName()
+	subject.Interfaces = createInterfacesMethodsInvalidName()
 
 	err = subject.Validate()
 
@@ -45,7 +45,7 @@ func TestSchema_Validate(t *testing.T) {
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
-	subject.Interfaces = schemaInterfacesMethodsInvalidVersion()
+	subject.Interfaces = createInterfacesMethodsInvalidVersion()
 
 	err = subject.Validate()
 
@@ -54,7 +54,7 @@ func TestSchema_Validate(t *testing.T) {
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
-	subject.Interfaces = schemaInterfacesMethodsInvalidHTTPMethod()
+	subject.Interfaces = createInterfacesMethodsInvalidHTTPMethod()
 
 	err = subject.Validate()
 

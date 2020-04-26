@@ -10,24 +10,24 @@ var (
 	siNameAppIDRegexp = regexp.MustCompile(`^(\w+)_(\d+)$`)
 )
 
-// SchemaInterfaceKey is the key that uniquely identifies a `SchemaInterface`.
-type SchemaInterfaceKey struct {
+// InterfaceKey is the key that uniquely identifies a `Interface`.
+type InterfaceKey struct {
 	Name  string
 	AppID uint32
 }
 
-// SchemaInterface holds the specification of an API interface.
+// Interface holds the specification of an API interface.
 //
 // The struct should be read-only.
-type SchemaInterface struct {
-	Name         string        `json:"name"`
-	Methods      SchemaMethods `json:"methods"`
-	Undocumented bool          `json:"undocumented"`
+type Interface struct {
+	Name         string  `json:"name"`
+	Methods      Methods `json:"methods"`
+	Undocumented bool    `json:"undocumented"`
 
-	key SchemaInterfaceKey
+	key InterfaceKey
 }
 
-func (i *SchemaInterface) parse() error {
+func (i *Interface) parse() error {
 	if i.key.Name != "" {
 		return nil
 	}
@@ -60,8 +60,8 @@ func (i *SchemaInterface) parse() error {
 //
 // Returns an error of type `*InvalidInterfaceNameError` if the interface name is invalid.
 //
-// Returns errors described in `SchemaMethods.Validate`.
-func (i *SchemaInterface) Validate() error {
+// Returns errors described in `Methods.Validate`.
+func (i *Interface) Validate() error {
 	if err := i.parse(); err != nil {
 		return err
 	}
@@ -81,7 +81,7 @@ func (i *SchemaInterface) Validate() error {
 // Key parses the interface name and extracts the base name and the AppID from the name.
 //
 // Returns errors described in `Validate`.
-func (i *SchemaInterface) Key() (SchemaInterfaceKey, error) {
+func (i *Interface) Key() (InterfaceKey, error) {
 	err := i.parse()
 	return i.key, err
 }

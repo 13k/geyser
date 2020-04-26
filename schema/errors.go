@@ -15,21 +15,20 @@ const (
 )
 
 var (
-	// ErrEmptyInterfaces is returned when trying to manipulate an empty
-	// SchemaInterfaces.
+	// ErrEmptyInterfaces is returned when trying to manipulate an empty `Interfaces`.
 	ErrEmptyInterfaces = errors.New("empty interfaces collection")
-	// ErrMixedInterfaces is returned when trying to use group helpers on a
-	// SchemaInterfaces collection containing mixed interface names.
+	// ErrMixedInterfaces is returned when trying to use group helpers on a `Interfaces` collection
+	// containing mixed interface names.
 	ErrMixedInterfaces = errors.New("mixed interfaces collection")
-	// ErrMixedMethods is returned when trying to use group helpers on a
-	// SchemaMethods collection containing mixed method names.
+	// ErrMixedMethods is returned when trying to use group helpers on a `Methods` collection
+	// containing mixed method names.
 	ErrMixedMethods = errors.New("mixed methods collection")
 )
 
-// InterfaceNotFoundError is returned when tried to access an interface with
-// invalid name or invalid AppID.
+// InterfaceNotFoundError is returned when tried to access an interface with invalid name or invalid
+// AppID.
 type InterfaceNotFoundError struct {
-	Key SchemaInterfaceKey
+	Key InterfaceKey
 }
 
 func (InterfaceNotFoundError) Error() string {
@@ -38,7 +37,7 @@ func (InterfaceNotFoundError) Error() string {
 
 // InvalidInterfaceNameError is returned when an interface has an invalid name.
 type InvalidInterfaceNameError struct {
-	Interface *SchemaInterface
+	Interface *Interface
 	Err       error
 }
 
@@ -46,10 +45,10 @@ func (InvalidInterfaceNameError) Error() string {
 	return errInvalidInterfaceName
 }
 
-// InterfaceMethodNotFoundError is returned when tried to access an interface
-// method with invalid name or invalid version.
+// InterfaceMethodNotFoundError is returned when tried to access an interface method with invalid
+// name or invalid version.
 type InterfaceMethodNotFoundError struct {
-	Key SchemaMethodKey
+	Key MethodKey
 }
 
 func (InterfaceMethodNotFoundError) Error() string {
@@ -58,7 +57,7 @@ func (InterfaceMethodNotFoundError) Error() string {
 
 // InvalidMethodNameError is returned when a method has an invalid name.
 type InvalidMethodNameError struct {
-	Method *SchemaMethod
+	Method *Method
 }
 
 func (InvalidMethodNameError) Error() string {
@@ -67,7 +66,7 @@ func (InvalidMethodNameError) Error() string {
 
 // InvalidMethodVersionError is returned when a method has an invalid version.
 type InvalidMethodVersionError struct {
-	Method *SchemaMethod
+	Method *Method
 }
 
 func (InvalidMethodVersionError) Error() string {
@@ -76,7 +75,7 @@ func (InvalidMethodVersionError) Error() string {
 
 // InvalidMethodHTTPMethodError is returned when a method has an invalid version.
 type InvalidMethodHTTPMethodError struct {
-	Method *SchemaMethod
+	Method *Method
 }
 
 func (InvalidMethodHTTPMethodError) Error() string {
@@ -85,7 +84,7 @@ func (InvalidMethodHTTPMethodError) Error() string {
 
 // RequiredParameterError is returned when a required parameter is missing.
 type RequiredParameterError struct {
-	Param *SchemaMethodParam
+	Param *MethodParam
 }
 
 func (RequiredParameterError) Error() string {

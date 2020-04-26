@@ -1,11 +1,11 @@
 package schema
 
-// SchemaMethods is a collection of `SchemaMethod`.
-type SchemaMethods []*SchemaMethod
+// Methods is a collection of `Method`s.
+type Methods []*Method
 
-// MustNewSchemaMethods is like `NewSchemaMethods` but panics if it returned an error.
-func MustNewSchemaMethods(methods ...*SchemaMethod) SchemaMethods {
-	c, err := NewSchemaMethods(methods...)
+// MustNewMethods is like `NewMethods` but panics if it returned an error.
+func MustNewMethods(methods ...*Method) Methods {
+	c, err := NewMethods(methods...)
 
 	if err != nil {
 		panic(err)
@@ -14,11 +14,11 @@ func MustNewSchemaMethods(methods ...*SchemaMethod) SchemaMethods {
 	return c
 }
 
-// NewSchemaMethods creates a new collection.
+// NewMethods creates a new collection.
 //
-// Returns errors described in `SchemaMethod.Validate`.
-func NewSchemaMethods(methods ...*SchemaMethod) (SchemaMethods, error) {
-	c := SchemaMethods(methods)
+// Returns errors described in `Method.Validate`.
+func NewMethods(methods ...*Method) (Methods, error) {
+	c := Methods(methods)
 
 	if err := c.Validate(); err != nil {
 		return nil, err
@@ -29,8 +29,8 @@ func NewSchemaMethods(methods ...*SchemaMethod) (SchemaMethods, error) {
 
 // Validate checks if all contained methods are valid.
 //
-// Returns errors described in `SchemaMethod.Validate`.
-func (c SchemaMethods) Validate() error {
+// Returns errors described in `Method.Validate`.
+func (c Methods) Validate() error {
 	for _, sm := range c {
 		if err := sm.Validate(); err != nil {
 			return err
@@ -44,8 +44,8 @@ func (c SchemaMethods) Validate() error {
 //
 // Returns an error of type `*InterfaceMethodNotFoundError` if none was found.
 //
-// Returns errors described in `SchemaMethod.Key`.
-func (c SchemaMethods) Get(key SchemaMethodKey) (*SchemaMethod, error) {
+// Returns errors described in `Method.Key`.
+func (c Methods) Get(key MethodKey) (*Method, error) {
 	for _, sm := range c {
 		k, err := sm.Key()
 
@@ -63,9 +63,9 @@ func (c SchemaMethods) Get(key SchemaMethodKey) (*SchemaMethod, error) {
 
 // GroupByName groups the methods by name.
 //
-// Returns errors described in `SchemaMethod.Key`.
-func (c SchemaMethods) GroupByName() (map[string]SchemaMethodsGroup, error) {
-	result := make(map[string]SchemaMethodsGroup)
+// Returns errors described in `Method.Key`.
+func (c Methods) GroupByName() (map[string]MethodsGroup, error) {
+	result := make(map[string]MethodsGroup)
 
 	for _, sm := range c {
 		key, err := sm.Key()
@@ -75,7 +75,7 @@ func (c SchemaMethods) GroupByName() (map[string]SchemaMethodsGroup, error) {
 		}
 
 		if result[key.Name] == nil {
-			result[key.Name] = make(SchemaMethodsGroup)
+			result[key.Name] = make(MethodsGroup)
 		}
 
 		result[key.Name][key] = sm
@@ -85,7 +85,7 @@ func (c SchemaMethods) GroupByName() (map[string]SchemaMethodsGroup, error) {
 }
 
 /*
-SchemaMethodsGroup is a group of `SchemaMethod`s with the same name.
+MethodsGroup is a group of `Method`s with the same name.
 
 It's a regular map and therefore provides no guarantees on consistency:
 
@@ -98,10 +98,10 @@ consistent.
 
 Behavior of inconsistent groups is undefined.
 */
-type SchemaMethodsGroup map[SchemaMethodKey]*SchemaMethod
+type MethodsGroup map[MethodKey]*Method
 
 // Versions collects the versions of all methods in the group.
-func (g SchemaMethodsGroup) Versions() []int {
+func (g MethodsGroup) Versions() []int {
 	var versions []int
 
 	for key := range g {

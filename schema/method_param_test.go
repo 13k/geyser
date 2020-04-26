@@ -8,8 +8,8 @@ import (
 	"github.com/13k/geyser/schema"
 )
 
-func schemaMethodParam() *schema.SchemaMethodParam {
-	return &schema.SchemaMethodParam{
+func createMethodParam() *schema.MethodParam {
+	return &schema.MethodParam{
 		Name:        "param",
 		Type:        "type",
 		Optional:    true,
@@ -17,8 +17,8 @@ func schemaMethodParam() *schema.SchemaMethodParam {
 	}
 }
 
-func schemaMethodParamRequired() *schema.SchemaMethodParam {
-	return &schema.SchemaMethodParam{
+func createMethodParamRequired() *schema.MethodParam {
+	return &schema.MethodParam{
 		Name:        "param",
 		Type:        "type",
 		Optional:    false,
@@ -26,8 +26,8 @@ func schemaMethodParamRequired() *schema.SchemaMethodParam {
 	}
 }
 
-func TestSchemaMethodParam_ValidateValue(t *testing.T) {
-	subject := schemaMethodParam()
+func TestMethodParam_ValidateValue(t *testing.T) {
+	subject := createMethodParam()
 
 	err := subject.ValidateValue("")
 
@@ -37,7 +37,7 @@ func TestSchemaMethodParam_ValidateValue(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	subject = schemaMethodParamRequired()
+	subject = createMethodParamRequired()
 
 	err = subject.ValidateValue("")
 

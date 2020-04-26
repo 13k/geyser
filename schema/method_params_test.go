@@ -9,39 +9,39 @@ import (
 	"github.com/13k/geyser/schema"
 )
 
-func schemaMethodParams() schema.SchemaMethodParams {
-	return schema.SchemaMethodParams{schemaMethodParam()}
+func createMethodParams() schema.MethodParams {
+	return schema.MethodParams{createMethodParam()}
 }
 
-func schemaMethodParamsRequired() schema.SchemaMethodParams {
-	return schema.SchemaMethodParams{schemaMethodParamRequired()}
+func createMethodParamsRequired() schema.MethodParams {
+	return schema.MethodParams{createMethodParamRequired()}
 }
 
-func TestNewSchemaMethodParams(t *testing.T) {
-	params := schema.NewSchemaMethodParams()
+func TestNewMethodParams(t *testing.T) {
+	params := schema.NewMethodParams()
 
 	assert.Len(t, params, 0)
 
-	params = schema.NewSchemaMethodParams(schemaMethodParam())
+	params = schema.NewMethodParams(createMethodParam())
 
 	assert.Len(t, params, 1)
 
-	params = schema.NewSchemaMethodParams(schemaMethodParam(), schemaMethodParamRequired())
+	params = schema.NewMethodParams(createMethodParam(), createMethodParamRequired())
 
 	assert.Len(t, params, 2)
 }
 
-func TestSchemaMethodParams_ValidateParams(t *testing.T) {
+func TestMethodParams_ValidateParams(t *testing.T) {
 	missingParams := url.Values{"param": []string{""}}
 	params := url.Values{"param": []string{"value"}}
 
-	var subject schema.SchemaMethodParams
+	var subject schema.MethodParams
 
 	err := subject.ValidateParams(missingParams)
 
 	assert.NoError(t, err)
 
-	subject = schemaMethodParams()
+	subject = createMethodParams()
 
 	err = subject.ValidateParams(missingParams)
 
@@ -51,7 +51,7 @@ func TestSchemaMethodParams_ValidateParams(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	subject = schemaMethodParamsRequired()
+	subject = createMethodParamsRequired()
 
 	err = subject.ValidateParams(missingParams)
 
