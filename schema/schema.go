@@ -1,3 +1,6 @@
+// Package schema represents the tree structure of an API schema.
+//
+// For more information, refer to the main "geyser" package documentation.
 package schema
 
 // Schema is the root of an API schema specification.

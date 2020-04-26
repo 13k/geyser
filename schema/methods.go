@@ -90,7 +90,9 @@ MethodsGroup is a group of `Method`s with the same name.
 It's a regular map and therefore provides no guarantees on consistency:
 
 * Keys are not guaranteed to be correctly associated to their respective methods
+
 * Methods are not guaranteed to be unique for each key
+
 * Methods are not guaranteed to have the same name
 
 The group creator is responsible for ensuring consistency. Group consumers can assume it's

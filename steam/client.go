@@ -1,8 +1,6 @@
-/*
-Package steam implements an HTTP client for the Steam Web API.
-
-For more information, refer to the main "geyser" package documentation.
-*/
+// Package steam implements an HTTP client for the Steam Web API.
+//
+// For more information, refer to the main "geyser" package documentation.
 package steam
 
 import (

@@ -1,8 +1,6 @@
-/*
-Package dota2 implements an HTTP client for the (undocumented) Dota 2 Web API.
-
-For more information, refer to the main "geyser" package documentation.
-*/
+// Package dota2 implements an HTTP client for the (undocumented) Dota 2 Web API.
+//
+// For more information, refer to the main "geyser" package documentation.
 package dota2
 
 import (
