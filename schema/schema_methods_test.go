@@ -1,63 +1,64 @@
-package geyser_test
+package schema_test
 
 import (
 	"net/http"
 	"testing"
 
-	"github.com/13k/geyser"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/13k/geyser/schema"
 )
 
-func schemaMethods() geyser.SchemaMethods {
-	return geyser.SchemaMethods{schemaMethodValid()}
+func schemaMethods() schema.SchemaMethods {
+	return schema.SchemaMethods{schemaMethodValid()}
 }
 
-func schemaMethodsInvalidName() geyser.SchemaMethods {
-	return geyser.SchemaMethods{schemaMethodInvalidName()}
+func schemaMethodsInvalidName() schema.SchemaMethods {
+	return schema.SchemaMethods{schemaMethodInvalidName()}
 }
 
-func schemaMethodsInvalidVersion() geyser.SchemaMethods {
-	return geyser.SchemaMethods{schemaMethodInvalidVersion()}
+func schemaMethodsInvalidVersion() schema.SchemaMethods {
+	return schema.SchemaMethods{schemaMethodInvalidVersion()}
 }
 
-func schemaMethodsInvalidHTTPMethod() geyser.SchemaMethods {
-	return geyser.SchemaMethods{schemaMethodInvalidHTTPMethod()}
+func schemaMethodsInvalidHTTPMethod() schema.SchemaMethods {
+	return schema.SchemaMethods{schemaMethodInvalidHTTPMethod()}
 }
 
 func TestNewSchemaMethods(t *testing.T) {
-	subject, err := geyser.NewSchemaMethods()
+	subject, err := schema.NewSchemaMethods()
 
 	assert.NoError(t, err)
 	assert.Len(t, subject, 0)
 
-	subject, err = geyser.NewSchemaMethods(schemaMethodValid())
+	subject, err = schema.NewSchemaMethods(schemaMethodValid())
 
 	assert.NoError(t, err)
 	assert.Len(t, subject, 1)
 
-	subject, err = geyser.NewSchemaMethods(schemaMethodInvalidName())
+	subject, err = schema.NewSchemaMethods(schemaMethodInvalidName())
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodNameError)
+		_, ok := err.(*schema.InvalidMethodNameError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, subject)
 	}
 
-	subject, err = geyser.NewSchemaMethods(schemaMethodInvalidVersion())
+	subject, err = schema.NewSchemaMethods(schemaMethodInvalidVersion())
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodVersionError)
+		_, ok := err.(*schema.InvalidMethodVersionError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, subject)
 	}
 
-	subject, err = geyser.NewSchemaMethods(schemaMethodInvalidHTTPMethod())
+	subject, err = schema.NewSchemaMethods(schemaMethodInvalidHTTPMethod())
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodHTTPMethodError)
+		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, subject)
@@ -65,30 +66,30 @@ func TestNewSchemaMethods(t *testing.T) {
 }
 
 func TestMustNewSchemaMethods(t *testing.T) {
-	var subject geyser.SchemaMethods
+	var subject schema.SchemaMethods
 
 	require.NotPanics(t, func() {
-		subject = geyser.MustNewSchemaMethods()
+		subject = schema.MustNewSchemaMethods()
 	})
 
 	assert.Len(t, subject, 0)
 
 	require.NotPanics(t, func() {
-		subject = geyser.MustNewSchemaMethods(schemaMethodValid())
+		subject = schema.MustNewSchemaMethods(schemaMethodValid())
 	})
 
 	assert.Len(t, subject, 1)
 
 	require.Panics(t, func() {
-		subject = geyser.MustNewSchemaMethods(schemaMethodInvalidName())
+		subject = schema.MustNewSchemaMethods(schemaMethodInvalidName())
 	})
 
 	require.Panics(t, func() {
-		subject = geyser.MustNewSchemaMethods(schemaMethodInvalidVersion())
+		subject = schema.MustNewSchemaMethods(schemaMethodInvalidVersion())
 	})
 
 	require.Panics(t, func() {
-		subject = geyser.MustNewSchemaMethods(schemaMethodInvalidHTTPMethod())
+		subject = schema.MustNewSchemaMethods(schemaMethodInvalidHTTPMethod())
 	})
 }
 
@@ -104,7 +105,7 @@ func TestSchemaMethods_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodNameError)
+		_, ok := err.(*schema.InvalidMethodNameError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
@@ -113,7 +114,7 @@ func TestSchemaMethods_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodVersionError)
+		_, ok := err.(*schema.InvalidMethodVersionError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
@@ -122,19 +123,19 @@ func TestSchemaMethods_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodHTTPMethodError)
+		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 }
 
 func TestSchemaMethods_Get(t *testing.T) {
-	key := geyser.SchemaMethodKey{Name: "Method", Version: 1}
+	key := schema.SchemaMethodKey{Name: "Method", Version: 1}
 	subject := schemaMethodsInvalidName()
 
 	sm, err := subject.Get(key)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodNameError)
+		_, ok := err.(*schema.InvalidMethodNameError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, sm)
@@ -145,7 +146,7 @@ func TestSchemaMethods_Get(t *testing.T) {
 	sm, err = subject.Get(key)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodVersionError)
+		_, ok := err.(*schema.InvalidMethodVersionError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, sm)
@@ -156,7 +157,7 @@ func TestSchemaMethods_Get(t *testing.T) {
 	sm, err = subject.Get(key)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodHTTPMethodError)
+		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, sm)
@@ -168,12 +169,12 @@ func TestSchemaMethods_Get(t *testing.T) {
 	key4, sm4 := schemaMethod("Method2", 2)
 	key5, sm5 := schemaMethod("Method2", 3)
 	key6, sm6 := schemaMethod("Method3", 3)
-	key7 := geyser.SchemaMethodKey{Name: "Method1", Version: 0}
-	key8 := geyser.SchemaMethodKey{Name: "Method2", Version: 1}
-	key9 := geyser.SchemaMethodKey{Name: "Method3", Version: 2}
+	key7 := schema.SchemaMethodKey{Name: "Method1", Version: 0}
+	key8 := schema.SchemaMethodKey{Name: "Method2", Version: 1}
+	key9 := schema.SchemaMethodKey{Name: "Method3", Version: 2}
 
 	require.NotPanics(t, func() {
-		subject = geyser.MustNewSchemaMethods(sm1, sm2, sm3, sm4, sm5, sm6)
+		subject = schema.MustNewSchemaMethods(sm1, sm2, sm3, sm4, sm5, sm6)
 	})
 
 	sm, err = subject.Get(key1)
@@ -215,7 +216,7 @@ func TestSchemaMethods_Get(t *testing.T) {
 	sm, err = subject.Get(key7)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InterfaceMethodNotFoundError)
+		_, ok := err.(*schema.InterfaceMethodNotFoundError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, sm)
@@ -224,7 +225,7 @@ func TestSchemaMethods_Get(t *testing.T) {
 	sm, err = subject.Get(key8)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InterfaceMethodNotFoundError)
+		_, ok := err.(*schema.InterfaceMethodNotFoundError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, sm)
@@ -233,7 +234,7 @@ func TestSchemaMethods_Get(t *testing.T) {
 	sm, err = subject.Get(key9)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InterfaceMethodNotFoundError)
+		_, ok := err.(*schema.InterfaceMethodNotFoundError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, sm)
@@ -245,7 +246,7 @@ func TestSchemaMethods_GroupByName(t *testing.T) {
 	groups, err := subject.GroupByName()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodNameError)
+		_, ok := err.(*schema.InvalidMethodNameError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, groups)
@@ -255,7 +256,7 @@ func TestSchemaMethods_GroupByName(t *testing.T) {
 	groups, err = subject.GroupByName()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodVersionError)
+		_, ok := err.(*schema.InvalidMethodVersionError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, groups)
@@ -265,19 +266,19 @@ func TestSchemaMethods_GroupByName(t *testing.T) {
 	groups, err = subject.GroupByName()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodHTTPMethodError)
+		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, groups)
 	}
 
-	subject = []*geyser.SchemaMethod{
-		&geyser.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: http.MethodGet},
-		&geyser.SchemaMethod{Name: "Method", Version: 2, HTTPMethod: http.MethodGet},
-		&geyser.SchemaMethod{Name: "Method", Version: 3, HTTPMethod: http.MethodGet},
-		&geyser.SchemaMethod{Name: "Method2", Version: 1, HTTPMethod: http.MethodGet},
-		&geyser.SchemaMethod{Name: "Method3", Version: 1, HTTPMethod: http.MethodGet},
-		&geyser.SchemaMethod{Name: "Method3", Version: 2, HTTPMethod: http.MethodGet},
+	subject = []*schema.SchemaMethod{
+		&schema.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: http.MethodGet},
+		&schema.SchemaMethod{Name: "Method", Version: 2, HTTPMethod: http.MethodGet},
+		&schema.SchemaMethod{Name: "Method", Version: 3, HTTPMethod: http.MethodGet},
+		&schema.SchemaMethod{Name: "Method2", Version: 1, HTTPMethod: http.MethodGet},
+		&schema.SchemaMethod{Name: "Method3", Version: 1, HTTPMethod: http.MethodGet},
+		&schema.SchemaMethod{Name: "Method3", Version: 2, HTTPMethod: http.MethodGet},
 	}
 
 	groups, err = subject.GroupByName()
@@ -307,13 +308,13 @@ func TestSchemaMethods_GroupByName(t *testing.T) {
 }
 
 func TestSchemaMethodsGroup_Versions(t *testing.T) {
-	methods := geyser.SchemaMethods{
-		&geyser.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: http.MethodGet},
-		&geyser.SchemaMethod{Name: "Method", Version: 2, HTTPMethod: http.MethodGet},
-		&geyser.SchemaMethod{Name: "Method", Version: 3, HTTPMethod: http.MethodGet},
+	methods := schema.SchemaMethods{
+		&schema.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: http.MethodGet},
+		&schema.SchemaMethod{Name: "Method", Version: 2, HTTPMethod: http.MethodGet},
+		&schema.SchemaMethod{Name: "Method", Version: 3, HTTPMethod: http.MethodGet},
 	}
 
-	subject := geyser.SchemaMethodsGroup{}
+	subject := schema.SchemaMethodsGroup{}
 
 	for _, method := range methods {
 		key, err := method.Key()

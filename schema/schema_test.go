@@ -1,14 +1,15 @@
-package geyser_test
+package schema_test
 
 import (
 	"testing"
 
-	"github.com/13k/geyser"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/13k/geyser/schema"
 )
 
 func TestSchema_Validate(t *testing.T) {
-	subject := &geyser.Schema{}
+	subject := &schema.Schema{}
 
 	err := subject.Validate()
 
@@ -25,7 +26,7 @@ func TestSchema_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidInterfaceNameError)
+		_, ok := err.(*schema.InvalidInterfaceNameError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
@@ -40,7 +41,7 @@ func TestSchema_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodNameError)
+		_, ok := err.(*schema.InvalidMethodNameError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
@@ -49,7 +50,7 @@ func TestSchema_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodVersionError)
+		_, ok := err.(*schema.InvalidMethodVersionError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
@@ -58,7 +59,7 @@ func TestSchema_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodHTTPMethodError)
+		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 }

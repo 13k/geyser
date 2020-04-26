@@ -1,4 +1,4 @@
-package geyser
+package schema
 
 // SchemaInterfaces is a collection of `SchemaInterface`.
 type SchemaInterfaces []*SchemaInterface

@@ -1,14 +1,15 @@
-package geyser_test
+package schema_test
 
 import (
 	"testing"
 
-	"github.com/13k/geyser"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/13k/geyser/schema"
 )
 
-func schemaMethodParam() *geyser.SchemaMethodParam {
-	return &geyser.SchemaMethodParam{
+func schemaMethodParam() *schema.SchemaMethodParam {
+	return &schema.SchemaMethodParam{
 		Name:        "param",
 		Type:        "type",
 		Optional:    true,
@@ -16,8 +17,8 @@ func schemaMethodParam() *geyser.SchemaMethodParam {
 	}
 }
 
-func schemaMethodParamRequired() *geyser.SchemaMethodParam {
-	return &geyser.SchemaMethodParam{
+func schemaMethodParamRequired() *schema.SchemaMethodParam {
+	return &schema.SchemaMethodParam{
 		Name:        "param",
 		Type:        "type",
 		Optional:    false,
@@ -41,7 +42,7 @@ func TestSchemaMethodParam_ValidateValue(t *testing.T) {
 	err = subject.ValidateValue("")
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.RequiredParameterError)
+		_, ok := err.(*schema.RequiredParameterError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 

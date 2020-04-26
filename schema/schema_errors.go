@@ -1,4 +1,4 @@
-package geyser
+package schema
 
 import (
 	"errors"

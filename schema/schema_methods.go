@@ -1,4 +1,4 @@
-package geyser
+package schema
 
 // SchemaMethods is a collection of `SchemaMethod`.
 type SchemaMethods []*SchemaMethod

@@ -1,31 +1,32 @@
-package geyser_test
+package schema_test
 
 import (
 	"net/url"
 	"testing"
 
-	"github.com/13k/geyser"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/13k/geyser/schema"
 )
 
-func schemaMethodParams() geyser.SchemaMethodParams {
-	return geyser.SchemaMethodParams{schemaMethodParam()}
+func schemaMethodParams() schema.SchemaMethodParams {
+	return schema.SchemaMethodParams{schemaMethodParam()}
 }
 
-func schemaMethodParamsRequired() geyser.SchemaMethodParams {
-	return geyser.SchemaMethodParams{schemaMethodParamRequired()}
+func schemaMethodParamsRequired() schema.SchemaMethodParams {
+	return schema.SchemaMethodParams{schemaMethodParamRequired()}
 }
 
 func TestNewSchemaMethodParams(t *testing.T) {
-	params := geyser.NewSchemaMethodParams()
+	params := schema.NewSchemaMethodParams()
 
 	assert.Len(t, params, 0)
 
-	params = geyser.NewSchemaMethodParams(schemaMethodParam())
+	params = schema.NewSchemaMethodParams(schemaMethodParam())
 
 	assert.Len(t, params, 1)
 
-	params = geyser.NewSchemaMethodParams(schemaMethodParam(), schemaMethodParamRequired())
+	params = schema.NewSchemaMethodParams(schemaMethodParam(), schemaMethodParamRequired())
 
 	assert.Len(t, params, 2)
 }
@@ -34,7 +35,7 @@ func TestSchemaMethodParams_ValidateParams(t *testing.T) {
 	missingParams := url.Values{"param": []string{""}}
 	params := url.Values{"param": []string{"value"}}
 
-	var subject geyser.SchemaMethodParams
+	var subject schema.SchemaMethodParams
 
 	err := subject.ValidateParams(missingParams)
 
@@ -55,7 +56,7 @@ func TestSchemaMethodParams_ValidateParams(t *testing.T) {
 	err = subject.ValidateParams(missingParams)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.RequiredParameterError)
+		_, ok := err.(*schema.RequiredParameterError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 

@@ -1,4 +1,4 @@
-package geyser
+package schema
 
 // Schema is the root of an API schema specification.
 type Schema struct {

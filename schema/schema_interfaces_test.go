@@ -1,89 +1,90 @@
-package geyser_test
+package schema_test
 
 import (
 	"net/http"
 	"testing"
 
-	"github.com/13k/geyser"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/13k/geyser/schema"
 )
 
-func schemaInterfacesValid() geyser.SchemaInterfaces {
-	return geyser.SchemaInterfaces{schemaInterfaceValid()}
+func schemaInterfacesValid() schema.SchemaInterfaces {
+	return schema.SchemaInterfaces{schemaInterfaceValid()}
 }
 
-func schemaInterfacesAppID() geyser.SchemaInterfaces {
-	return geyser.SchemaInterfaces{schemaInterfaceAppID()}
+func schemaInterfacesAppID() schema.SchemaInterfaces {
+	return schema.SchemaInterfaces{schemaInterfaceAppID()}
 }
 
-func schemaInterfacesMethods() geyser.SchemaInterfaces {
-	return geyser.SchemaInterfaces{schemaInterfaceMethods()}
+func schemaInterfacesMethods() schema.SchemaInterfaces {
+	return schema.SchemaInterfaces{schemaInterfaceMethods()}
 }
 
-func schemaInterfacesInvalidName() geyser.SchemaInterfaces {
-	return geyser.SchemaInterfaces{schemaInterfaceInvalidName()}
+func schemaInterfacesInvalidName() schema.SchemaInterfaces {
+	return schema.SchemaInterfaces{schemaInterfaceInvalidName()}
 }
 
-func schemaInterfacesMethodsInvalidName() geyser.SchemaInterfaces {
-	return geyser.SchemaInterfaces{schemaInterfaceMethodsInvalidName()}
+func schemaInterfacesMethodsInvalidName() schema.SchemaInterfaces {
+	return schema.SchemaInterfaces{schemaInterfaceMethodsInvalidName()}
 }
 
-func schemaInterfacesMethodsInvalidVersion() geyser.SchemaInterfaces {
-	return geyser.SchemaInterfaces{schemaInterfaceMethodsInvalidVersion()}
+func schemaInterfacesMethodsInvalidVersion() schema.SchemaInterfaces {
+	return schema.SchemaInterfaces{schemaInterfaceMethodsInvalidVersion()}
 }
 
-func schemaInterfacesMethodsInvalidHTTPMethod() geyser.SchemaInterfaces {
-	return geyser.SchemaInterfaces{schemaInterfaceMethodsInvalidHTTPMethod()}
+func schemaInterfacesMethodsInvalidHTTPMethod() schema.SchemaInterfaces {
+	return schema.SchemaInterfaces{schemaInterfaceMethodsInvalidHTTPMethod()}
 }
 
 func TestNewSchemaInterfaces(t *testing.T) {
-	subject, err := geyser.NewSchemaInterfaces()
+	subject, err := schema.NewSchemaInterfaces()
 
 	assert.NoError(t, err)
 	assert.Len(t, subject, 0)
 
-	subject, err = geyser.NewSchemaInterfaces(schemaInterfaceValid())
+	subject, err = schema.NewSchemaInterfaces(schemaInterfaceValid())
 
 	assert.NoError(t, err)
 	assert.Len(t, subject, 1)
 
-	subject, err = geyser.NewSchemaInterfaces(schemaInterfaceMethods())
+	subject, err = schema.NewSchemaInterfaces(schemaInterfaceMethods())
 
 	assert.NoError(t, err)
 	assert.Len(t, subject, 1)
 
-	subject, err = geyser.NewSchemaInterfaces(schemaInterfaceInvalidName())
+	subject, err = schema.NewSchemaInterfaces(schemaInterfaceInvalidName())
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidInterfaceNameError)
+		_, ok := err.(*schema.InvalidInterfaceNameError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, subject)
 	}
 
-	subject, err = geyser.NewSchemaInterfaces(schemaInterfaceMethodsInvalidName())
+	subject, err = schema.NewSchemaInterfaces(schemaInterfaceMethodsInvalidName())
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodNameError)
+		_, ok := err.(*schema.InvalidMethodNameError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, subject)
 	}
 
-	subject, err = geyser.NewSchemaInterfaces(schemaInterfaceMethodsInvalidVersion())
+	subject, err = schema.NewSchemaInterfaces(schemaInterfaceMethodsInvalidVersion())
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodVersionError)
+		_, ok := err.(*schema.InvalidMethodVersionError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, subject)
 	}
 
-	subject, err = geyser.NewSchemaInterfaces(schemaInterfaceMethodsInvalidHTTPMethod())
+	subject, err = schema.NewSchemaInterfaces(schemaInterfaceMethodsInvalidHTTPMethod())
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodHTTPMethodError)
+		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, subject)
@@ -91,40 +92,40 @@ func TestNewSchemaInterfaces(t *testing.T) {
 }
 
 func TestMustNewSchemaInterfaces(t *testing.T) {
-	var subject geyser.SchemaInterfaces
+	var subject schema.SchemaInterfaces
 
 	require.NotPanics(t, func() {
-		subject = geyser.MustNewSchemaInterfaces()
+		subject = schema.MustNewSchemaInterfaces()
 	})
 
 	assert.Len(t, subject, 0)
 
 	require.NotPanics(t, func() {
-		subject = geyser.MustNewSchemaInterfaces(schemaInterfaceValid())
+		subject = schema.MustNewSchemaInterfaces(schemaInterfaceValid())
 	})
 
 	assert.Len(t, subject, 1)
 
 	require.NotPanics(t, func() {
-		subject = geyser.MustNewSchemaInterfaces(schemaInterfaceMethods())
+		subject = schema.MustNewSchemaInterfaces(schemaInterfaceMethods())
 	})
 
 	assert.Len(t, subject, 1)
 
 	require.Panics(t, func() {
-		subject = geyser.MustNewSchemaInterfaces(schemaInterfaceInvalidName())
+		subject = schema.MustNewSchemaInterfaces(schemaInterfaceInvalidName())
 	})
 
 	require.Panics(t, func() {
-		subject = geyser.MustNewSchemaInterfaces(schemaInterfaceMethodsInvalidName())
+		subject = schema.MustNewSchemaInterfaces(schemaInterfaceMethodsInvalidName())
 	})
 
 	require.Panics(t, func() {
-		subject = geyser.MustNewSchemaInterfaces(schemaInterfaceMethodsInvalidVersion())
+		subject = schema.MustNewSchemaInterfaces(schemaInterfaceMethodsInvalidVersion())
 	})
 
 	require.Panics(t, func() {
-		subject = geyser.MustNewSchemaInterfaces(schemaInterfaceMethodsInvalidHTTPMethod())
+		subject = schema.MustNewSchemaInterfaces(schemaInterfaceMethodsInvalidHTTPMethod())
 	})
 }
 
@@ -140,7 +141,7 @@ func TestSchemaInterfaces_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidInterfaceNameError)
+		_, ok := err.(*schema.InvalidInterfaceNameError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
@@ -155,7 +156,7 @@ func TestSchemaInterfaces_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodNameError)
+		_, ok := err.(*schema.InvalidMethodNameError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
@@ -164,7 +165,7 @@ func TestSchemaInterfaces_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodVersionError)
+		_, ok := err.(*schema.InvalidMethodVersionError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
@@ -173,24 +174,24 @@ func TestSchemaInterfaces_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodHTTPMethodError)
+		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 }
 
 func TestSchemaInterfaces_Get(t *testing.T) {
-	key := geyser.SchemaInterfaceKey{Name: "IFace", AppID: 0}
+	key := schema.SchemaInterfaceKey{Name: "IFace", AppID: 0}
 	subject := schemaInterfacesInvalidName()
 	si, err := subject.Get(key)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidInterfaceNameError)
+		_, ok := err.(*schema.InvalidInterfaceNameError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, si)
 	}
 
-	key = geyser.SchemaInterfaceKey{Name: "IFace", AppID: 0}
+	key = schema.SchemaInterfaceKey{Name: "IFace", AppID: 0}
 	subject = schemaInterfacesValid()
 	si, err = subject.Get(key)
 
@@ -199,7 +200,7 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 		assert.Equal(t, "IFace", si.Name)
 	}
 
-	key = geyser.SchemaInterfaceKey{Name: "IFace", AppID: 123}
+	key = schema.SchemaInterfaceKey{Name: "IFace", AppID: 123}
 	subject = schemaInterfacesAppID()
 	si, err = subject.Get(key)
 
@@ -208,7 +209,7 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 		assert.Equal(t, "IFace_123", si.Name)
 	}
 
-	key = geyser.SchemaInterfaceKey{Name: "IFace", AppID: 0}
+	key = schema.SchemaInterfaceKey{Name: "IFace", AppID: 0}
 	subject = schemaInterfacesMethodsInvalidName()
 	si, err = subject.Get(key)
 
@@ -217,7 +218,7 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 		assert.Equal(t, "IFace", si.Name)
 	}
 
-	key = geyser.SchemaInterfaceKey{Name: "IFace", AppID: 0}
+	key = schema.SchemaInterfaceKey{Name: "IFace", AppID: 0}
 	subject = schemaInterfacesMethodsInvalidVersion()
 	si, err = subject.Get(key)
 
@@ -226,7 +227,7 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 		assert.Equal(t, "IFace", si.Name)
 	}
 
-	key = geyser.SchemaInterfaceKey{Name: "IFace", AppID: 0}
+	key = schema.SchemaInterfaceKey{Name: "IFace", AppID: 0}
 	subject = schemaInterfacesMethodsInvalidHTTPMethod()
 	si, err = subject.Get(key)
 
@@ -240,14 +241,14 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 	key3, si3 := schemaInterface("IFace2", 0)
 	key4, si4 := schemaInterface("IFace3", 0)
 	key5, si5 := schemaInterface("IFace4", 444)
-	key6 := geyser.SchemaInterfaceKey{Name: "IFace1", AppID: 0}
-	key7 := geyser.SchemaInterfaceKey{Name: "IFace1", AppID: 333}
-	key8 := geyser.SchemaInterfaceKey{Name: "IFace2", AppID: 222}
-	key9 := geyser.SchemaInterfaceKey{Name: "IFace3", AppID: 333}
-	key10 := geyser.SchemaInterfaceKey{Name: "IFace4", AppID: 0}
+	key6 := schema.SchemaInterfaceKey{Name: "IFace1", AppID: 0}
+	key7 := schema.SchemaInterfaceKey{Name: "IFace1", AppID: 333}
+	key8 := schema.SchemaInterfaceKey{Name: "IFace2", AppID: 222}
+	key9 := schema.SchemaInterfaceKey{Name: "IFace3", AppID: 333}
+	key10 := schema.SchemaInterfaceKey{Name: "IFace4", AppID: 0}
 
 	require.NotPanics(t, func() {
-		subject = geyser.MustNewSchemaInterfaces(si1, si2, si3, si4, si5)
+		subject = schema.MustNewSchemaInterfaces(si1, si2, si3, si4, si5)
 	})
 
 	si, err = subject.Get(key1)
@@ -283,7 +284,7 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 	si, err = subject.Get(key6)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InterfaceNotFoundError)
+		_, ok := err.(*schema.InterfaceNotFoundError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, si)
@@ -292,7 +293,7 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 	si, err = subject.Get(key7)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InterfaceNotFoundError)
+		_, ok := err.(*schema.InterfaceNotFoundError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, si)
@@ -301,7 +302,7 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 	si, err = subject.Get(key8)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InterfaceNotFoundError)
+		_, ok := err.(*schema.InterfaceNotFoundError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, si)
@@ -310,7 +311,7 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 	si, err = subject.Get(key9)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InterfaceNotFoundError)
+		_, ok := err.(*schema.InterfaceNotFoundError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, si)
@@ -319,7 +320,7 @@ func TestSchemaInterfaces_Get(t *testing.T) {
 	si, err = subject.Get(key10)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InterfaceNotFoundError)
+		_, ok := err.(*schema.InterfaceNotFoundError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, si)
@@ -331,19 +332,19 @@ func TestSchemaInterfaces_GroupByBaseName(t *testing.T) {
 	groups, err := subject.GroupByBaseName()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidInterfaceNameError)
+		_, ok := err.(*schema.InvalidInterfaceNameError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Nil(t, groups)
 	}
 
 	require.NotPanics(t, func() {
-		subject = geyser.MustNewSchemaInterfaces(
-			&geyser.SchemaInterface{Name: "IFace1_111"},
-			&geyser.SchemaInterface{Name: "IFace1_222"},
-			&geyser.SchemaInterface{Name: "IFace2"},
-			&geyser.SchemaInterface{Name: "IFace3_A"},
-			&geyser.SchemaInterface{Name: "IFace4_444"},
+		subject = schema.MustNewSchemaInterfaces(
+			&schema.SchemaInterface{Name: "IFace1_111"},
+			&schema.SchemaInterface{Name: "IFace1_222"},
+			&schema.SchemaInterface{Name: "IFace2"},
+			&schema.SchemaInterface{Name: "IFace3_A"},
+			&schema.SchemaInterface{Name: "IFace4_444"},
 		)
 	})
 
@@ -387,13 +388,13 @@ func TestSchemaInterfaces_GroupByBaseName(t *testing.T) {
 }
 
 func TestSchemaInterfacesGroup_Name(t *testing.T) {
-	interfaces := geyser.SchemaInterfaces{
-		&geyser.SchemaInterface{Name: "Interface_1"},
-		&geyser.SchemaInterface{Name: "Interface_2"},
-		&geyser.SchemaInterface{Name: "Interface_3"},
+	interfaces := schema.SchemaInterfaces{
+		&schema.SchemaInterface{Name: "Interface_1"},
+		&schema.SchemaInterface{Name: "Interface_2"},
+		&schema.SchemaInterface{Name: "Interface_3"},
 	}
 
-	subject := geyser.SchemaInterfacesGroup{}
+	subject := schema.SchemaInterfacesGroup{}
 
 	for _, si := range interfaces {
 		key, err := si.Key()
@@ -409,13 +410,13 @@ func TestSchemaInterfacesGroup_Name(t *testing.T) {
 }
 
 func TestSchemaInterfacesGroup_AppIDs(t *testing.T) {
-	interfaces := geyser.SchemaInterfaces{
-		&geyser.SchemaInterface{Name: "Interface_1"},
-		&geyser.SchemaInterface{Name: "Interface_2"},
-		&geyser.SchemaInterface{Name: "Interface_3"},
+	interfaces := schema.SchemaInterfaces{
+		&schema.SchemaInterface{Name: "Interface_1"},
+		&schema.SchemaInterface{Name: "Interface_2"},
+		&schema.SchemaInterface{Name: "Interface_3"},
 	}
 
-	subject := geyser.SchemaInterfacesGroup{}
+	subject := schema.SchemaInterfacesGroup{}
 
 	for _, si := range interfaces {
 		key, err := si.Key()
@@ -436,38 +437,38 @@ func TestSchemaInterfacesGroup_AppIDs(t *testing.T) {
 }
 
 func TestSchemaInterfacesGroup_GroupMethods(t *testing.T) {
-	var interfaces geyser.SchemaInterfaces
+	var interfaces schema.SchemaInterfaces
 
 	require.NotPanics(t, func() {
-		interfaces = geyser.SchemaInterfaces{
-			&geyser.SchemaInterface{
+		interfaces = schema.SchemaInterfaces{
+			&schema.SchemaInterface{
 				Name: "Interface_1",
-				Methods: geyser.MustNewSchemaMethods(
-					&geyser.SchemaMethod{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
-					&geyser.SchemaMethod{Name: "Method2", Version: 1, HTTPMethod: http.MethodGet},
-					&geyser.SchemaMethod{Name: "Method3", Version: 1, HTTPMethod: http.MethodGet},
+				Methods: schema.MustNewSchemaMethods(
+					&schema.SchemaMethod{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
+					&schema.SchemaMethod{Name: "Method2", Version: 1, HTTPMethod: http.MethodGet},
+					&schema.SchemaMethod{Name: "Method3", Version: 1, HTTPMethod: http.MethodGet},
 				),
 			},
-			&geyser.SchemaInterface{
+			&schema.SchemaInterface{
 				Name: "Interface_2",
-				Methods: geyser.MustNewSchemaMethods(
-					&geyser.SchemaMethod{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
-					&geyser.SchemaMethod{Name: "Method1", Version: 2, HTTPMethod: http.MethodGet},
-					&geyser.SchemaMethod{Name: "Method1", Version: 3, HTTPMethod: http.MethodGet},
+				Methods: schema.MustNewSchemaMethods(
+					&schema.SchemaMethod{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
+					&schema.SchemaMethod{Name: "Method1", Version: 2, HTTPMethod: http.MethodGet},
+					&schema.SchemaMethod{Name: "Method1", Version: 3, HTTPMethod: http.MethodGet},
 				),
 			},
-			&geyser.SchemaInterface{
+			&schema.SchemaInterface{
 				Name: "Interface_3",
-				Methods: geyser.MustNewSchemaMethods(
-					&geyser.SchemaMethod{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
-					&geyser.SchemaMethod{Name: "Method2", Version: 2, HTTPMethod: http.MethodGet},
-					&geyser.SchemaMethod{Name: "Method3", Version: 3, HTTPMethod: http.MethodGet},
+				Methods: schema.MustNewSchemaMethods(
+					&schema.SchemaMethod{Name: "Method1", Version: 1, HTTPMethod: http.MethodGet},
+					&schema.SchemaMethod{Name: "Method2", Version: 2, HTTPMethod: http.MethodGet},
+					&schema.SchemaMethod{Name: "Method3", Version: 3, HTTPMethod: http.MethodGet},
 				),
 			},
 		}
 	})
 
-	subject := geyser.SchemaInterfacesGroup{}
+	subject := schema.SchemaInterfacesGroup{}
 
 	for _, si := range interfaces {
 		key, err := si.Key()
@@ -492,21 +493,21 @@ func TestSchemaInterfacesGroup_GroupMethods(t *testing.T) {
 	require.Truef(t, ok, "method group %q not found", "Method1")
 	require.Len(t, group, 3)
 
-	key := geyser.SchemaMethodKey{Name: "Method1", Version: 1}
+	key := schema.SchemaMethodKey{Name: "Method1", Version: 1}
 	sm, ok := group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method1")
 	require.Equal(t, "Method1", sm.Name)
 	require.Equal(t, 1, sm.Version)
 
-	key = geyser.SchemaMethodKey{Name: "Method1", Version: 2}
+	key = schema.SchemaMethodKey{Name: "Method1", Version: 2}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method1")
 	require.Equal(t, "Method1", sm.Name)
 	require.Equal(t, 2, sm.Version)
 
-	key = geyser.SchemaMethodKey{Name: "Method1", Version: 3}
+	key = schema.SchemaMethodKey{Name: "Method1", Version: 3}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method1")
@@ -518,14 +519,14 @@ func TestSchemaInterfacesGroup_GroupMethods(t *testing.T) {
 	require.Truef(t, ok, "method group %q not found", "Method2")
 	require.Len(t, group, 2)
 
-	key = geyser.SchemaMethodKey{Name: "Method2", Version: 1}
+	key = schema.SchemaMethodKey{Name: "Method2", Version: 1}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method2")
 	require.Equal(t, "Method2", sm.Name)
 	require.Equal(t, 1, sm.Version)
 
-	key = geyser.SchemaMethodKey{Name: "Method2", Version: 2}
+	key = schema.SchemaMethodKey{Name: "Method2", Version: 2}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method2")
@@ -537,14 +538,14 @@ func TestSchemaInterfacesGroup_GroupMethods(t *testing.T) {
 	require.Truef(t, ok, "method group %q not found", "Method3")
 	require.Len(t, group, 2)
 
-	key = geyser.SchemaMethodKey{Name: "Method3", Version: 1}
+	key = schema.SchemaMethodKey{Name: "Method3", Version: 1}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method3")
 	require.Equal(t, "Method3", sm.Name)
 	require.Equal(t, 1, sm.Version)
 
-	key = geyser.SchemaMethodKey{Name: "Method3", Version: 3}
+	key = schema.SchemaMethodKey{Name: "Method3", Version: 3}
 	sm, ok = group[key]
 
 	require.Truef(t, ok, "method %s/%d not found in group %q", key.Name, key.Version, "Method3")

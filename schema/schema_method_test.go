@@ -1,38 +1,39 @@
-package geyser_test
+package schema_test
 
 import (
 	"net/http"
 	"net/url"
 	"testing"
 
-	"github.com/13k/geyser"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/13k/geyser/schema"
 )
 
-func schemaMethod(name string, version int) (geyser.SchemaMethodKey, *geyser.SchemaMethod) {
-	key := geyser.SchemaMethodKey{Name: name, Version: version}
-	sm := &geyser.SchemaMethod{Name: name, Version: version, HTTPMethod: http.MethodGet}
+func schemaMethod(name string, version int) (schema.SchemaMethodKey, *schema.SchemaMethod) {
+	key := schema.SchemaMethodKey{Name: name, Version: version}
+	sm := &schema.SchemaMethod{Name: name, Version: version, HTTPMethod: http.MethodGet}
 	return key, sm
 }
 
-func schemaMethodValid() *geyser.SchemaMethod {
-	return &geyser.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: http.MethodGet}
+func schemaMethodValid() *schema.SchemaMethod {
+	return &schema.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: http.MethodGet}
 }
 
-func schemaMethodInvalidName() *geyser.SchemaMethod {
-	return &geyser.SchemaMethod{Name: "9Method", Version: 1, HTTPMethod: http.MethodGet}
+func schemaMethodInvalidName() *schema.SchemaMethod {
+	return &schema.SchemaMethod{Name: "9Method", Version: 1, HTTPMethod: http.MethodGet}
 }
 
-func schemaMethodInvalidVersion() *geyser.SchemaMethod {
-	return &geyser.SchemaMethod{Name: "Method", Version: 0, HTTPMethod: http.MethodGet}
+func schemaMethodInvalidVersion() *schema.SchemaMethod {
+	return &schema.SchemaMethod{Name: "Method", Version: 0, HTTPMethod: http.MethodGet}
 }
 
-func schemaMethodInvalidHTTPMethod() *geyser.SchemaMethod {
-	return &geyser.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: "xyz"}
+func schemaMethodInvalidHTTPMethod() *schema.SchemaMethod {
+	return &schema.SchemaMethod{Name: "Method", Version: 1, HTTPMethod: "xyz"}
 }
 
-func schemaMethodWithParams() *geyser.SchemaMethod {
-	return &geyser.SchemaMethod{
+func schemaMethodWithParams() *schema.SchemaMethod {
+	return &schema.SchemaMethod{
 		Name:       "MyMethod",
 		Version:    1,
 		HTTPMethod: http.MethodGet,
@@ -40,8 +41,8 @@ func schemaMethodWithParams() *geyser.SchemaMethod {
 	}
 }
 
-func schemaMethodWithRequiredParams() *geyser.SchemaMethod {
-	return &geyser.SchemaMethod{
+func schemaMethodWithRequiredParams() *schema.SchemaMethod {
+	return &schema.SchemaMethod{
 		Name:       "MyMethod",
 		Version:    1,
 		HTTPMethod: http.MethodGet,
@@ -61,7 +62,7 @@ func TestSchemaMethod_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodNameError)
+		_, ok := err.(*schema.InvalidMethodNameError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
@@ -70,7 +71,7 @@ func TestSchemaMethod_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodVersionError)
+		_, ok := err.(*schema.InvalidMethodVersionError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 
@@ -79,13 +80,13 @@ func TestSchemaMethod_Validate(t *testing.T) {
 	err = subject.Validate()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodHTTPMethodError)
+		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 }
 
 func TestSchemaMethod_Key(t *testing.T) {
-	expectedKey := geyser.SchemaMethodKey{Name: "Method", Version: 1}
+	expectedKey := schema.SchemaMethodKey{Name: "Method", Version: 1}
 	subject := schemaMethodValid()
 
 	key, err := subject.Key()
@@ -100,7 +101,7 @@ func TestSchemaMethod_Key(t *testing.T) {
 	key, err = subject.Key()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodNameError)
+		_, ok := err.(*schema.InvalidMethodNameError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Equal(t, "", key.Name)
@@ -112,7 +113,7 @@ func TestSchemaMethod_Key(t *testing.T) {
 	key, err = subject.Key()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodVersionError)
+		_, ok := err.(*schema.InvalidMethodVersionError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Equal(t, "", key.Name)
@@ -124,7 +125,7 @@ func TestSchemaMethod_Key(t *testing.T) {
 	key, err = subject.Key()
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.InvalidMethodHTTPMethodError)
+		_, ok := err.(*schema.InvalidMethodHTTPMethodError)
 
 		assert.Truef(t, ok, "invalid error type: %T", err)
 		assert.Equal(t, "", key.Name)
@@ -161,7 +162,7 @@ func TestSchemaMethod_ValidateParams(t *testing.T) {
 	err = subject.ValidateParams(missingParams)
 
 	if assert.Error(t, err) {
-		_, ok := err.(*geyser.RequiredParameterError)
+		_, ok := err.(*schema.RequiredParameterError)
 		assert.Truef(t, ok, "invalid error type: %T", err)
 	}
 

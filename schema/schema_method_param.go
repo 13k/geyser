@@ -1,4 +1,4 @@
-package geyser
+package schema
 
 // SchemaMethodParam holds the specification of an API interface method parameter.
 //
