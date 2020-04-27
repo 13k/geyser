@@ -91,11 +91,7 @@ func (i *IDOTA2Fantasy) GetFantasyPlayerRawStats() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -115,11 +111,7 @@ func (i *IDOTA2Fantasy) GetLeaderboards() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -139,11 +131,7 @@ func (i *IDOTA2Fantasy) GetPlayerInfo() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -163,11 +151,7 @@ func (i *IDOTA2Fantasy) GetProPlayerInfo() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }

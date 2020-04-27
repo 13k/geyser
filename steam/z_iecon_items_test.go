@@ -12,34 +12,41 @@ import (
 )
 
 func TestNewIEconItems(t *testing.T) {
-	client := &steam.Client{}
+	client, err := steam.New()
+
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
 	appIDs := []uint32{440, 570, 620, 730, 205790, 221540, 238460, 583950}
 
 	for _, appID := range appIDs {
-		iface, err := steam.NewIEconItems(client, appID)
+		ci, err := steam.NewIEconItems(client, appID)
 
 		require.NoError(t, err)
-		require.NotNil(t, iface)
+		require.NotNil(t, ci)
 
-		assert.Same(t, client, iface.Client)
-		assert.NotNil(t, iface.Interface)
+		assert.Same(t, client, ci.Client)
+		assert.NotNil(t, ci.Interface)
 	}
 }
 
 func TestIEconItems_GetEquippedPlayerItems(t *testing.T) {
-	var iface *steam.IEconItems
+	var ci *steam.IEconItems
 	var err error
 	var req *geyser.Request
 	var ok bool
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconItems(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetEquippedPlayerItems()
+	ci, err = steam.NewIEconItems(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetEquippedPlayerItems()
 
 	require.Error(t, err)
 
@@ -47,30 +54,29 @@ func TestIEconItems_GetEquippedPlayerItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 570)
+	ci, err = steam.NewIEconItems(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetEquippedPlayerItems()
+	req, err = ci.GetEquippedPlayerItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetEquippedPlayerItems", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 620)
+	ci, err = steam.NewIEconItems(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetEquippedPlayerItems()
+	req, err = ci.GetEquippedPlayerItems()
 
 	require.Error(t, err)
 
@@ -78,12 +84,12 @@ func TestIEconItems_GetEquippedPlayerItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 730)
+	ci, err = steam.NewIEconItems(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetEquippedPlayerItems()
+	req, err = ci.GetEquippedPlayerItems()
 
 	require.Error(t, err)
 
@@ -91,30 +97,29 @@ func TestIEconItems_GetEquippedPlayerItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 205790)
+	ci, err = steam.NewIEconItems(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetEquippedPlayerItems()
+	req, err = ci.GetEquippedPlayerItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetEquippedPlayerItems", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 221540)
+	ci, err = steam.NewIEconItems(client, 221540)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetEquippedPlayerItems()
+	req, err = ci.GetEquippedPlayerItems()
 
 	require.Error(t, err)
 
@@ -122,12 +127,12 @@ func TestIEconItems_GetEquippedPlayerItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 238460)
+	ci, err = steam.NewIEconItems(client, 238460)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetEquippedPlayerItems()
+	req, err = ci.GetEquippedPlayerItems()
 
 	require.Error(t, err)
 
@@ -135,18 +140,17 @@ func TestIEconItems_GetEquippedPlayerItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 583950)
+	ci, err = steam.NewIEconItems(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetEquippedPlayerItems()
+	req, err = ci.GetEquippedPlayerItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetEquippedPlayerItems", req.Method.Name)
@@ -155,145 +159,141 @@ func TestIEconItems_GetEquippedPlayerItems(t *testing.T) {
 }
 
 func TestIEconItems_GetPlayerItems(t *testing.T) {
-	var iface *steam.IEconItems
+	var ci *steam.IEconItems
 	var err error
 	var req *geyser.Request
 	var ok bool
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconItems(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetPlayerItems()
+	ci, err = steam.NewIEconItems(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetPlayerItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerItems", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 570)
+	ci, err = steam.NewIEconItems(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetPlayerItems()
+	req, err = ci.GetPlayerItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerItems", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 620)
+	ci, err = steam.NewIEconItems(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetPlayerItems()
+	req, err = ci.GetPlayerItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerItems", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 730)
+	ci, err = steam.NewIEconItems(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetPlayerItems()
+	req, err = ci.GetPlayerItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerItems", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 205790)
+	ci, err = steam.NewIEconItems(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetPlayerItems()
+	req, err = ci.GetPlayerItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerItems", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 221540)
+	ci, err = steam.NewIEconItems(client, 221540)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetPlayerItems()
+	req, err = ci.GetPlayerItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerItems", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 238460)
+	ci, err = steam.NewIEconItems(client, 238460)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetPlayerItems()
+	req, err = ci.GetPlayerItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerItems", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 583950)
+	ci, err = steam.NewIEconItems(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetPlayerItems()
+	req, err = ci.GetPlayerItems()
 
 	require.Error(t, err)
 
@@ -303,37 +303,39 @@ func TestIEconItems_GetPlayerItems(t *testing.T) {
 }
 
 func TestIEconItems_GetSchema(t *testing.T) {
-	var iface *steam.IEconItems
+	var ci *steam.IEconItems
 	var err error
 	var req *geyser.Request
 	var ok bool
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconItems(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSchema(1)
+	ci, err = steam.NewIEconItems(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSchema(1)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchema", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 440)
+	ci, err = steam.NewIEconItems(client, 440)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(2)
+	req, err = ci.GetSchema(2)
 
 	require.Error(t, err)
 
@@ -341,12 +343,12 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 570)
+	ci, err = steam.NewIEconItems(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(1)
+	req, err = ci.GetSchema(1)
 
 	require.Error(t, err)
 
@@ -354,12 +356,12 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 570)
+	ci, err = steam.NewIEconItems(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(2)
+	req, err = ci.GetSchema(2)
 
 	require.Error(t, err)
 
@@ -367,30 +369,29 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 620)
+	ci, err = steam.NewIEconItems(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(1)
+	req, err = ci.GetSchema(1)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchema", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 620)
+	ci, err = steam.NewIEconItems(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(2)
+	req, err = ci.GetSchema(2)
 
 	require.Error(t, err)
 
@@ -398,12 +399,12 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 730)
+	ci, err = steam.NewIEconItems(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(1)
+	req, err = ci.GetSchema(1)
 
 	require.Error(t, err)
 
@@ -411,30 +412,29 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 730)
+	ci, err = steam.NewIEconItems(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(2)
+	req, err = ci.GetSchema(2)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchema", req.Method.Name)
 		assert.Equal(t, 2, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 205790)
+	ci, err = steam.NewIEconItems(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(1)
+	req, err = ci.GetSchema(1)
 
 	require.Error(t, err)
 
@@ -442,12 +442,12 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 205790)
+	ci, err = steam.NewIEconItems(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(2)
+	req, err = ci.GetSchema(2)
 
 	require.Error(t, err)
 
@@ -455,12 +455,12 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 221540)
+	ci, err = steam.NewIEconItems(client, 221540)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(1)
+	req, err = ci.GetSchema(1)
 
 	require.Error(t, err)
 
@@ -468,12 +468,12 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 221540)
+	ci, err = steam.NewIEconItems(client, 221540)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(2)
+	req, err = ci.GetSchema(2)
 
 	require.Error(t, err)
 
@@ -481,12 +481,12 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 238460)
+	ci, err = steam.NewIEconItems(client, 238460)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(1)
+	req, err = ci.GetSchema(1)
 
 	require.Error(t, err)
 
@@ -494,12 +494,12 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 238460)
+	ci, err = steam.NewIEconItems(client, 238460)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(2)
+	req, err = ci.GetSchema(2)
 
 	require.Error(t, err)
 
@@ -507,12 +507,12 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 583950)
+	ci, err = steam.NewIEconItems(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(1)
+	req, err = ci.GetSchema(1)
 
 	require.Error(t, err)
 
@@ -520,12 +520,12 @@ func TestIEconItems_GetSchema(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 583950)
+	ci, err = steam.NewIEconItems(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchema(2)
+	req, err = ci.GetSchema(2)
 
 	require.Error(t, err)
 
@@ -535,37 +535,39 @@ func TestIEconItems_GetSchema(t *testing.T) {
 }
 
 func TestIEconItems_GetSchemaItems(t *testing.T) {
-	var iface *steam.IEconItems
+	var ci *steam.IEconItems
 	var err error
 	var req *geyser.Request
 	var ok bool
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconItems(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSchemaItems()
+	ci, err = steam.NewIEconItems(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSchemaItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchemaItems", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 570)
+	ci, err = steam.NewIEconItems(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaItems()
+	req, err = ci.GetSchemaItems()
 
 	require.Error(t, err)
 
@@ -573,12 +575,12 @@ func TestIEconItems_GetSchemaItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 620)
+	ci, err = steam.NewIEconItems(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaItems()
+	req, err = ci.GetSchemaItems()
 
 	require.Error(t, err)
 
@@ -586,12 +588,12 @@ func TestIEconItems_GetSchemaItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 730)
+	ci, err = steam.NewIEconItems(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaItems()
+	req, err = ci.GetSchemaItems()
 
 	require.Error(t, err)
 
@@ -599,12 +601,12 @@ func TestIEconItems_GetSchemaItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 205790)
+	ci, err = steam.NewIEconItems(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaItems()
+	req, err = ci.GetSchemaItems()
 
 	require.Error(t, err)
 
@@ -612,12 +614,12 @@ func TestIEconItems_GetSchemaItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 221540)
+	ci, err = steam.NewIEconItems(client, 221540)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaItems()
+	req, err = ci.GetSchemaItems()
 
 	require.Error(t, err)
 
@@ -625,12 +627,12 @@ func TestIEconItems_GetSchemaItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 238460)
+	ci, err = steam.NewIEconItems(client, 238460)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaItems()
+	req, err = ci.GetSchemaItems()
 
 	require.Error(t, err)
 
@@ -638,12 +640,12 @@ func TestIEconItems_GetSchemaItems(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 583950)
+	ci, err = steam.NewIEconItems(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaItems()
+	req, err = ci.GetSchemaItems()
 
 	require.Error(t, err)
 
@@ -653,37 +655,39 @@ func TestIEconItems_GetSchemaItems(t *testing.T) {
 }
 
 func TestIEconItems_GetSchemaOverview(t *testing.T) {
-	var iface *steam.IEconItems
+	var ci *steam.IEconItems
 	var err error
 	var req *geyser.Request
 	var ok bool
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconItems(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSchemaOverview()
+	ci, err = steam.NewIEconItems(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSchemaOverview()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchemaOverview", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 570)
+	ci, err = steam.NewIEconItems(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaOverview()
+	req, err = ci.GetSchemaOverview()
 
 	require.Error(t, err)
 
@@ -691,12 +695,12 @@ func TestIEconItems_GetSchemaOverview(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 620)
+	ci, err = steam.NewIEconItems(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaOverview()
+	req, err = ci.GetSchemaOverview()
 
 	require.Error(t, err)
 
@@ -704,12 +708,12 @@ func TestIEconItems_GetSchemaOverview(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 730)
+	ci, err = steam.NewIEconItems(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaOverview()
+	req, err = ci.GetSchemaOverview()
 
 	require.Error(t, err)
 
@@ -717,12 +721,12 @@ func TestIEconItems_GetSchemaOverview(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 205790)
+	ci, err = steam.NewIEconItems(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaOverview()
+	req, err = ci.GetSchemaOverview()
 
 	require.Error(t, err)
 
@@ -730,12 +734,12 @@ func TestIEconItems_GetSchemaOverview(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 221540)
+	ci, err = steam.NewIEconItems(client, 221540)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaOverview()
+	req, err = ci.GetSchemaOverview()
 
 	require.Error(t, err)
 
@@ -743,12 +747,12 @@ func TestIEconItems_GetSchemaOverview(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 238460)
+	ci, err = steam.NewIEconItems(client, 238460)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaOverview()
+	req, err = ci.GetSchemaOverview()
 
 	require.Error(t, err)
 
@@ -756,12 +760,12 @@ func TestIEconItems_GetSchemaOverview(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 583950)
+	ci, err = steam.NewIEconItems(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaOverview()
+	req, err = ci.GetSchemaOverview()
 
 	require.Error(t, err)
 
@@ -771,37 +775,39 @@ func TestIEconItems_GetSchemaOverview(t *testing.T) {
 }
 
 func TestIEconItems_GetSchemaURL(t *testing.T) {
-	var iface *steam.IEconItems
+	var ci *steam.IEconItems
 	var err error
 	var req *geyser.Request
 	var ok bool
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconItems(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSchemaURL(1)
+	ci, err = steam.NewIEconItems(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSchemaURL(1)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchemaURL", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 440)
+	ci, err = steam.NewIEconItems(client, 440)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(2)
+	req, err = ci.GetSchemaURL(2)
 
 	require.Error(t, err)
 
@@ -809,30 +815,29 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 570)
+	ci, err = steam.NewIEconItems(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(1)
+	req, err = ci.GetSchemaURL(1)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchemaURL", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 570)
+	ci, err = steam.NewIEconItems(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(2)
+	req, err = ci.GetSchemaURL(2)
 
 	require.Error(t, err)
 
@@ -840,12 +845,12 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 620)
+	ci, err = steam.NewIEconItems(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(1)
+	req, err = ci.GetSchemaURL(1)
 
 	require.Error(t, err)
 
@@ -853,12 +858,12 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 620)
+	ci, err = steam.NewIEconItems(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(2)
+	req, err = ci.GetSchemaURL(2)
 
 	require.Error(t, err)
 
@@ -866,12 +871,12 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 730)
+	ci, err = steam.NewIEconItems(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(1)
+	req, err = ci.GetSchemaURL(1)
 
 	require.Error(t, err)
 
@@ -879,48 +884,46 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 730)
+	ci, err = steam.NewIEconItems(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(2)
+	req, err = ci.GetSchemaURL(2)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchemaURL", req.Method.Name)
 		assert.Equal(t, 2, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 205790)
+	ci, err = steam.NewIEconItems(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(1)
+	req, err = ci.GetSchemaURL(1)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchemaURL", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 205790)
+	ci, err = steam.NewIEconItems(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(2)
+	req, err = ci.GetSchemaURL(2)
 
 	require.Error(t, err)
 
@@ -928,12 +931,12 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 221540)
+	ci, err = steam.NewIEconItems(client, 221540)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(1)
+	req, err = ci.GetSchemaURL(1)
 
 	require.Error(t, err)
 
@@ -941,12 +944,12 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 221540)
+	ci, err = steam.NewIEconItems(client, 221540)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(2)
+	req, err = ci.GetSchemaURL(2)
 
 	require.Error(t, err)
 
@@ -954,12 +957,12 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 238460)
+	ci, err = steam.NewIEconItems(client, 238460)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(1)
+	req, err = ci.GetSchemaURL(1)
 
 	require.Error(t, err)
 
@@ -967,12 +970,12 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 238460)
+	ci, err = steam.NewIEconItems(client, 238460)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(2)
+	req, err = ci.GetSchemaURL(2)
 
 	require.Error(t, err)
 
@@ -980,12 +983,12 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 583950)
+	ci, err = steam.NewIEconItems(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(1)
+	req, err = ci.GetSchemaURL(1)
 
 	require.Error(t, err)
 
@@ -993,12 +996,12 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 583950)
+	ci, err = steam.NewIEconItems(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaURL(2)
+	req, err = ci.GetSchemaURL(2)
 
 	require.Error(t, err)
 
@@ -1008,55 +1011,56 @@ func TestIEconItems_GetSchemaURL(t *testing.T) {
 }
 
 func TestIEconItems_GetStoreMetaData(t *testing.T) {
-	var iface *steam.IEconItems
+	var ci *steam.IEconItems
 	var err error
 	var req *geyser.Request
 	var ok bool
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconItems(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetStoreMetaData()
+	ci, err = steam.NewIEconItems(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetStoreMetaData()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetStoreMetaData", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 570)
+	ci, err = steam.NewIEconItems(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreMetaData()
+	req, err = ci.GetStoreMetaData()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetStoreMetaData", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 620)
+	ci, err = steam.NewIEconItems(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreMetaData()
+	req, err = ci.GetStoreMetaData()
 
 	require.Error(t, err)
 
@@ -1064,48 +1068,46 @@ func TestIEconItems_GetStoreMetaData(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 730)
+	ci, err = steam.NewIEconItems(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreMetaData()
+	req, err = ci.GetStoreMetaData()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetStoreMetaData", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 205790)
+	ci, err = steam.NewIEconItems(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreMetaData()
+	req, err = ci.GetStoreMetaData()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetStoreMetaData", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 221540)
+	ci, err = steam.NewIEconItems(client, 221540)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreMetaData()
+	req, err = ci.GetStoreMetaData()
 
 	require.Error(t, err)
 
@@ -1113,12 +1115,12 @@ func TestIEconItems_GetStoreMetaData(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 238460)
+	ci, err = steam.NewIEconItems(client, 238460)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreMetaData()
+	req, err = ci.GetStoreMetaData()
 
 	require.Error(t, err)
 
@@ -1126,12 +1128,12 @@ func TestIEconItems_GetStoreMetaData(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 583950)
+	ci, err = steam.NewIEconItems(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreMetaData()
+	req, err = ci.GetStoreMetaData()
 
 	require.Error(t, err)
 
@@ -1141,37 +1143,39 @@ func TestIEconItems_GetStoreMetaData(t *testing.T) {
 }
 
 func TestIEconItems_GetStoreStatus(t *testing.T) {
-	var iface *steam.IEconItems
+	var ci *steam.IEconItems
 	var err error
 	var req *geyser.Request
 	var ok bool
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconItems(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetStoreStatus()
+	ci, err = steam.NewIEconItems(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetStoreStatus()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetStoreStatus", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIEconItems(client, 570)
+	ci, err = steam.NewIEconItems(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreStatus()
+	req, err = ci.GetStoreStatus()
 
 	require.Error(t, err)
 
@@ -1179,12 +1183,12 @@ func TestIEconItems_GetStoreStatus(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 620)
+	ci, err = steam.NewIEconItems(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreStatus()
+	req, err = ci.GetStoreStatus()
 
 	require.Error(t, err)
 
@@ -1192,12 +1196,12 @@ func TestIEconItems_GetStoreStatus(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 730)
+	ci, err = steam.NewIEconItems(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreStatus()
+	req, err = ci.GetStoreStatus()
 
 	require.Error(t, err)
 
@@ -1205,12 +1209,12 @@ func TestIEconItems_GetStoreStatus(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 205790)
+	ci, err = steam.NewIEconItems(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreStatus()
+	req, err = ci.GetStoreStatus()
 
 	require.Error(t, err)
 
@@ -1218,12 +1222,12 @@ func TestIEconItems_GetStoreStatus(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 221540)
+	ci, err = steam.NewIEconItems(client, 221540)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreStatus()
+	req, err = ci.GetStoreStatus()
 
 	require.Error(t, err)
 
@@ -1231,12 +1235,12 @@ func TestIEconItems_GetStoreStatus(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 238460)
+	ci, err = steam.NewIEconItems(client, 238460)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreStatus()
+	req, err = ci.GetStoreStatus()
 
 	require.Error(t, err)
 
@@ -1244,12 +1248,12 @@ func TestIEconItems_GetStoreStatus(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIEconItems(client, 583950)
+	ci, err = steam.NewIEconItems(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetStoreStatus()
+	req, err = ci.GetStoreStatus()
 
 	require.Error(t, err)
 

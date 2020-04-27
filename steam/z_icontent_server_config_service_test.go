@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIContentServerConfigService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewIContentServerConfigService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewIContentServerConfigService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIContentServerConfigService_GetSteamCacheNodeParams(t *testing.T) {
-	var iface *steam.IContentServerConfigService
+	var ci *steam.IContentServerConfigService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIContentServerConfigService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSteamCacheNodeParams()
+	ci, err = steam.NewIContentServerConfigService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSteamCacheNodeParams()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSteamCacheNodeParams", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIContentServerConfigService_GetSteamCacheNodeParams(t *testing.T) {
 }
 
 func TestIContentServerConfigService_SetSteamCacheClientFilters(t *testing.T) {
-	var iface *steam.IContentServerConfigService
+	var ci *steam.IContentServerConfigService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIContentServerConfigService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetSteamCacheClientFilters()
+	ci, err = steam.NewIContentServerConfigService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetSteamCacheClientFilters()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetSteamCacheClientFilters", req.Method.Name)
@@ -74,24 +82,26 @@ func TestIContentServerConfigService_SetSteamCacheClientFilters(t *testing.T) {
 }
 
 func TestIContentServerConfigService_SetSteamCachePerformanceStats(t *testing.T) {
-	var iface *steam.IContentServerConfigService
+	var ci *steam.IContentServerConfigService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIContentServerConfigService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetSteamCachePerformanceStats()
+	ci, err = steam.NewIContentServerConfigService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetSteamCachePerformanceStats()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetSteamCachePerformanceStats", req.Method.Name)

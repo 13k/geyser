@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewISteamWebUserPresenceOAuth(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewISteamWebUserPresenceOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewISteamWebUserPresenceOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestISteamWebUserPresenceOAuth_DeviceInfo(t *testing.T) {
-	var iface *steam.ISteamWebUserPresenceOAuth
+	var ci *steam.ISteamWebUserPresenceOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamWebUserPresenceOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.DeviceInfo()
+	ci, err = steam.NewISteamWebUserPresenceOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.DeviceInfo()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "DeviceInfo", req.Method.Name)
@@ -48,24 +54,26 @@ func TestISteamWebUserPresenceOAuth_DeviceInfo(t *testing.T) {
 }
 
 func TestISteamWebUserPresenceOAuth_Logoff(t *testing.T) {
-	var iface *steam.ISteamWebUserPresenceOAuth
+	var ci *steam.ISteamWebUserPresenceOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamWebUserPresenceOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Logoff()
+	ci, err = steam.NewISteamWebUserPresenceOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Logoff()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Logoff", req.Method.Name)
@@ -74,24 +82,26 @@ func TestISteamWebUserPresenceOAuth_Logoff(t *testing.T) {
 }
 
 func TestISteamWebUserPresenceOAuth_Logon(t *testing.T) {
-	var iface *steam.ISteamWebUserPresenceOAuth
+	var ci *steam.ISteamWebUserPresenceOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamWebUserPresenceOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Logon()
+	ci, err = steam.NewISteamWebUserPresenceOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Logon()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Logon", req.Method.Name)
@@ -100,24 +110,26 @@ func TestISteamWebUserPresenceOAuth_Logon(t *testing.T) {
 }
 
 func TestISteamWebUserPresenceOAuth_Message(t *testing.T) {
-	var iface *steam.ISteamWebUserPresenceOAuth
+	var ci *steam.ISteamWebUserPresenceOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamWebUserPresenceOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Message()
+	ci, err = steam.NewISteamWebUserPresenceOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Message()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Message", req.Method.Name)
@@ -126,24 +138,26 @@ func TestISteamWebUserPresenceOAuth_Message(t *testing.T) {
 }
 
 func TestISteamWebUserPresenceOAuth_Poll(t *testing.T) {
-	var iface *steam.ISteamWebUserPresenceOAuth
+	var ci *steam.ISteamWebUserPresenceOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamWebUserPresenceOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Poll()
+	ci, err = steam.NewISteamWebUserPresenceOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Poll()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Poll", req.Method.Name)
@@ -152,24 +166,26 @@ func TestISteamWebUserPresenceOAuth_Poll(t *testing.T) {
 }
 
 func TestISteamWebUserPresenceOAuth_PollStatus(t *testing.T) {
-	var iface *steam.ISteamWebUserPresenceOAuth
+	var ci *steam.ISteamWebUserPresenceOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamWebUserPresenceOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.PollStatus()
+	ci, err = steam.NewISteamWebUserPresenceOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.PollStatus()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "PollStatus", req.Method.Name)

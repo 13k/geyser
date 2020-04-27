@@ -290,11 +290,7 @@ func (i *IEconDOTA2) GetEventStatsForAccount() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -316,11 +312,7 @@ func (i *IEconDOTA2) GetGameItems() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -343,11 +335,7 @@ func (i *IEconDOTA2) GetHeroes() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -369,11 +357,7 @@ func (i *IEconDOTA2) GetItemCreators() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -396,11 +380,7 @@ func (i *IEconDOTA2) GetItemIconPath() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -422,11 +402,7 @@ func (i *IEconDOTA2) GetRarities() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -448,11 +424,7 @@ func (i *IEconDOTA2) GetTournamentPrizePool() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }

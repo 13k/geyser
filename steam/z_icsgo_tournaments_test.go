@@ -11,39 +11,45 @@ import (
 )
 
 func TestNewICSGOTournaments(t *testing.T) {
-	client := &steam.Client{}
+	client, err := steam.New()
+
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
 	appIDs := []uint32{730}
 
 	for _, appID := range appIDs {
-		iface, err := steam.NewICSGOTournaments(client, appID)
+		ci, err := steam.NewICSGOTournaments(client, appID)
 
 		require.NoError(t, err)
-		require.NotNil(t, iface)
+		require.NotNil(t, ci)
 
-		assert.Same(t, client, iface.Client)
-		assert.NotNil(t, iface.Interface)
+		assert.Same(t, client, ci.Client)
+		assert.NotNil(t, ci.Interface)
 	}
 }
 
 func TestICSGOTournaments_GetTournamentFantasyLineup(t *testing.T) {
-	var iface *steam.ICSGOTournaments
+	var ci *steam.ICSGOTournaments
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICSGOTournaments(client, 730)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTournamentFantasyLineup()
+	ci, err = steam.NewICSGOTournaments(client, 730)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTournamentFantasyLineup()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTournamentFantasyLineup", req.Method.Name)
@@ -52,24 +58,26 @@ func TestICSGOTournaments_GetTournamentFantasyLineup(t *testing.T) {
 }
 
 func TestICSGOTournaments_GetTournamentItems(t *testing.T) {
-	var iface *steam.ICSGOTournaments
+	var ci *steam.ICSGOTournaments
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICSGOTournaments(client, 730)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTournamentItems()
+	ci, err = steam.NewICSGOTournaments(client, 730)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTournamentItems()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTournamentItems", req.Method.Name)
@@ -78,24 +86,26 @@ func TestICSGOTournaments_GetTournamentItems(t *testing.T) {
 }
 
 func TestICSGOTournaments_GetTournamentLayout(t *testing.T) {
-	var iface *steam.ICSGOTournaments
+	var ci *steam.ICSGOTournaments
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICSGOTournaments(client, 730)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTournamentLayout()
+	ci, err = steam.NewICSGOTournaments(client, 730)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTournamentLayout()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTournamentLayout", req.Method.Name)
@@ -104,24 +114,26 @@ func TestICSGOTournaments_GetTournamentLayout(t *testing.T) {
 }
 
 func TestICSGOTournaments_GetTournamentPredictions(t *testing.T) {
-	var iface *steam.ICSGOTournaments
+	var ci *steam.ICSGOTournaments
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICSGOTournaments(client, 730)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTournamentPredictions()
+	ci, err = steam.NewICSGOTournaments(client, 730)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTournamentPredictions()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTournamentPredictions", req.Method.Name)
@@ -130,24 +142,26 @@ func TestICSGOTournaments_GetTournamentPredictions(t *testing.T) {
 }
 
 func TestICSGOTournaments_UploadTournamentFantasyLineup(t *testing.T) {
-	var iface *steam.ICSGOTournaments
+	var ci *steam.ICSGOTournaments
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICSGOTournaments(client, 730)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.UploadTournamentFantasyLineup()
+	ci, err = steam.NewICSGOTournaments(client, 730)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.UploadTournamentFantasyLineup()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "UploadTournamentFantasyLineup", req.Method.Name)
@@ -156,24 +170,26 @@ func TestICSGOTournaments_UploadTournamentFantasyLineup(t *testing.T) {
 }
 
 func TestICSGOTournaments_UploadTournamentPredictions(t *testing.T) {
-	var iface *steam.ICSGOTournaments
+	var ci *steam.ICSGOTournaments
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICSGOTournaments(client, 730)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.UploadTournamentPredictions()
+	ci, err = steam.NewICSGOTournaments(client, 730)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.UploadTournamentPredictions()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "UploadTournamentPredictions", req.Method.Name)

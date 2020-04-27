@@ -84,11 +84,7 @@ func (i *IFriendMessagesService) GetActiveMessageSessions() (*geyser.Request, er
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -108,11 +104,7 @@ func (i *IFriendMessagesService) GetRecentMessages() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -132,11 +124,7 @@ func (i *IFriendMessagesService) MarkOfflineMessagesRead() (*geyser.Request, err
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }

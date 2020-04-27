@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewICustomGames(t *testing.T) {
-	client := &dota2.Client{}
-	iface, err := dota2.NewICustomGames(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := dota2.NewICustomGames(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestICustomGames_GetGamePlayerCounts(t *testing.T) {
-	var iface *dota2.ICustomGames
+	var ci *dota2.ICustomGames
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewICustomGames(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetGamePlayerCounts()
+	ci, err = dota2.NewICustomGames(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetGamePlayerCounts()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetGamePlayerCounts", req.Method.Name)
@@ -48,24 +54,26 @@ func TestICustomGames_GetGamePlayerCounts(t *testing.T) {
 }
 
 func TestICustomGames_GetPopularGames(t *testing.T) {
-	var iface *dota2.ICustomGames
+	var ci *dota2.ICustomGames
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewICustomGames(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetPopularGames()
+	ci, err = dota2.NewICustomGames(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetPopularGames()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPopularGames", req.Method.Name)
@@ -74,24 +82,26 @@ func TestICustomGames_GetPopularGames(t *testing.T) {
 }
 
 func TestICustomGames_GetSuggestedGames(t *testing.T) {
-	var iface *dota2.ICustomGames
+	var ci *dota2.ICustomGames
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewICustomGames(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSuggestedGames()
+	ci, err = dota2.NewICustomGames(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSuggestedGames()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSuggestedGames", req.Method.Name)
@@ -100,24 +110,26 @@ func TestICustomGames_GetSuggestedGames(t *testing.T) {
 }
 
 func TestICustomGames_GetWorkshopVoteQueue(t *testing.T) {
-	var iface *dota2.ICustomGames
+	var ci *dota2.ICustomGames
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewICustomGames(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetWorkshopVoteQueue()
+	ci, err = dota2.NewICustomGames(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetWorkshopVoteQueue()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetWorkshopVoteQueue", req.Method.Name)

@@ -146,11 +146,7 @@ func (i *ISteamWebUserPresenceOAuth) DeviceInfo() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -170,11 +166,7 @@ func (i *ISteamWebUserPresenceOAuth) Logoff() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -194,11 +186,7 @@ func (i *ISteamWebUserPresenceOAuth) Logon() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -218,11 +206,7 @@ func (i *ISteamWebUserPresenceOAuth) Message() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -242,11 +226,7 @@ func (i *ISteamWebUserPresenceOAuth) Poll() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -274,11 +254,7 @@ func (i *ISteamWebUserPresenceOAuth) PollStatus() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }

@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIDOTA2League(t *testing.T) {
-	client := &dota2.Client{}
-	iface, err := dota2.NewIDOTA2League(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := dota2.NewIDOTA2League(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIDOTA2League_GetLeagueData(t *testing.T) {
-	var iface *dota2.IDOTA2League
+	var ci *dota2.IDOTA2League
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2League(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetLeagueData()
+	ci, err = dota2.NewIDOTA2League(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetLeagueData()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetLeagueData", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIDOTA2League_GetLeagueData(t *testing.T) {
 }
 
 func TestIDOTA2League_GetLeagueInfoList(t *testing.T) {
-	var iface *dota2.IDOTA2League
+	var ci *dota2.IDOTA2League
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2League(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetLeagueInfoList()
+	ci, err = dota2.NewIDOTA2League(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetLeagueInfoList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetLeagueInfoList", req.Method.Name)
@@ -74,24 +82,26 @@ func TestIDOTA2League_GetLeagueInfoList(t *testing.T) {
 }
 
 func TestIDOTA2League_GetLeagueNodeResults(t *testing.T) {
-	var iface *dota2.IDOTA2League
+	var ci *dota2.IDOTA2League
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2League(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetLeagueNodeResults()
+	ci, err = dota2.NewIDOTA2League(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetLeagueNodeResults()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetLeagueNodeResults", req.Method.Name)
@@ -100,24 +110,26 @@ func TestIDOTA2League_GetLeagueNodeResults(t *testing.T) {
 }
 
 func TestIDOTA2League_GetLiveGames(t *testing.T) {
-	var iface *dota2.IDOTA2League
+	var ci *dota2.IDOTA2League
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2League(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetLiveGames()
+	ci, err = dota2.NewIDOTA2League(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetLiveGames()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetLiveGames", req.Method.Name)
@@ -126,24 +138,26 @@ func TestIDOTA2League_GetLiveGames(t *testing.T) {
 }
 
 func TestIDOTA2League_GetPredictionResults(t *testing.T) {
-	var iface *dota2.IDOTA2League
+	var ci *dota2.IDOTA2League
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2League(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetPredictionResults()
+	ci, err = dota2.NewIDOTA2League(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetPredictionResults()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPredictionResults", req.Method.Name)
@@ -152,24 +166,26 @@ func TestIDOTA2League_GetPredictionResults(t *testing.T) {
 }
 
 func TestIDOTA2League_GetPredictions(t *testing.T) {
-	var iface *dota2.IDOTA2League
+	var ci *dota2.IDOTA2League
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2League(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetPredictions()
+	ci, err = dota2.NewIDOTA2League(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetPredictions()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPredictions", req.Method.Name)
@@ -178,24 +194,26 @@ func TestIDOTA2League_GetPredictions(t *testing.T) {
 }
 
 func TestIDOTA2League_GetPrizePool(t *testing.T) {
-	var iface *dota2.IDOTA2League
+	var ci *dota2.IDOTA2League
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2League(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetPrizePool()
+	ci, err = dota2.NewIDOTA2League(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetPrizePool()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPrizePool", req.Method.Name)

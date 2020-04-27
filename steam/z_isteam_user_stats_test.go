@@ -11,53 +11,58 @@ import (
 )
 
 func TestNewISteamUserStats(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewISteamUserStats(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewISteamUserStats(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestISteamUserStats_GetGlobalAchievementPercentagesForApp(t *testing.T) {
-	var iface *steam.ISteamUserStats
+	var ci *steam.ISteamUserStats
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserStats(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetGlobalAchievementPercentagesForApp(1)
+	ci, err = steam.NewISteamUserStats(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetGlobalAchievementPercentagesForApp(1)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetGlobalAchievementPercentagesForApp", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewISteamUserStats(client)
+	ci, err = steam.NewISteamUserStats(client)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetGlobalAchievementPercentagesForApp(2)
+	req, err = ci.GetGlobalAchievementPercentagesForApp(2)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetGlobalAchievementPercentagesForApp", req.Method.Name)
@@ -66,24 +71,26 @@ func TestISteamUserStats_GetGlobalAchievementPercentagesForApp(t *testing.T) {
 }
 
 func TestISteamUserStats_GetGlobalStatsForGame(t *testing.T) {
-	var iface *steam.ISteamUserStats
+	var ci *steam.ISteamUserStats
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserStats(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetGlobalStatsForGame()
+	ci, err = steam.NewISteamUserStats(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetGlobalStatsForGame()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetGlobalStatsForGame", req.Method.Name)
@@ -92,24 +99,26 @@ func TestISteamUserStats_GetGlobalStatsForGame(t *testing.T) {
 }
 
 func TestISteamUserStats_GetNumberOfCurrentPlayers(t *testing.T) {
-	var iface *steam.ISteamUserStats
+	var ci *steam.ISteamUserStats
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserStats(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetNumberOfCurrentPlayers()
+	ci, err = steam.NewISteamUserStats(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetNumberOfCurrentPlayers()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetNumberOfCurrentPlayers", req.Method.Name)
@@ -118,24 +127,26 @@ func TestISteamUserStats_GetNumberOfCurrentPlayers(t *testing.T) {
 }
 
 func TestISteamUserStats_GetPlayerAchievements(t *testing.T) {
-	var iface *steam.ISteamUserStats
+	var ci *steam.ISteamUserStats
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserStats(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetPlayerAchievements()
+	ci, err = steam.NewISteamUserStats(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetPlayerAchievements()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerAchievements", req.Method.Name)
@@ -144,42 +155,43 @@ func TestISteamUserStats_GetPlayerAchievements(t *testing.T) {
 }
 
 func TestISteamUserStats_GetSchemaForGame(t *testing.T) {
-	var iface *steam.ISteamUserStats
+	var ci *steam.ISteamUserStats
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserStats(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSchemaForGame(1)
+	ci, err = steam.NewISteamUserStats(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSchemaForGame(1)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchemaForGame", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewISteamUserStats(client)
+	ci, err = steam.NewISteamUserStats(client)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSchemaForGame(2)
+	req, err = ci.GetSchemaForGame(2)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSchemaForGame", req.Method.Name)
@@ -188,42 +200,43 @@ func TestISteamUserStats_GetSchemaForGame(t *testing.T) {
 }
 
 func TestISteamUserStats_GetUserStatsForGame(t *testing.T) {
-	var iface *steam.ISteamUserStats
+	var ci *steam.ISteamUserStats
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserStats(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetUserStatsForGame(1)
+	ci, err = steam.NewISteamUserStats(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetUserStatsForGame(1)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetUserStatsForGame", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewISteamUserStats(client)
+	ci, err = steam.NewISteamUserStats(client)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetUserStatsForGame(2)
+	req, err = ci.GetUserStatsForGame(2)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetUserStatsForGame", req.Method.Name)

@@ -12,70 +12,75 @@ import (
 )
 
 func TestNewIGCVersion(t *testing.T) {
-	client := &steam.Client{}
+	client, err := steam.New()
+
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
 	appIDs := []uint32{440, 570, 730, 205790, 583950, 1046930}
 
 	for _, appID := range appIDs {
-		iface, err := steam.NewIGCVersion(client, appID)
+		ci, err := steam.NewIGCVersion(client, appID)
 
 		require.NoError(t, err)
-		require.NotNil(t, iface)
+		require.NotNil(t, ci)
 
-		assert.Same(t, client, iface.Client)
-		assert.NotNil(t, iface.Interface)
+		assert.Same(t, client, ci.Client)
+		assert.NotNil(t, ci.Interface)
 	}
 }
 
 func TestIGCVersion_GetClientVersion(t *testing.T) {
-	var iface *steam.IGCVersion
+	var ci *steam.IGCVersion
 	var err error
 	var req *geyser.Request
 	var ok bool
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGCVersion(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetClientVersion()
+	ci, err = steam.NewIGCVersion(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetClientVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetClientVersion", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIGCVersion(client, 570)
+	ci, err = steam.NewIGCVersion(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetClientVersion()
+	req, err = ci.GetClientVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetClientVersion", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIGCVersion(client, 730)
+	ci, err = steam.NewIGCVersion(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetClientVersion()
+	req, err = ci.GetClientVersion()
 
 	require.Error(t, err)
 
@@ -83,54 +88,51 @@ func TestIGCVersion_GetClientVersion(t *testing.T) {
 
 	assert.Truef(t, ok, "invalid error type %T", err)
 
-	iface, err = steam.NewIGCVersion(client, 205790)
+	ci, err = steam.NewIGCVersion(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetClientVersion()
+	req, err = ci.GetClientVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetClientVersion", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIGCVersion(client, 583950)
+	ci, err = steam.NewIGCVersion(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetClientVersion()
+	req, err = ci.GetClientVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetClientVersion", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIGCVersion(client, 1046930)
+	ci, err = steam.NewIGCVersion(client, 1046930)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetClientVersion()
+	req, err = ci.GetClientVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetClientVersion", req.Method.Name)
@@ -139,114 +141,111 @@ func TestIGCVersion_GetClientVersion(t *testing.T) {
 }
 
 func TestIGCVersion_GetServerVersion(t *testing.T) {
-	var iface *steam.IGCVersion
+	var ci *steam.IGCVersion
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGCVersion(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetServerVersion()
+	ci, err = steam.NewIGCVersion(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetServerVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetServerVersion", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIGCVersion(client, 570)
+	ci, err = steam.NewIGCVersion(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetServerVersion()
+	req, err = ci.GetServerVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetServerVersion", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIGCVersion(client, 730)
+	ci, err = steam.NewIGCVersion(client, 730)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetServerVersion()
+	req, err = ci.GetServerVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetServerVersion", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIGCVersion(client, 205790)
+	ci, err = steam.NewIGCVersion(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetServerVersion()
+	req, err = ci.GetServerVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetServerVersion", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIGCVersion(client, 583950)
+	ci, err = steam.NewIGCVersion(client, 583950)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetServerVersion()
+	req, err = ci.GetServerVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetServerVersion", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIGCVersion(client, 1046930)
+	ci, err = steam.NewIGCVersion(client, 1046930)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetServerVersion()
+	req, err = ci.GetServerVersion()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetServerVersion", req.Method.Name)

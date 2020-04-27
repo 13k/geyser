@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIPlayerService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIPlayerService_AddFriend(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.AddFriend()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.AddFriend()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "AddFriend", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIPlayerService_AddFriend(t *testing.T) {
 }
 
 func TestIPlayerService_GetBadges(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBadges()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBadges()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBadges", req.Method.Name)
@@ -74,24 +82,26 @@ func TestIPlayerService_GetBadges(t *testing.T) {
 }
 
 func TestIPlayerService_GetCommunityBadgeProgress(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetCommunityBadgeProgress()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetCommunityBadgeProgress()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetCommunityBadgeProgress", req.Method.Name)
@@ -100,24 +110,26 @@ func TestIPlayerService_GetCommunityBadgeProgress(t *testing.T) {
 }
 
 func TestIPlayerService_GetNicknameList(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetNicknameList()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetNicknameList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetNicknameList", req.Method.Name)
@@ -126,24 +138,26 @@ func TestIPlayerService_GetNicknameList(t *testing.T) {
 }
 
 func TestIPlayerService_GetOwnedGames(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetOwnedGames()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetOwnedGames()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetOwnedGames", req.Method.Name)
@@ -152,24 +166,26 @@ func TestIPlayerService_GetOwnedGames(t *testing.T) {
 }
 
 func TestIPlayerService_GetRecentlyPlayedGames(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetRecentlyPlayedGames()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetRecentlyPlayedGames()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetRecentlyPlayedGames", req.Method.Name)
@@ -178,24 +194,26 @@ func TestIPlayerService_GetRecentlyPlayedGames(t *testing.T) {
 }
 
 func TestIPlayerService_GetSteamLevel(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSteamLevel()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSteamLevel()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSteamLevel", req.Method.Name)
@@ -204,24 +222,26 @@ func TestIPlayerService_GetSteamLevel(t *testing.T) {
 }
 
 func TestIPlayerService_GetSteamLevelDistribution(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSteamLevelDistribution()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSteamLevelDistribution()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSteamLevelDistribution", req.Method.Name)
@@ -230,24 +250,26 @@ func TestIPlayerService_GetSteamLevelDistribution(t *testing.T) {
 }
 
 func TestIPlayerService_IgnoreFriend(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.IgnoreFriend()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.IgnoreFriend()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "IgnoreFriend", req.Method.Name)
@@ -256,24 +278,26 @@ func TestIPlayerService_IgnoreFriend(t *testing.T) {
 }
 
 func TestIPlayerService_IsPlayingSharedGame(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.IsPlayingSharedGame()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.IsPlayingSharedGame()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "IsPlayingSharedGame", req.Method.Name)
@@ -282,24 +306,26 @@ func TestIPlayerService_IsPlayingSharedGame(t *testing.T) {
 }
 
 func TestIPlayerService_RecordOfflinePlaytime(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.RecordOfflinePlaytime()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.RecordOfflinePlaytime()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "RecordOfflinePlaytime", req.Method.Name)
@@ -308,24 +334,26 @@ func TestIPlayerService_RecordOfflinePlaytime(t *testing.T) {
 }
 
 func TestIPlayerService_RemoveFriend(t *testing.T) {
-	var iface *steam.IPlayerService
+	var ci *steam.IPlayerService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPlayerService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.RemoveFriend()
+	ci, err = steam.NewIPlayerService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.RemoveFriend()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "RemoveFriend", req.Method.Name)

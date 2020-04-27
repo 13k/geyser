@@ -84,11 +84,7 @@ func (i *IDOTA2AutomatedTourney) GetParticipationDetails() (*geyser.Request, err
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -108,11 +104,7 @@ func (i *IDOTA2AutomatedTourney) GetPlayerHistory() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -132,11 +124,7 @@ func (i *IDOTA2AutomatedTourney) GetTournamentDetails() (*geyser.Request, error)
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }

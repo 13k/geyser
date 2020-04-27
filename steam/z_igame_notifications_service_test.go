@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIGameNotificationsService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewIGameNotificationsService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewIGameNotificationsService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIGameNotificationsService_UserCreateSession(t *testing.T) {
-	var iface *steam.IGameNotificationsService
+	var ci *steam.IGameNotificationsService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameNotificationsService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.UserCreateSession()
+	ci, err = steam.NewIGameNotificationsService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.UserCreateSession()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "UserCreateSession", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIGameNotificationsService_UserCreateSession(t *testing.T) {
 }
 
 func TestIGameNotificationsService_UserDeleteSession(t *testing.T) {
-	var iface *steam.IGameNotificationsService
+	var ci *steam.IGameNotificationsService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameNotificationsService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.UserDeleteSession()
+	ci, err = steam.NewIGameNotificationsService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.UserDeleteSession()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "UserDeleteSession", req.Method.Name)
@@ -74,24 +82,26 @@ func TestIGameNotificationsService_UserDeleteSession(t *testing.T) {
 }
 
 func TestIGameNotificationsService_UserUpdateSession(t *testing.T) {
-	var iface *steam.IGameNotificationsService
+	var ci *steam.IGameNotificationsService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameNotificationsService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.UserUpdateSession()
+	ci, err = steam.NewIGameNotificationsService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.UserUpdateSession()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "UserUpdateSession", req.Method.Name)

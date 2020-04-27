@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewICredentialsService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewICredentialsService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewICredentialsService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestICredentialsService_SteamGuardPhishingReport(t *testing.T) {
-	var iface *steam.ICredentialsService
+	var ci *steam.ICredentialsService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICredentialsService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SteamGuardPhishingReport()
+	ci, err = steam.NewICredentialsService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SteamGuardPhishingReport()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SteamGuardPhishingReport", req.Method.Name)
@@ -48,24 +54,26 @@ func TestICredentialsService_SteamGuardPhishingReport(t *testing.T) {
 }
 
 func TestICredentialsService_ValidateEmailAddress(t *testing.T) {
-	var iface *steam.ICredentialsService
+	var ci *steam.ICredentialsService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICredentialsService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.ValidateEmailAddress()
+	ci, err = steam.NewICredentialsService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.ValidateEmailAddress()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "ValidateEmailAddress", req.Method.Name)

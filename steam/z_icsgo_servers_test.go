@@ -11,39 +11,45 @@ import (
 )
 
 func TestNewICSGOServers(t *testing.T) {
-	client := &steam.Client{}
+	client, err := steam.New()
+
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
 	appIDs := []uint32{730}
 
 	for _, appID := range appIDs {
-		iface, err := steam.NewICSGOServers(client, appID)
+		ci, err := steam.NewICSGOServers(client, appID)
 
 		require.NoError(t, err)
-		require.NotNil(t, iface)
+		require.NotNil(t, ci)
 
-		assert.Same(t, client, iface.Client)
-		assert.NotNil(t, iface.Interface)
+		assert.Same(t, client, ci.Client)
+		assert.NotNil(t, ci.Interface)
 	}
 }
 
 func TestICSGOServers_GetGameMapsPlaytime(t *testing.T) {
-	var iface *steam.ICSGOServers
+	var ci *steam.ICSGOServers
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICSGOServers(client, 730)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetGameMapsPlaytime()
+	ci, err = steam.NewICSGOServers(client, 730)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetGameMapsPlaytime()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetGameMapsPlaytime", req.Method.Name)
@@ -52,24 +58,26 @@ func TestICSGOServers_GetGameMapsPlaytime(t *testing.T) {
 }
 
 func TestICSGOServers_GetGameServersStatus(t *testing.T) {
-	var iface *steam.ICSGOServers
+	var ci *steam.ICSGOServers
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICSGOServers(client, 730)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetGameServersStatus()
+	ci, err = steam.NewICSGOServers(client, 730)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetGameServersStatus()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetGameServersStatus", req.Method.Name)

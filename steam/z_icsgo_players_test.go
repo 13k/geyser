@@ -11,39 +11,45 @@ import (
 )
 
 func TestNewICSGOPlayers(t *testing.T) {
-	client := &steam.Client{}
+	client, err := steam.New()
+
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
 	appIDs := []uint32{730}
 
 	for _, appID := range appIDs {
-		iface, err := steam.NewICSGOPlayers(client, appID)
+		ci, err := steam.NewICSGOPlayers(client, appID)
 
 		require.NoError(t, err)
-		require.NotNil(t, iface)
+		require.NotNil(t, ci)
 
-		assert.Same(t, client, iface.Client)
-		assert.NotNil(t, iface.Interface)
+		assert.Same(t, client, ci.Client)
+		assert.NotNil(t, ci.Interface)
 	}
 }
 
 func TestICSGOPlayers_GetNextMatchSharingCode(t *testing.T) {
-	var iface *steam.ICSGOPlayers
+	var ci *steam.ICSGOPlayers
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICSGOPlayers(client, 730)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetNextMatchSharingCode()
+	ci, err = steam.NewICSGOPlayers(client, 730)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetNextMatchSharingCode()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetNextMatchSharingCode", req.Method.Name)

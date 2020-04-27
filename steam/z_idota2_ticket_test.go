@@ -11,57 +11,62 @@ import (
 )
 
 func TestNewIDOTA2Ticket(t *testing.T) {
-	client := &steam.Client{}
+	client, err := steam.New()
+
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
 	appIDs := []uint32{570, 205790}
 
 	for _, appID := range appIDs {
-		iface, err := steam.NewIDOTA2Ticket(client, appID)
+		ci, err := steam.NewIDOTA2Ticket(client, appID)
 
 		require.NoError(t, err)
-		require.NotNil(t, iface)
+		require.NotNil(t, ci)
 
-		assert.Same(t, client, iface.Client)
-		assert.NotNil(t, iface.Interface)
+		assert.Same(t, client, ci.Client)
+		assert.NotNil(t, ci.Interface)
 	}
 }
 
 func TestIDOTA2Ticket_ClaimBadgeReward(t *testing.T) {
-	var iface *steam.IDOTA2Ticket
+	var ci *steam.IDOTA2Ticket
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIDOTA2Ticket(client, 570)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.ClaimBadgeReward()
+	ci, err = steam.NewIDOTA2Ticket(client, 570)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.ClaimBadgeReward()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "ClaimBadgeReward", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIDOTA2Ticket(client, 205790)
+	ci, err = steam.NewIDOTA2Ticket(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.ClaimBadgeReward()
+	req, err = ci.ClaimBadgeReward()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "ClaimBadgeReward", req.Method.Name)
@@ -70,42 +75,43 @@ func TestIDOTA2Ticket_ClaimBadgeReward(t *testing.T) {
 }
 
 func TestIDOTA2Ticket_GetSteamIDForBadgeID(t *testing.T) {
-	var iface *steam.IDOTA2Ticket
+	var ci *steam.IDOTA2Ticket
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIDOTA2Ticket(client, 570)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSteamIDForBadgeID()
+	ci, err = steam.NewIDOTA2Ticket(client, 570)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSteamIDForBadgeID()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSteamIDForBadgeID", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIDOTA2Ticket(client, 205790)
+	ci, err = steam.NewIDOTA2Ticket(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetSteamIDForBadgeID()
+	req, err = ci.GetSteamIDForBadgeID()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSteamIDForBadgeID", req.Method.Name)
@@ -114,42 +120,43 @@ func TestIDOTA2Ticket_GetSteamIDForBadgeID(t *testing.T) {
 }
 
 func TestIDOTA2Ticket_SetSteamAccountPurchased(t *testing.T) {
-	var iface *steam.IDOTA2Ticket
+	var ci *steam.IDOTA2Ticket
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIDOTA2Ticket(client, 570)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetSteamAccountPurchased()
+	ci, err = steam.NewIDOTA2Ticket(client, 570)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetSteamAccountPurchased()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetSteamAccountPurchased", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIDOTA2Ticket(client, 205790)
+	ci, err = steam.NewIDOTA2Ticket(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.SetSteamAccountPurchased()
+	req, err = ci.SetSteamAccountPurchased()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetSteamAccountPurchased", req.Method.Name)
@@ -158,42 +165,43 @@ func TestIDOTA2Ticket_SetSteamAccountPurchased(t *testing.T) {
 }
 
 func TestIDOTA2Ticket_SteamAccountValidForBadgeType(t *testing.T) {
-	var iface *steam.IDOTA2Ticket
+	var ci *steam.IDOTA2Ticket
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIDOTA2Ticket(client, 570)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SteamAccountValidForBadgeType()
+	ci, err = steam.NewIDOTA2Ticket(client, 570)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SteamAccountValidForBadgeType()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SteamAccountValidForBadgeType", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewIDOTA2Ticket(client, 205790)
+	ci, err = steam.NewIDOTA2Ticket(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.SteamAccountValidForBadgeType()
+	req, err = ci.SteamAccountValidForBadgeType()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SteamAccountValidForBadgeType", req.Method.Name)

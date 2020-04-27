@@ -11,93 +11,96 @@ import (
 )
 
 func TestNewITFPromos(t *testing.T) {
-	client := &steam.Client{}
+	client, err := steam.New()
+
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
 	appIDs := []uint32{440, 570, 620, 205790}
 
 	for _, appID := range appIDs {
-		iface, err := steam.NewITFPromos(client, appID)
+		ci, err := steam.NewITFPromos(client, appID)
 
 		require.NoError(t, err)
-		require.NotNil(t, iface)
+		require.NotNil(t, ci)
 
-		assert.Same(t, client, iface.Client)
-		assert.NotNil(t, iface.Interface)
+		assert.Same(t, client, ci.Client)
+		assert.NotNil(t, ci.Interface)
 	}
 }
 
 func TestITFPromos_GetItemID(t *testing.T) {
-	var iface *steam.ITFPromos
+	var ci *steam.ITFPromos
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITFPromos(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetItemID()
+	ci, err = steam.NewITFPromos(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetItemID()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetItemID", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewITFPromos(client, 570)
+	ci, err = steam.NewITFPromos(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetItemID()
+	req, err = ci.GetItemID()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetItemID", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewITFPromos(client, 620)
+	ci, err = steam.NewITFPromos(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetItemID()
+	req, err = ci.GetItemID()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetItemID", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewITFPromos(client, 205790)
+	ci, err = steam.NewITFPromos(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetItemID()
+	req, err = ci.GetItemID()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetItemID", req.Method.Name)
@@ -106,78 +109,77 @@ func TestITFPromos_GetItemID(t *testing.T) {
 }
 
 func TestITFPromos_GrantItem(t *testing.T) {
-	var iface *steam.ITFPromos
+	var ci *steam.ITFPromos
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITFPromos(client, 440)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GrantItem()
+	ci, err = steam.NewITFPromos(client, 440)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GrantItem()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GrantItem", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewITFPromos(client, 570)
+	ci, err = steam.NewITFPromos(client, 570)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GrantItem()
+	req, err = ci.GrantItem()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GrantItem", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewITFPromos(client, 620)
+	ci, err = steam.NewITFPromos(client, 620)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GrantItem()
+	req, err = ci.GrantItem()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GrantItem", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewITFPromos(client, 205790)
+	ci, err = steam.NewITFPromos(client, 205790)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GrantItem()
+	req, err = ci.GrantItem()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GrantItem", req.Method.Name)

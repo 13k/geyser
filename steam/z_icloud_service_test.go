@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewICloudService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewICloudService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewICloudService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestICloudService_BeginHTTPUpload(t *testing.T) {
-	var iface *steam.ICloudService
+	var ci *steam.ICloudService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICloudService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.BeginHTTPUpload()
+	ci, err = steam.NewICloudService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.BeginHTTPUpload()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "BeginHTTPUpload", req.Method.Name)
@@ -48,24 +54,26 @@ func TestICloudService_BeginHTTPUpload(t *testing.T) {
 }
 
 func TestICloudService_CommitHTTPUpload(t *testing.T) {
-	var iface *steam.ICloudService
+	var ci *steam.ICloudService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICloudService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.CommitHTTPUpload()
+	ci, err = steam.NewICloudService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.CommitHTTPUpload()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "CommitHTTPUpload", req.Method.Name)
@@ -74,24 +82,26 @@ func TestICloudService_CommitHTTPUpload(t *testing.T) {
 }
 
 func TestICloudService_Delete(t *testing.T) {
-	var iface *steam.ICloudService
+	var ci *steam.ICloudService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICloudService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Delete()
+	ci, err = steam.NewICloudService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Delete()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Delete", req.Method.Name)
@@ -100,24 +110,26 @@ func TestICloudService_Delete(t *testing.T) {
 }
 
 func TestICloudService_EnumerateUserFiles(t *testing.T) {
-	var iface *steam.ICloudService
+	var ci *steam.ICloudService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICloudService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.EnumerateUserFiles()
+	ci, err = steam.NewICloudService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.EnumerateUserFiles()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "EnumerateUserFiles", req.Method.Name)
@@ -126,24 +138,26 @@ func TestICloudService_EnumerateUserFiles(t *testing.T) {
 }
 
 func TestICloudService_GetFileDetails(t *testing.T) {
-	var iface *steam.ICloudService
+	var ci *steam.ICloudService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICloudService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetFileDetails()
+	ci, err = steam.NewICloudService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetFileDetails()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetFileDetails", req.Method.Name)
@@ -152,24 +166,26 @@ func TestICloudService_GetFileDetails(t *testing.T) {
 }
 
 func TestICloudService_GetUploadServerInfo(t *testing.T) {
-	var iface *steam.ICloudService
+	var ci *steam.ICloudService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewICloudService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetUploadServerInfo()
+	ci, err = steam.NewICloudService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetUploadServerInfo()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetUploadServerInfo", req.Method.Name)

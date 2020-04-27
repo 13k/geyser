@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewISteamCDN(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewISteamCDN(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewISteamCDN(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestISteamCDN_SetClientFilters(t *testing.T) {
-	var iface *steam.ISteamCDN
+	var ci *steam.ISteamCDN
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamCDN(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetClientFilters()
+	ci, err = steam.NewISteamCDN(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetClientFilters()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetClientFilters", req.Method.Name)
@@ -48,24 +54,26 @@ func TestISteamCDN_SetClientFilters(t *testing.T) {
 }
 
 func TestISteamCDN_SetPerformanceStats(t *testing.T) {
-	var iface *steam.ISteamCDN
+	var ci *steam.ISteamCDN
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamCDN(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetPerformanceStats()
+	ci, err = steam.NewISteamCDN(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetPerformanceStats()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetPerformanceStats", req.Method.Name)

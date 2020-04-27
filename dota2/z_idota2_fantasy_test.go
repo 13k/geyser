@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIDOTA2Fantasy(t *testing.T) {
-	client := &dota2.Client{}
-	iface, err := dota2.NewIDOTA2Fantasy(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := dota2.NewIDOTA2Fantasy(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIDOTA2Fantasy_GetFantasyPlayerRawStats(t *testing.T) {
-	var iface *dota2.IDOTA2Fantasy
+	var ci *dota2.IDOTA2Fantasy
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2Fantasy(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetFantasyPlayerRawStats()
+	ci, err = dota2.NewIDOTA2Fantasy(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetFantasyPlayerRawStats()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetFantasyPlayerRawStats", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIDOTA2Fantasy_GetFantasyPlayerRawStats(t *testing.T) {
 }
 
 func TestIDOTA2Fantasy_GetLeaderboards(t *testing.T) {
-	var iface *dota2.IDOTA2Fantasy
+	var ci *dota2.IDOTA2Fantasy
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2Fantasy(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetLeaderboards()
+	ci, err = dota2.NewIDOTA2Fantasy(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetLeaderboards()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetLeaderboards", req.Method.Name)
@@ -74,24 +82,26 @@ func TestIDOTA2Fantasy_GetLeaderboards(t *testing.T) {
 }
 
 func TestIDOTA2Fantasy_GetPlayerInfo(t *testing.T) {
-	var iface *dota2.IDOTA2Fantasy
+	var ci *dota2.IDOTA2Fantasy
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2Fantasy(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetPlayerInfo()
+	ci, err = dota2.NewIDOTA2Fantasy(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetPlayerInfo()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerInfo", req.Method.Name)
@@ -100,24 +110,26 @@ func TestIDOTA2Fantasy_GetPlayerInfo(t *testing.T) {
 }
 
 func TestIDOTA2Fantasy_GetProPlayerInfo(t *testing.T) {
-	var iface *dota2.IDOTA2Fantasy
+	var ci *dota2.IDOTA2Fantasy
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2Fantasy(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetProPlayerInfo()
+	ci, err = dota2.NewIDOTA2Fantasy(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetProPlayerInfo()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetProPlayerInfo", req.Method.Name)

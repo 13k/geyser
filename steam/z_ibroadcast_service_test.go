@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIBroadcastService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIBroadcastService_GetBroadcastUploadStats(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBroadcastUploadStats()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBroadcastUploadStats()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBroadcastUploadStats", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIBroadcastService_GetBroadcastUploadStats(t *testing.T) {
 }
 
 func TestIBroadcastService_GetBroadcastViewerStats(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBroadcastViewerStats()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBroadcastViewerStats()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBroadcastViewerStats", req.Method.Name)
@@ -74,24 +82,26 @@ func TestIBroadcastService_GetBroadcastViewerStats(t *testing.T) {
 }
 
 func TestIBroadcastService_GetBuildClipStatus(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBuildClipStatus()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBuildClipStatus()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBuildClipStatus", req.Method.Name)
@@ -100,24 +110,26 @@ func TestIBroadcastService_GetBuildClipStatus(t *testing.T) {
 }
 
 func TestIBroadcastService_GetClipDetails(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetClipDetails()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetClipDetails()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetClipDetails", req.Method.Name)
@@ -126,24 +138,26 @@ func TestIBroadcastService_GetClipDetails(t *testing.T) {
 }
 
 func TestIBroadcastService_GetRTMPInfo(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetRTMPInfo()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetRTMPInfo()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetRTMPInfo", req.Method.Name)
@@ -152,24 +166,26 @@ func TestIBroadcastService_GetRTMPInfo(t *testing.T) {
 }
 
 func TestIBroadcastService_MuteBroadcastChatUser(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.MuteBroadcastChatUser()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.MuteBroadcastChatUser()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "MuteBroadcastChatUser", req.Method.Name)
@@ -178,24 +194,26 @@ func TestIBroadcastService_MuteBroadcastChatUser(t *testing.T) {
 }
 
 func TestIBroadcastService_PostChatMessage(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.PostChatMessage()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.PostChatMessage()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "PostChatMessage", req.Method.Name)
@@ -204,24 +222,26 @@ func TestIBroadcastService_PostChatMessage(t *testing.T) {
 }
 
 func TestIBroadcastService_PostGameDataFrameRTMP(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.PostGameDataFrameRTMP()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.PostGameDataFrameRTMP()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "PostGameDataFrameRTMP", req.Method.Name)
@@ -230,24 +250,26 @@ func TestIBroadcastService_PostGameDataFrameRTMP(t *testing.T) {
 }
 
 func TestIBroadcastService_RemoveUserChatText(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.RemoveUserChatText()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.RemoveUserChatText()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "RemoveUserChatText", req.Method.Name)
@@ -256,24 +278,26 @@ func TestIBroadcastService_RemoveUserChatText(t *testing.T) {
 }
 
 func TestIBroadcastService_SetRTMPInfo(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetRTMPInfo()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetRTMPInfo()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetRTMPInfo", req.Method.Name)
@@ -282,24 +306,26 @@ func TestIBroadcastService_SetRTMPInfo(t *testing.T) {
 }
 
 func TestIBroadcastService_StartBuildClip(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.StartBuildClip()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.StartBuildClip()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "StartBuildClip", req.Method.Name)
@@ -308,24 +334,26 @@ func TestIBroadcastService_StartBuildClip(t *testing.T) {
 }
 
 func TestIBroadcastService_UpdateChatMessageFlair(t *testing.T) {
-	var iface *steam.IBroadcastService
+	var ci *steam.IBroadcastService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIBroadcastService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.UpdateChatMessageFlair()
+	ci, err = steam.NewIBroadcastService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.UpdateChatMessageFlair()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "UpdateChatMessageFlair", req.Method.Name)

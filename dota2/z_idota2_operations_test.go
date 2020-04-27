@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIDOTA2Operations(t *testing.T) {
-	client := &dota2.Client{}
-	iface, err := dota2.NewIDOTA2Operations(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := dota2.NewIDOTA2Operations(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIDOTA2Operations_GetBannedWordList(t *testing.T) {
-	var iface *dota2.IDOTA2Operations
+	var ci *dota2.IDOTA2Operations
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2Operations(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBannedWordList()
+	ci, err = dota2.NewIDOTA2Operations(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBannedWordList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBannedWordList", req.Method.Name)

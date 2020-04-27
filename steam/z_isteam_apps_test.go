@@ -11,53 +11,58 @@ import (
 )
 
 func TestNewISteamApps(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewISteamApps(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewISteamApps(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestISteamApps_GetAppList(t *testing.T) {
-	var iface *steam.ISteamApps
+	var ci *steam.ISteamApps
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamApps(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetAppList(1)
+	ci, err = steam.NewISteamApps(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetAppList(1)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetAppList", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewISteamApps(client)
+	ci, err = steam.NewISteamApps(client)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetAppList(2)
+	req, err = ci.GetAppList(2)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetAppList", req.Method.Name)
@@ -66,24 +71,26 @@ func TestISteamApps_GetAppList(t *testing.T) {
 }
 
 func TestISteamApps_GetSDRConfig(t *testing.T) {
-	var iface *steam.ISteamApps
+	var ci *steam.ISteamApps
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamApps(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSDRConfig()
+	ci, err = steam.NewISteamApps(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSDRConfig()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSDRConfig", req.Method.Name)
@@ -92,24 +99,26 @@ func TestISteamApps_GetSDRConfig(t *testing.T) {
 }
 
 func TestISteamApps_GetServersAtAddress(t *testing.T) {
-	var iface *steam.ISteamApps
+	var ci *steam.ISteamApps
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamApps(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetServersAtAddress()
+	ci, err = steam.NewISteamApps(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetServersAtAddress()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetServersAtAddress", req.Method.Name)
@@ -118,24 +127,26 @@ func TestISteamApps_GetServersAtAddress(t *testing.T) {
 }
 
 func TestISteamApps_UpToDateCheck(t *testing.T) {
-	var iface *steam.ISteamApps
+	var ci *steam.ISteamApps
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamApps(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.UpToDateCheck()
+	ci, err = steam.NewISteamApps(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.UpToDateCheck()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "UpToDateCheck", req.Method.Name)

@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIDOTA2Match(t *testing.T) {
-	client := &dota2.Client{}
-	iface, err := dota2.NewIDOTA2Match(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := dota2.NewIDOTA2Match(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIDOTA2Match_GetMatchMVPVotes(t *testing.T) {
-	var iface *dota2.IDOTA2Match
+	var ci *dota2.IDOTA2Match
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2Match(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetMatchMVPVotes()
+	ci, err = dota2.NewIDOTA2Match(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetMatchMVPVotes()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetMatchMVPVotes", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIDOTA2Match_GetMatchMVPVotes(t *testing.T) {
 }
 
 func TestIDOTA2Match_GetTopLiveEventGame(t *testing.T) {
-	var iface *dota2.IDOTA2Match
+	var ci *dota2.IDOTA2Match
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2Match(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTopLiveEventGame()
+	ci, err = dota2.NewIDOTA2Match(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTopLiveEventGame()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTopLiveEventGame", req.Method.Name)
@@ -74,24 +82,26 @@ func TestIDOTA2Match_GetTopLiveEventGame(t *testing.T) {
 }
 
 func TestIDOTA2Match_GetTopLiveGame(t *testing.T) {
-	var iface *dota2.IDOTA2Match
+	var ci *dota2.IDOTA2Match
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2Match(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTopLiveGame()
+	ci, err = dota2.NewIDOTA2Match(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTopLiveGame()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTopLiveGame", req.Method.Name)
@@ -100,24 +110,26 @@ func TestIDOTA2Match_GetTopLiveGame(t *testing.T) {
 }
 
 func TestIDOTA2Match_GetTopWeekendTourneyGames(t *testing.T) {
-	var iface *dota2.IDOTA2Match
+	var ci *dota2.IDOTA2Match
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewIDOTA2Match(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTopWeekendTourneyGames()
+	ci, err = dota2.NewIDOTA2Match(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTopWeekendTourneyGames()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTopWeekendTourneyGames", req.Method.Name)

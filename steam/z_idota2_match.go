@@ -611,11 +611,7 @@ func (i *IDOTA2Match) GetLeagueListing() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -638,11 +634,7 @@ func (i *IDOTA2Match) GetLiveLeagueGames() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -653,6 +645,7 @@ GetMatchDetails creates a Request for interface method GetMatchDetails.
 Parameters
 
   * match_id [uint64] (required): Match id
+  * include_persona_names [bool]: Include persona names as part of the response
 */
 func (i *IDOTA2Match) GetMatchDetails() (*geyser.Request, error) {
 	sm, err := i.Interface.Methods.Get(schema.MethodKey{
@@ -664,11 +657,7 @@ func (i *IDOTA2Match) GetMatchDetails() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -697,11 +686,7 @@ func (i *IDOTA2Match) GetMatchHistory() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -724,11 +709,7 @@ func (i *IDOTA2Match) GetMatchHistoryBySequenceNum() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -751,11 +732,7 @@ func (i *IDOTA2Match) GetTeamInfoByTeamID() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -777,11 +754,7 @@ func (i *IDOTA2Match) GetTopLiveEventGame() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -803,11 +776,7 @@ func (i *IDOTA2Match) GetTopLiveGame() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -830,11 +799,7 @@ func (i *IDOTA2Match) GetTopWeekendTourneyGames() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -851,7 +816,6 @@ Parameters (v1)
   * hero_id [string]
   * time_frame [string]
   * match_id [uint64]
-  * phase_id [uint32]
 
 Parameters (v2)
 
@@ -872,11 +836,7 @@ func (i *IDOTA2Match) GetTournamentPlayerStats(version int) (*geyser.Request, er
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }

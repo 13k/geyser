@@ -239,7 +239,7 @@ GetItemID creates a Request for interface method GetItemID.
 Parameters
 
   * steamid [uint64] (required): The Steam ID to fetch items for
-  * PromoID [uint32] (required): The promo ID to grant an item for
+  * promoid [uint32] (required): The promo ID to grant an item for
 */
 func (i *ITFPromos) GetItemID() (*geyser.Request, error) {
 	sm, err := i.Interface.Methods.Get(schema.MethodKey{
@@ -251,11 +251,7 @@ func (i *ITFPromos) GetItemID() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -266,7 +262,7 @@ GrantItem creates a Request for interface method GrantItem.
 Parameters
 
   * steamid [uint64] (required): The Steam ID to fetch items for
-  * PromoID [uint32] (required): The promo ID to grant an item for
+  * promoid [uint32] (required): The promo ID to grant an item for
 */
 func (i *ITFPromos) GrantItem() (*geyser.Request, error) {
 	sm, err := i.Interface.Methods.Get(schema.MethodKey{
@@ -278,11 +274,7 @@ func (i *ITFPromos) GrantItem() (*geyser.Request, error) {
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }

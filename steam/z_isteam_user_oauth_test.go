@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewISteamUserOAuth(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewISteamUserOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewISteamUserOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestISteamUserOAuth_GetFriendList(t *testing.T) {
-	var iface *steam.ISteamUserOAuth
+	var ci *steam.ISteamUserOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetFriendList()
+	ci, err = steam.NewISteamUserOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetFriendList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetFriendList", req.Method.Name)
@@ -48,24 +54,26 @@ func TestISteamUserOAuth_GetFriendList(t *testing.T) {
 }
 
 func TestISteamUserOAuth_GetGroupList(t *testing.T) {
-	var iface *steam.ISteamUserOAuth
+	var ci *steam.ISteamUserOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetGroupList()
+	ci, err = steam.NewISteamUserOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetGroupList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetGroupList", req.Method.Name)
@@ -74,24 +82,26 @@ func TestISteamUserOAuth_GetGroupList(t *testing.T) {
 }
 
 func TestISteamUserOAuth_GetGroupSummaries(t *testing.T) {
-	var iface *steam.ISteamUserOAuth
+	var ci *steam.ISteamUserOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetGroupSummaries()
+	ci, err = steam.NewISteamUserOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetGroupSummaries()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetGroupSummaries", req.Method.Name)
@@ -100,24 +110,26 @@ func TestISteamUserOAuth_GetGroupSummaries(t *testing.T) {
 }
 
 func TestISteamUserOAuth_GetTokenDetails(t *testing.T) {
-	var iface *steam.ISteamUserOAuth
+	var ci *steam.ISteamUserOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTokenDetails()
+	ci, err = steam.NewISteamUserOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTokenDetails()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTokenDetails", req.Method.Name)
@@ -126,24 +138,26 @@ func TestISteamUserOAuth_GetTokenDetails(t *testing.T) {
 }
 
 func TestISteamUserOAuth_GetUserSummaries(t *testing.T) {
-	var iface *steam.ISteamUserOAuth
+	var ci *steam.ISteamUserOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetUserSummaries()
+	ci, err = steam.NewISteamUserOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetUserSummaries()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetUserSummaries", req.Method.Name)
@@ -152,24 +166,26 @@ func TestISteamUserOAuth_GetUserSummaries(t *testing.T) {
 }
 
 func TestISteamUserOAuth_Search(t *testing.T) {
-	var iface *steam.ISteamUserOAuth
+	var ci *steam.ISteamUserOAuth
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUserOAuth(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Search()
+	ci, err = steam.NewISteamUserOAuth(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Search()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Search", req.Method.Name)

@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewISteamDirectory(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewISteamDirectory(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewISteamDirectory(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestISteamDirectory_GetCMList(t *testing.T) {
-	var iface *steam.ISteamDirectory
+	var ci *steam.ISteamDirectory
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamDirectory(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetCMList()
+	ci, err = steam.NewISteamDirectory(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetCMList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetCMList", req.Method.Name)
@@ -48,24 +54,26 @@ func TestISteamDirectory_GetCMList(t *testing.T) {
 }
 
 func TestISteamDirectory_GetCSList(t *testing.T) {
-	var iface *steam.ISteamDirectory
+	var ci *steam.ISteamDirectory
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamDirectory(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetCSList()
+	ci, err = steam.NewISteamDirectory(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetCSList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetCSList", req.Method.Name)
@@ -74,24 +82,26 @@ func TestISteamDirectory_GetCSList(t *testing.T) {
 }
 
 func TestISteamDirectory_GetSteamPipeDomains(t *testing.T) {
-	var iface *steam.ISteamDirectory
+	var ci *steam.ISteamDirectory
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamDirectory(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSteamPipeDomains()
+	ci, err = steam.NewISteamDirectory(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSteamPipeDomains()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSteamPipeDomains", req.Method.Name)

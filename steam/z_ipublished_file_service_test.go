@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIPublishedFileService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIPublishedFileService_CanSubscribe(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.CanSubscribe()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.CanSubscribe()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "CanSubscribe", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIPublishedFileService_CanSubscribe(t *testing.T) {
 }
 
 func TestIPublishedFileService_GetDetails(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetDetails()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetDetails()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetDetails", req.Method.Name)
@@ -74,24 +82,26 @@ func TestIPublishedFileService_GetDetails(t *testing.T) {
 }
 
 func TestIPublishedFileService_GetUserFiles(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetUserFiles()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetUserFiles()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetUserFiles", req.Method.Name)
@@ -100,24 +110,26 @@ func TestIPublishedFileService_GetUserFiles(t *testing.T) {
 }
 
 func TestIPublishedFileService_Publish(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Publish()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Publish()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Publish", req.Method.Name)
@@ -126,24 +138,26 @@ func TestIPublishedFileService_Publish(t *testing.T) {
 }
 
 func TestIPublishedFileService_QueryFiles(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.QueryFiles()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.QueryFiles()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "QueryFiles", req.Method.Name)
@@ -152,24 +166,26 @@ func TestIPublishedFileService_QueryFiles(t *testing.T) {
 }
 
 func TestIPublishedFileService_RefreshVotingQueue(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.RefreshVotingQueue()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.RefreshVotingQueue()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "RefreshVotingQueue", req.Method.Name)
@@ -178,24 +194,26 @@ func TestIPublishedFileService_RefreshVotingQueue(t *testing.T) {
 }
 
 func TestIPublishedFileService_SetDeveloperMetadata(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetDeveloperMetadata()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetDeveloperMetadata()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetDeveloperMetadata", req.Method.Name)
@@ -204,24 +222,26 @@ func TestIPublishedFileService_SetDeveloperMetadata(t *testing.T) {
 }
 
 func TestIPublishedFileService_Subscribe(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Subscribe()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Subscribe()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Subscribe", req.Method.Name)
@@ -230,24 +250,26 @@ func TestIPublishedFileService_Subscribe(t *testing.T) {
 }
 
 func TestIPublishedFileService_Unsubscribe(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Unsubscribe()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Unsubscribe()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Unsubscribe", req.Method.Name)
@@ -256,24 +278,26 @@ func TestIPublishedFileService_Unsubscribe(t *testing.T) {
 }
 
 func TestIPublishedFileService_Update(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Update()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Update()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Update", req.Method.Name)
@@ -282,24 +306,26 @@ func TestIPublishedFileService_Update(t *testing.T) {
 }
 
 func TestIPublishedFileService_UpdateTags(t *testing.T) {
-	var iface *steam.IPublishedFileService
+	var ci *steam.IPublishedFileService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIPublishedFileService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.UpdateTags()
+	ci, err = steam.NewIPublishedFileService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.UpdateTags()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "UpdateTags", req.Method.Name)

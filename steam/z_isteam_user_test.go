@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewISteamUser(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewISteamUser(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewISteamUser(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestISteamUser_GetFriendList(t *testing.T) {
-	var iface *steam.ISteamUser
+	var ci *steam.ISteamUser
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUser(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetFriendList()
+	ci, err = steam.NewISteamUser(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetFriendList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetFriendList", req.Method.Name)
@@ -48,24 +54,26 @@ func TestISteamUser_GetFriendList(t *testing.T) {
 }
 
 func TestISteamUser_GetPlayerBans(t *testing.T) {
-	var iface *steam.ISteamUser
+	var ci *steam.ISteamUser
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUser(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetPlayerBans()
+	ci, err = steam.NewISteamUser(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetPlayerBans()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerBans", req.Method.Name)
@@ -74,42 +82,43 @@ func TestISteamUser_GetPlayerBans(t *testing.T) {
 }
 
 func TestISteamUser_GetPlayerSummaries(t *testing.T) {
-	var iface *steam.ISteamUser
+	var ci *steam.ISteamUser
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUser(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetPlayerSummaries(1)
+	ci, err = steam.NewISteamUser(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetPlayerSummaries(1)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerSummaries", req.Method.Name)
 		assert.Equal(t, 1, req.Method.Version)
 	}
 
-	iface, err = steam.NewISteamUser(client)
+	ci, err = steam.NewISteamUser(client)
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, ci)
 
-	req, err = iface.GetPlayerSummaries(2)
+	req, err = ci.GetPlayerSummaries(2)
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetPlayerSummaries", req.Method.Name)
@@ -118,24 +127,26 @@ func TestISteamUser_GetPlayerSummaries(t *testing.T) {
 }
 
 func TestISteamUser_GetUserGroupList(t *testing.T) {
-	var iface *steam.ISteamUser
+	var ci *steam.ISteamUser
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUser(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetUserGroupList()
+	ci, err = steam.NewISteamUser(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetUserGroupList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetUserGroupList", req.Method.Name)
@@ -144,24 +155,26 @@ func TestISteamUser_GetUserGroupList(t *testing.T) {
 }
 
 func TestISteamUser_ResolveVanityURL(t *testing.T) {
-	var iface *steam.ISteamUser
+	var ci *steam.ISteamUser
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamUser(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.ResolveVanityURL()
+	ci, err = steam.NewISteamUser(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.ResolveVanityURL()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "ResolveVanityURL", req.Method.Name)

@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIEconService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewIEconService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewIEconService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIEconService_CancelTradeOffer(t *testing.T) {
-	var iface *steam.IEconService
+	var ci *steam.IEconService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.CancelTradeOffer()
+	ci, err = steam.NewIEconService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.CancelTradeOffer()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "CancelTradeOffer", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIEconService_CancelTradeOffer(t *testing.T) {
 }
 
 func TestIEconService_DeclineTradeOffer(t *testing.T) {
-	var iface *steam.IEconService
+	var ci *steam.IEconService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.DeclineTradeOffer()
+	ci, err = steam.NewIEconService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.DeclineTradeOffer()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "DeclineTradeOffer", req.Method.Name)
@@ -74,24 +82,26 @@ func TestIEconService_DeclineTradeOffer(t *testing.T) {
 }
 
 func TestIEconService_GetTradeHistory(t *testing.T) {
-	var iface *steam.IEconService
+	var ci *steam.IEconService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTradeHistory()
+	ci, err = steam.NewIEconService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTradeHistory()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTradeHistory", req.Method.Name)
@@ -100,24 +110,26 @@ func TestIEconService_GetTradeHistory(t *testing.T) {
 }
 
 func TestIEconService_GetTradeHoldDurations(t *testing.T) {
-	var iface *steam.IEconService
+	var ci *steam.IEconService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTradeHoldDurations()
+	ci, err = steam.NewIEconService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTradeHoldDurations()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTradeHoldDurations", req.Method.Name)
@@ -126,24 +138,26 @@ func TestIEconService_GetTradeHoldDurations(t *testing.T) {
 }
 
 func TestIEconService_GetTradeOffer(t *testing.T) {
-	var iface *steam.IEconService
+	var ci *steam.IEconService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTradeOffer()
+	ci, err = steam.NewIEconService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTradeOffer()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTradeOffer", req.Method.Name)
@@ -152,24 +166,26 @@ func TestIEconService_GetTradeOffer(t *testing.T) {
 }
 
 func TestIEconService_GetTradeOffers(t *testing.T) {
-	var iface *steam.IEconService
+	var ci *steam.IEconService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTradeOffers()
+	ci, err = steam.NewIEconService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTradeOffers()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTradeOffers", req.Method.Name)
@@ -178,24 +194,26 @@ func TestIEconService_GetTradeOffers(t *testing.T) {
 }
 
 func TestIEconService_GetTradeOffersSummary(t *testing.T) {
-	var iface *steam.IEconService
+	var ci *steam.IEconService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTradeOffersSummary()
+	ci, err = steam.NewIEconService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTradeOffersSummary()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTradeOffersSummary", req.Method.Name)
@@ -204,24 +222,26 @@ func TestIEconService_GetTradeOffersSummary(t *testing.T) {
 }
 
 func TestIEconService_GetTradeStatus(t *testing.T) {
-	var iface *steam.IEconService
+	var ci *steam.IEconService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIEconService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTradeStatus()
+	ci, err = steam.NewIEconService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTradeStatus()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTradeStatus", req.Method.Name)

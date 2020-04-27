@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIGameServersService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIGameServersService_CreateAccount(t *testing.T) {
-	var iface *steam.IGameServersService
+	var ci *steam.IGameServersService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.CreateAccount()
+	ci, err = steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.CreateAccount()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "CreateAccount", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIGameServersService_CreateAccount(t *testing.T) {
 }
 
 func TestIGameServersService_DeleteAccount(t *testing.T) {
-	var iface *steam.IGameServersService
+	var ci *steam.IGameServersService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.DeleteAccount()
+	ci, err = steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.DeleteAccount()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "DeleteAccount", req.Method.Name)
@@ -74,24 +82,26 @@ func TestIGameServersService_DeleteAccount(t *testing.T) {
 }
 
 func TestIGameServersService_GetAccountList(t *testing.T) {
-	var iface *steam.IGameServersService
+	var ci *steam.IGameServersService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetAccountList()
+	ci, err = steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetAccountList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetAccountList", req.Method.Name)
@@ -100,24 +110,26 @@ func TestIGameServersService_GetAccountList(t *testing.T) {
 }
 
 func TestIGameServersService_GetAccountPublicInfo(t *testing.T) {
-	var iface *steam.IGameServersService
+	var ci *steam.IGameServersService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetAccountPublicInfo()
+	ci, err = steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetAccountPublicInfo()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetAccountPublicInfo", req.Method.Name)
@@ -126,24 +138,26 @@ func TestIGameServersService_GetAccountPublicInfo(t *testing.T) {
 }
 
 func TestIGameServersService_GetServerIPsBySteamID(t *testing.T) {
-	var iface *steam.IGameServersService
+	var ci *steam.IGameServersService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetServerIPsBySteamID()
+	ci, err = steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetServerIPsBySteamID()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetServerIPsBySteamID", req.Method.Name)
@@ -152,24 +166,26 @@ func TestIGameServersService_GetServerIPsBySteamID(t *testing.T) {
 }
 
 func TestIGameServersService_GetServerList(t *testing.T) {
-	var iface *steam.IGameServersService
+	var ci *steam.IGameServersService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetServerList()
+	ci, err = steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetServerList()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetServerList", req.Method.Name)
@@ -178,24 +194,26 @@ func TestIGameServersService_GetServerList(t *testing.T) {
 }
 
 func TestIGameServersService_GetServerSteamIDsByIP(t *testing.T) {
-	var iface *steam.IGameServersService
+	var ci *steam.IGameServersService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetServerSteamIDsByIP()
+	ci, err = steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetServerSteamIDsByIP()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetServerSteamIDsByIP", req.Method.Name)
@@ -204,24 +222,26 @@ func TestIGameServersService_GetServerSteamIDsByIP(t *testing.T) {
 }
 
 func TestIGameServersService_QueryLoginToken(t *testing.T) {
-	var iface *steam.IGameServersService
+	var ci *steam.IGameServersService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.QueryLoginToken()
+	ci, err = steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.QueryLoginToken()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "QueryLoginToken", req.Method.Name)
@@ -230,24 +250,26 @@ func TestIGameServersService_QueryLoginToken(t *testing.T) {
 }
 
 func TestIGameServersService_ResetLoginToken(t *testing.T) {
-	var iface *steam.IGameServersService
+	var ci *steam.IGameServersService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.ResetLoginToken()
+	ci, err = steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.ResetLoginToken()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "ResetLoginToken", req.Method.Name)
@@ -256,24 +278,26 @@ func TestIGameServersService_ResetLoginToken(t *testing.T) {
 }
 
 func TestIGameServersService_SetMemo(t *testing.T) {
-	var iface *steam.IGameServersService
+	var ci *steam.IGameServersService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameServersService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetMemo()
+	ci, err = steam.NewIGameServersService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetMemo()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetMemo", req.Method.Name)

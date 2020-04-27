@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewITwoFactorService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestITwoFactorService_AddAuthenticator(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.AddAuthenticator()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.AddAuthenticator()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "AddAuthenticator", req.Method.Name)
@@ -48,24 +54,26 @@ func TestITwoFactorService_AddAuthenticator(t *testing.T) {
 }
 
 func TestITwoFactorService_CreateEmergencyCodes(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.CreateEmergencyCodes()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.CreateEmergencyCodes()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "CreateEmergencyCodes", req.Method.Name)
@@ -74,24 +82,26 @@ func TestITwoFactorService_CreateEmergencyCodes(t *testing.T) {
 }
 
 func TestITwoFactorService_DestroyEmergencyCodes(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.DestroyEmergencyCodes()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.DestroyEmergencyCodes()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "DestroyEmergencyCodes", req.Method.Name)
@@ -100,24 +110,26 @@ func TestITwoFactorService_DestroyEmergencyCodes(t *testing.T) {
 }
 
 func TestITwoFactorService_FinalizeAddAuthenticator(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.FinalizeAddAuthenticator()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.FinalizeAddAuthenticator()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "FinalizeAddAuthenticator", req.Method.Name)
@@ -126,24 +138,26 @@ func TestITwoFactorService_FinalizeAddAuthenticator(t *testing.T) {
 }
 
 func TestITwoFactorService_QuerySecrets(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.QuerySecrets()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.QuerySecrets()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "QuerySecrets", req.Method.Name)
@@ -152,24 +166,26 @@ func TestITwoFactorService_QuerySecrets(t *testing.T) {
 }
 
 func TestITwoFactorService_QueryStatus(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.QueryStatus()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.QueryStatus()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "QueryStatus", req.Method.Name)
@@ -178,24 +194,26 @@ func TestITwoFactorService_QueryStatus(t *testing.T) {
 }
 
 func TestITwoFactorService_QueryTime(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.QueryTime()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.QueryTime()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "QueryTime", req.Method.Name)
@@ -204,24 +222,26 @@ func TestITwoFactorService_QueryTime(t *testing.T) {
 }
 
 func TestITwoFactorService_RecoverAuthenticatorCommit(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.RecoverAuthenticatorCommit()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.RecoverAuthenticatorCommit()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "RecoverAuthenticatorCommit", req.Method.Name)
@@ -230,24 +250,26 @@ func TestITwoFactorService_RecoverAuthenticatorCommit(t *testing.T) {
 }
 
 func TestITwoFactorService_RecoverAuthenticatorContinue(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.RecoverAuthenticatorContinue()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.RecoverAuthenticatorContinue()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "RecoverAuthenticatorContinue", req.Method.Name)
@@ -256,24 +278,26 @@ func TestITwoFactorService_RecoverAuthenticatorContinue(t *testing.T) {
 }
 
 func TestITwoFactorService_RemoveAuthenticator(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.RemoveAuthenticator()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.RemoveAuthenticator()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "RemoveAuthenticator", req.Method.Name)
@@ -282,24 +306,26 @@ func TestITwoFactorService_RemoveAuthenticator(t *testing.T) {
 }
 
 func TestITwoFactorService_RemoveAuthenticatorViaChallengeContinue(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.RemoveAuthenticatorViaChallengeContinue()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.RemoveAuthenticatorViaChallengeContinue()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "RemoveAuthenticatorViaChallengeContinue", req.Method.Name)
@@ -308,24 +334,26 @@ func TestITwoFactorService_RemoveAuthenticatorViaChallengeContinue(t *testing.T)
 }
 
 func TestITwoFactorService_RemoveAuthenticatorViaChallengeStart(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.RemoveAuthenticatorViaChallengeStart()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.RemoveAuthenticatorViaChallengeStart()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "RemoveAuthenticatorViaChallengeStart", req.Method.Name)
@@ -334,24 +362,26 @@ func TestITwoFactorService_RemoveAuthenticatorViaChallengeStart(t *testing.T) {
 }
 
 func TestITwoFactorService_SendEmail(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SendEmail()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SendEmail()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SendEmail", req.Method.Name)
@@ -360,24 +390,26 @@ func TestITwoFactorService_SendEmail(t *testing.T) {
 }
 
 func TestITwoFactorService_ValidateToken(t *testing.T) {
-	var iface *steam.ITwoFactorService
+	var ci *steam.ITwoFactorService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewITwoFactorService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.ValidateToken()
+	ci, err = steam.NewITwoFactorService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.ValidateToken()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "ValidateToken", req.Method.Name)

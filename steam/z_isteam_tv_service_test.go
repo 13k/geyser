@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewISteamTVService(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestISteamTVService_AddChatBan(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.AddChatBan()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.AddChatBan()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "AddChatBan", req.Method.Name)
@@ -48,24 +54,26 @@ func TestISteamTVService_AddChatBan(t *testing.T) {
 }
 
 func TestISteamTVService_AddChatModerator(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.AddChatModerator()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.AddChatModerator()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "AddChatModerator", req.Method.Name)
@@ -74,24 +82,26 @@ func TestISteamTVService_AddChatModerator(t *testing.T) {
 }
 
 func TestISteamTVService_AddWordBan(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.AddWordBan()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.AddWordBan()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "AddWordBan", req.Method.Name)
@@ -100,24 +110,26 @@ func TestISteamTVService_AddWordBan(t *testing.T) {
 }
 
 func TestISteamTVService_CreateBroadcastChannel(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.CreateBroadcastChannel()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.CreateBroadcastChannel()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "CreateBroadcastChannel", req.Method.Name)
@@ -126,24 +138,26 @@ func TestISteamTVService_CreateBroadcastChannel(t *testing.T) {
 }
 
 func TestISteamTVService_FollowBroadcastChannel(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.FollowBroadcastChannel()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.FollowBroadcastChannel()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "FollowBroadcastChannel", req.Method.Name)
@@ -152,24 +166,26 @@ func TestISteamTVService_FollowBroadcastChannel(t *testing.T) {
 }
 
 func TestISteamTVService_GetBroadcastChannelBroadcasters(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBroadcastChannelBroadcasters()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBroadcastChannelBroadcasters()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBroadcastChannelBroadcasters", req.Method.Name)
@@ -178,24 +194,26 @@ func TestISteamTVService_GetBroadcastChannelBroadcasters(t *testing.T) {
 }
 
 func TestISteamTVService_GetBroadcastChannelClips(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBroadcastChannelClips()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBroadcastChannelClips()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBroadcastChannelClips", req.Method.Name)
@@ -204,24 +222,26 @@ func TestISteamTVService_GetBroadcastChannelClips(t *testing.T) {
 }
 
 func TestISteamTVService_GetBroadcastChannelID(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBroadcastChannelID()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBroadcastChannelID()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBroadcastChannelID", req.Method.Name)
@@ -230,24 +250,26 @@ func TestISteamTVService_GetBroadcastChannelID(t *testing.T) {
 }
 
 func TestISteamTVService_GetBroadcastChannelImages(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBroadcastChannelImages()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBroadcastChannelImages()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBroadcastChannelImages", req.Method.Name)
@@ -256,24 +278,26 @@ func TestISteamTVService_GetBroadcastChannelImages(t *testing.T) {
 }
 
 func TestISteamTVService_GetBroadcastChannelInteraction(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBroadcastChannelInteraction()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBroadcastChannelInteraction()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBroadcastChannelInteraction", req.Method.Name)
@@ -282,24 +306,26 @@ func TestISteamTVService_GetBroadcastChannelInteraction(t *testing.T) {
 }
 
 func TestISteamTVService_GetBroadcastChannelLinks(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBroadcastChannelLinks()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBroadcastChannelLinks()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBroadcastChannelLinks", req.Method.Name)
@@ -308,24 +334,26 @@ func TestISteamTVService_GetBroadcastChannelLinks(t *testing.T) {
 }
 
 func TestISteamTVService_GetBroadcastChannelProfile(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBroadcastChannelProfile()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBroadcastChannelProfile()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBroadcastChannelProfile", req.Method.Name)
@@ -334,24 +362,26 @@ func TestISteamTVService_GetBroadcastChannelProfile(t *testing.T) {
 }
 
 func TestISteamTVService_GetBroadcastChannelStatus(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetBroadcastChannelStatus()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetBroadcastChannelStatus()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetBroadcastChannelStatus", req.Method.Name)
@@ -360,24 +390,26 @@ func TestISteamTVService_GetBroadcastChannelStatus(t *testing.T) {
 }
 
 func TestISteamTVService_GetChannels(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetChannels()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetChannels()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetChannels", req.Method.Name)
@@ -386,24 +418,26 @@ func TestISteamTVService_GetChannels(t *testing.T) {
 }
 
 func TestISteamTVService_GetChatBans(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetChatBans()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetChatBans()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetChatBans", req.Method.Name)
@@ -412,24 +446,26 @@ func TestISteamTVService_GetChatBans(t *testing.T) {
 }
 
 func TestISteamTVService_GetChatModerators(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetChatModerators()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetChatModerators()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetChatModerators", req.Method.Name)
@@ -438,24 +474,26 @@ func TestISteamTVService_GetChatModerators(t *testing.T) {
 }
 
 func TestISteamTVService_GetFeatured(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetFeatured()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetFeatured()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetFeatured", req.Method.Name)
@@ -464,24 +502,26 @@ func TestISteamTVService_GetFeatured(t *testing.T) {
 }
 
 func TestISteamTVService_GetFollowedChannels(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetFollowedChannels()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetFollowedChannels()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetFollowedChannels", req.Method.Name)
@@ -490,24 +530,26 @@ func TestISteamTVService_GetFollowedChannels(t *testing.T) {
 }
 
 func TestISteamTVService_GetGames(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetGames()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetGames()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetGames", req.Method.Name)
@@ -516,24 +558,26 @@ func TestISteamTVService_GetGames(t *testing.T) {
 }
 
 func TestISteamTVService_GetHomePageContents(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetHomePageContents()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetHomePageContents()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetHomePageContents", req.Method.Name)
@@ -542,24 +586,26 @@ func TestISteamTVService_GetHomePageContents(t *testing.T) {
 }
 
 func TestISteamTVService_GetMyBroadcastChannels(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetMyBroadcastChannels()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetMyBroadcastChannels()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetMyBroadcastChannels", req.Method.Name)
@@ -568,24 +614,26 @@ func TestISteamTVService_GetMyBroadcastChannels(t *testing.T) {
 }
 
 func TestISteamTVService_GetSteamTVUserSettings(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSteamTVUserSettings()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSteamTVUserSettings()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSteamTVUserSettings", req.Method.Name)
@@ -594,24 +642,26 @@ func TestISteamTVService_GetSteamTVUserSettings(t *testing.T) {
 }
 
 func TestISteamTVService_GetSubscribedChannels(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetSubscribedChannels()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetSubscribedChannels()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetSubscribedChannels", req.Method.Name)
@@ -620,24 +670,26 @@ func TestISteamTVService_GetSubscribedChannels(t *testing.T) {
 }
 
 func TestISteamTVService_GetWordBans(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetWordBans()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetWordBans()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetWordBans", req.Method.Name)
@@ -646,24 +698,26 @@ func TestISteamTVService_GetWordBans(t *testing.T) {
 }
 
 func TestISteamTVService_JoinChat(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.JoinChat()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.JoinChat()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "JoinChat", req.Method.Name)
@@ -672,24 +726,26 @@ func TestISteamTVService_JoinChat(t *testing.T) {
 }
 
 func TestISteamTVService_ReportBroadcastChannel(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.ReportBroadcastChannel()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.ReportBroadcastChannel()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "ReportBroadcastChannel", req.Method.Name)
@@ -698,24 +754,26 @@ func TestISteamTVService_ReportBroadcastChannel(t *testing.T) {
 }
 
 func TestISteamTVService_Search(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.Search()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.Search()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "Search", req.Method.Name)
@@ -724,24 +782,26 @@ func TestISteamTVService_Search(t *testing.T) {
 }
 
 func TestISteamTVService_SetBroadcastChannelImage(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetBroadcastChannelImage()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetBroadcastChannelImage()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetBroadcastChannelImage", req.Method.Name)
@@ -750,24 +810,26 @@ func TestISteamTVService_SetBroadcastChannelImage(t *testing.T) {
 }
 
 func TestISteamTVService_SetBroadcastChannelLinkRegions(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetBroadcastChannelLinkRegions()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetBroadcastChannelLinkRegions()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetBroadcastChannelLinkRegions", req.Method.Name)
@@ -776,24 +838,26 @@ func TestISteamTVService_SetBroadcastChannelLinkRegions(t *testing.T) {
 }
 
 func TestISteamTVService_SetBroadcastChannelProfile(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetBroadcastChannelProfile()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetBroadcastChannelProfile()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetBroadcastChannelProfile", req.Method.Name)
@@ -802,24 +866,26 @@ func TestISteamTVService_SetBroadcastChannelProfile(t *testing.T) {
 }
 
 func TestISteamTVService_SetSteamTVUserSettings(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SetSteamTVUserSettings()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SetSteamTVUserSettings()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SetSteamTVUserSettings", req.Method.Name)
@@ -828,24 +894,26 @@ func TestISteamTVService_SetSteamTVUserSettings(t *testing.T) {
 }
 
 func TestISteamTVService_SubscribeBroadcastChannel(t *testing.T) {
-	var iface *steam.ISteamTVService
+	var ci *steam.ISteamTVService
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewISteamTVService(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.SubscribeBroadcastChannel()
+	ci, err = steam.NewISteamTVService(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.SubscribeBroadcastChannel()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "SubscribeBroadcastChannel", req.Method.Name)

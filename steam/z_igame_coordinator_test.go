@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewIGameCoordinator(t *testing.T) {
-	client := &steam.Client{}
-	iface, err := steam.NewIGameCoordinator(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := steam.NewIGameCoordinator(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestIGameCoordinator_GetMessages(t *testing.T) {
-	var iface *steam.IGameCoordinator
+	var ci *steam.IGameCoordinator
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameCoordinator(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetMessages()
+	ci, err = steam.NewIGameCoordinator(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetMessages()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetMessages", req.Method.Name)
@@ -48,24 +54,26 @@ func TestIGameCoordinator_GetMessages(t *testing.T) {
 }
 
 func TestIGameCoordinator_PostMessages(t *testing.T) {
-	var iface *steam.IGameCoordinator
+	var ci *steam.IGameCoordinator
 	var err error
 	var req *geyser.Request
 
-	client := &steam.Client{}
-
-	iface, err = steam.NewIGameCoordinator(client)
+	client, err := steam.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.PostMessages()
+	ci, err = steam.NewIGameCoordinator(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.PostMessages()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "PostMessages", req.Method.Name)

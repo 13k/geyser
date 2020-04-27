@@ -11,35 +11,41 @@ import (
 )
 
 func TestNewITournaments(t *testing.T) {
-	client := &dota2.Client{}
-	iface, err := dota2.NewITournaments(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	assert.Same(t, client, iface.Client)
-	assert.NotNil(t, iface.Interface)
+	ci, err := dota2.NewITournaments(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	assert.Same(t, client, ci.Client)
+	assert.NotNil(t, ci.Interface)
 }
 
 func TestITournaments_GetGroupStandings(t *testing.T) {
-	var iface *dota2.ITournaments
+	var ci *dota2.ITournaments
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewITournaments(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetGroupStandings()
+	ci, err = dota2.NewITournaments(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetGroupStandings()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetGroupStandings", req.Method.Name)
@@ -48,24 +54,26 @@ func TestITournaments_GetGroupStandings(t *testing.T) {
 }
 
 func TestITournaments_GetLiveLeagueGames(t *testing.T) {
-	var iface *dota2.ITournaments
+	var ci *dota2.ITournaments
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewITournaments(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetLiveLeagueGames()
+	ci, err = dota2.NewITournaments(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetLiveLeagueGames()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetLiveLeagueGames", req.Method.Name)
@@ -74,24 +82,26 @@ func TestITournaments_GetLiveLeagueGames(t *testing.T) {
 }
 
 func TestITournaments_GetTournamentBrackets(t *testing.T) {
-	var iface *dota2.ITournaments
+	var ci *dota2.ITournaments
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewITournaments(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTournamentBrackets()
+	ci, err = dota2.NewITournaments(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTournamentBrackets()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTournamentBrackets", req.Method.Name)
@@ -100,24 +110,26 @@ func TestITournaments_GetTournamentBrackets(t *testing.T) {
 }
 
 func TestITournaments_GetTournamentInfo(t *testing.T) {
-	var iface *dota2.ITournaments
+	var ci *dota2.ITournaments
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewITournaments(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTournamentInfo()
+	ci, err = dota2.NewITournaments(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTournamentInfo()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTournamentInfo", req.Method.Name)
@@ -126,24 +138,26 @@ func TestITournaments_GetTournamentInfo(t *testing.T) {
 }
 
 func TestITournaments_GetTournamentPlayers(t *testing.T) {
-	var iface *dota2.ITournaments
+	var ci *dota2.ITournaments
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewITournaments(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTournamentPlayers()
+	ci, err = dota2.NewITournaments(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTournamentPlayers()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTournamentPlayers", req.Method.Name)
@@ -152,24 +166,26 @@ func TestITournaments_GetTournamentPlayers(t *testing.T) {
 }
 
 func TestITournaments_GetTournamentSeriesDetails(t *testing.T) {
-	var iface *dota2.ITournaments
+	var ci *dota2.ITournaments
 	var err error
 	var req *geyser.Request
 
-	client := &dota2.Client{}
-
-	iface, err = dota2.NewITournaments(client)
+	client, err := dota2.New()
 
 	require.NoError(t, err)
-	require.NotNil(t, iface)
+	require.NotNil(t, client)
 
-	req, err = iface.GetTournamentSeriesDetails()
+	ci, err = dota2.NewITournaments(client)
+
+	require.NoError(t, err)
+	require.NotNil(t, ci)
+
+	req, err = ci.GetTournamentSeriesDetails()
 
 	require.NoError(t, err)
 	require.NotNil(t, req)
 
-	assert.Same(t, client, req.Client)
-	assert.Same(t, iface.Interface, req.Interface)
+	assert.Same(t, ci.Interface, req.Interface)
 
 	if assert.NotNil(t, req.Method) {
 		assert.Equal(t, "GetTournamentSeriesDetails", req.Method.Name)

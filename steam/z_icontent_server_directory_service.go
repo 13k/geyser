@@ -130,11 +130,7 @@ func (i *IContentServerDirectoryService) GetDepotPatchInfo() (*geyser.Request, e
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -159,11 +155,7 @@ func (i *IContentServerDirectoryService) GetServersForSteamPipe() (*geyser.Reque
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }

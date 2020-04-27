@@ -191,11 +191,7 @@ func (i *IContentServerConfigService) GetSteamCacheNodeParams() (*geyser.Request
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -221,11 +217,7 @@ func (i *IContentServerConfigService) SetSteamCacheClientFilters() (*geyser.Requ
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
@@ -255,11 +247,7 @@ func (i *IContentServerConfigService) SetSteamCachePerformanceStats() (*geyser.R
 		return nil, err
 	}
 
-	req := &geyser.Request{
-		Client:    i.Client,
-		Interface: i.Interface,
-		Method:    sm,
-	}
+	req := geyser.NewRequest(i.Interface, sm)
 
 	return req, nil
 }
