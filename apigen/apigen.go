@@ -41,7 +41,9 @@ const (
 	srcSchemaMethodParamsCtor      = "NewMethodParams"
 	srcSchemaMethodParam           = "MethodParam"
 	srcClient                      = "Client"
+	srcClientCtor                  = "New"
 	srcRequest                     = "Request"
+	srcRequestCtor                 = "NewRequest"
 	srcfStructCtorName             = "New%s"
 	srcfSchemaVarName              = "Schema%s"
 	srcIntefaceMethodNotFoundError = "InterfaceMethodNotFoundError"
@@ -64,8 +66,8 @@ const (
 	errfUnknownInterfaceFilename = "Unknown filename for interface %q"
 	errfUnknownHTTPMethod        = "Unknown HTTP method %q of interface method %q/%q"
 
-	testfInvalidResultType = "invalid result type %T"
-	testfInvalidErrorType  = "invalid error type %T"
+	testfInvalidErrorType = "invalid error type %T"
+	// 	testfInvalidResultType = "invalid result type %T"
 )
 
 var (

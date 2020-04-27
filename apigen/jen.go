@@ -116,21 +116,19 @@ func jGeyserTypeOp(op, id string) *j.Statement {
 	return j.Op(op).Add(jGeyserID(id))
 }
 
-func jGeyserTypeAddr(id string) *j.Statement {
-	return jGeyserTypeOp("&", id)
-}
-
 func jGeyserTypePtr(id string) *j.Statement {
 	return jGeyserTypeOp("*", id)
 }
 
-func jRequestAddr() *j.Statement {
-	return jGeyserTypeAddr(srcRequest)
+func jRequestCtorID() *j.Statement {
+	return jGeyserID(srcRequestCtor)
 }
 
 func jRequestPtr() *j.Statement {
 	return jGeyserTypePtr(srcRequest)
 }
+
+//// packages that contain a "Client" identifier
 
 func jClientID(pkgPath string) *j.Statement {
 	if pkgPath != "" {
@@ -140,12 +138,16 @@ func jClientID(pkgPath string) *j.Statement {
 	return j.Id(srcClient)
 }
 
-func jClientOp(op, pkgPath string) *j.Statement {
-	return j.Op(op).Add(jClientID(pkgPath))
+func jClientCtorID(pkgPath string) *j.Statement {
+	if pkgPath != "" {
+		return j.Qual(pkgPath, srcClientCtor)
+	}
+
+	return j.Id(srcClientCtor)
 }
 
-func jClientAddr(pkgPath string) *j.Statement {
-	return jClientOp("&", pkgPath)
+func jClientOp(op, pkgPath string) *j.Statement {
+	return j.Op(op).Add(jClientID(pkgPath))
 }
 
 func jClientPtr(pkgPath string) *j.Statement {

@@ -367,19 +367,21 @@ func (g *APIGen) genMethod(methodName string, group schema.MethodsGroup) j.Code 
 
 	getArgs := []j.Code{jSchemaMethodKey(methodName, version)}
 
-	reqInst := j.Id("req").Op(":=").Add(jRequestAddr()).Values(j.Dict{
-		j.Id("Client"):    j.Id("i").Dot("Client"),
-		j.Id("Interface"): j.Id("i").Dot("Interface"),
-		j.Id("Method"):    j.Id("sm"),
-		// j.Id("Result"):    j.Op("&").Id(resultStructName).Values(),
-	})
+	reqInst := jRequestCtorID().Call(
+		j.Id("i").Dot("Interface"),
+		j.Id("sm"),
+	)
+
+	// reqInst = reqInst.Dot("SetResult").Call(j.Op("&").Id(resultStructName).Values())
+
+	reqDecl := j.Id("req").Op(":=").Add(reqInst)
 
 	body := []j.Code{
 		j.List(j.Id("sm"), j.Err()).Op(":=").Id("i").Dot("Interface").Dot("Methods").Dot("Get").Call(getArgs...),
 		j.Line(),
 		jIfErrRetNilErr(),
 		j.Line(),
-		reqInst,
+		reqDecl,
 		j.Line(),
 		j.Return(j.Id("req"), j.Nil()),
 	}

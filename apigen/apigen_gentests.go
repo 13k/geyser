@@ -49,13 +49,13 @@ func (g *APIGen) genTestCtor() j.Code {
 	}
 
 	testCaseBlock := []j.Code{
-		j.List(j.Id("iface"), j.Err()).Op(":=").Add(g.jQual(g.structCtorName)).Call(ctorArgs...),
+		j.List(j.Id("ci"), j.Err()).Op(":=").Add(g.jQual(g.structCtorName)).Call(ctorArgs...),
 		j.Line(),
 		jTestifyRequire("NoError", "t", j.Err()),
-		jTestifyRequire("NotNil", "t", j.Id("iface")),
+		jTestifyRequire("NotNil", "t", j.Id("ci")),
 		j.Line(),
-		jTestifyAssert("Same", "t", j.Id("client"), j.Id("iface").Dot("Client")),
-		jTestifyAssert("NotNil", "t", j.Id("iface").Dot("Interface")),
+		jTestifyAssert("Same", "t", j.Id("client"), j.Id("ci").Dot("Client")),
+		jTestifyAssert("NotNil", "t", j.Id("ci").Dot("Interface")),
 	}
 
 	if g.requiredAppID {
@@ -68,7 +68,11 @@ func (g *APIGen) genTestCtor() j.Code {
 	}
 
 	body := []j.Code{
-		j.Id("client").Op(":=").Add(jClientAddr(g.pkgPath)).Values(),
+		j.List(j.Id("client"), j.Err()).Op(":=").Add(jClientCtorID(g.pkgPath)).Call(),
+		j.Line(),
+		jTestifyRequire("NoError", "t", j.Err()),
+		jTestifyRequire("NotNil", "t", j.Id("client")),
+		j.Line(),
 	}
 
 	if g.requiredAppID {
@@ -114,14 +118,18 @@ func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.Method
 	sort.Ints(versions)
 
 	vars := jBag{
-		{"iface", j.Var().Id("iface").Add(g.jQualPtr(g.structName))},
+		{"ci", j.Var().Id("ci").Add(g.jQualPtr(g.structName))},
 		{"err", jVarErrError()},
 		{"req", j.Var().Id("req").Add(jRequestPtr())},
 		// {"result", j.Var().Id("result").Add(g.jQualPtr(resultStructName))},
 	}
 
 	body := []j.Code{
-		j.Id("client").Op(":=").Add(jClientAddr(g.pkgPath)).Values(),
+		j.List(j.Id("client"), j.Err()).Op(":=").Add(jClientCtorID(g.pkgPath)).Call(),
+		j.Line(),
+		jTestifyRequire("NoError", "t", j.Err()),
+		jTestifyRequire("NotNil", "t", j.Id("client")),
+		j.Line(),
 	}
 
 	for _, appID := range appIDs {
@@ -153,30 +161,31 @@ func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.Method
 			body = append(
 				body,
 				j.Line(),
-				j.List(j.Id("iface"), j.Err()).Op("=").Add(g.jQual(g.structCtorName)).Call(ctorArgs...),
+				j.List(j.Id("ci"), j.Err()).Op("=").Add(g.jQual(g.structCtorName)).Call(ctorArgs...),
 				j.Line(),
 				jTestifyRequire("NoError", "t", j.Err()),
-				jTestifyRequire("NotNil", "t", j.Id("iface")),
+				jTestifyRequire("NotNil", "t", j.Id("ci")),
 				j.Line(),
-				j.List(j.Id("req"), j.Err()).Op("=").Id("iface").Dot(structFuncName).Call(methodArgs...),
+				j.List(j.Id("req"), j.Err()).Op("=").Id("ci").Dot(structFuncName).Call(methodArgs...),
 				j.Line(),
 			)
 
 			if err == nil {
+				// vars.Declare("ok", j.Var().Id("ok").Bool())
+
 				body = append(
 					body,
 					jTestifyRequire("NoError", "t", j.Err()),
 					jTestifyRequire("NotNil", "t", j.Id("req")),
 					j.Line(),
-					jTestifyAssert("Same", "t", j.Id("client"), j.Id("req").Dot("Client")),
-					jTestifyAssert("Same", "t", j.Id("iface").Dot("Interface"), j.Id("req").Dot("Interface")),
+					jTestifyAssert("Same", "t", j.Id("ci").Dot("Interface"), j.Id("req").Dot("Interface")),
 					j.Line(),
 					j.If(jTestifyAssert("NotNil", "t", j.Id("req").Dot("Method"))).Block(
 						jTestifyAssert("Equal", "t", j.Lit(name), j.Id("req").Dot("Method").Dot("Name")),
 						jTestifyAssert("Equal", "t", j.Lit(version), j.Id("req").Dot("Method").Dot("Version")),
 					),
 					// j.Line(),
-					// j.List(j.Id("result"), j.Id("ok")).Op("=").Id("req").Dot("Result").Assert(g.jQualPtr(resultStructName)),
+					// j.List(j.Id("result"), j.Id("ok")).Op("=").Id("req").Dot("Result").Call().Assert(g.jQualPtr(resultStructName)),
 					// j.Line(),
 					// j.If(jTestifyAssert("Truef", "t", j.Id("ok"), j.Lit(testfInvalidResultType), j.Id("result"))).Block(
 					// 	jTestifyAssert("NotNil", "t", j.Id("result")),
