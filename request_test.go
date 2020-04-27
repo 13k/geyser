@@ -2,93 +2,67 @@ package geyser_test
 
 import (
 	"context"
+	"net/http"
 	"net/url"
 	"testing"
 
-	"github.com/go-resty/resty/v2"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/13k/geyser"
 	"github.com/13k/geyser/schema"
 )
 
-func TestRequest_SetOptions(t *testing.T) {
-	req := &geyser.Request{}
+func TestRequest_GettersSetters(t *testing.T) {
+	assert := assert.New(t)
 
-	ctx := context.Background()
-	headers := map[string]string{"X-Test": "test"}
-	params := url.Values{"param": []string{"value"}}
-	formData := url.Values{"form": []string{"data"}}
-	body := map[string]interface{}{"field": "value"}
-	key := "abc123xyz"
-	lang := "en"
-
-	options := geyser.RequestOptions{
-		Context:  ctx,
-		Headers:  headers,
-		Params:   params,
-		FormData: formData,
-		Body:     body,
-		Key:      key,
-		Lang:     lang,
-	}
-
-	req.SetOptions(options)
-
-	assert.Same(t, ctx, req.Options.Context)
-	assert.Equal(t, headers, req.Options.Headers)
-	assert.Equal(t, params, req.Options.Params)
-	assert.Equal(t, formData, req.Options.FormData)
-	assert.Equal(t, body, req.Options.Body)
-	assert.Equal(t, key, req.Options.Key)
-	assert.Equal(t, lang, req.Options.Lang)
-}
-
-func TestRequest_SetResult(t *testing.T) {
-	req := &geyser.Request{}
-	resultMap := make(map[string]interface{})
-
-	req.SetResult(resultMap)
-
-	assert.Equal(t, resultMap, req.Result)
-
-	resultStruct := &struct{ Field int }{}
-
-	req.SetResult(resultStruct)
-
-	assert.Same(t, resultStruct, req.Result)
-}
-
-type testRequestClient struct {
-	creq *geyser.ClientRequest
-}
-
-func (c *testRequestClient) Request(req geyser.ClientRequest) (*resty.Response, error) {
-	c.creq = &req
-	return nil, nil
-}
-
-func TestRequest_Execute(t *testing.T) {
-	c := &testRequestClient{}
 	si := &schema.Interface{}
 	sm := &schema.Method{}
-	result := &struct{ Field int }{}
+	ctx := context.Background()
+	form := url.Values{"form": {"data"}}
+	body := map[string]interface{}{"field": "value"}
+	result := map[string]interface{}{}
 
-	req := &geyser.Request{
-		Client:    c,
-		Interface: si,
-		Method:    sm,
-		Result:    result,
+	req := geyser.NewRequest(si, sm).
+		SetContext(ctx).
+		SetHeader("X-Keep", "keep").
+		SetHeader("X-Override", "initial").
+		SetHeaders(http.Header{
+			"X-Append":   {"append"},
+			"X-Override": {"overridden"},
+		}).
+		SetQueryParam("keep", "keep").
+		SetQueryParam("override", "initial").
+		SetQueryParams(url.Values{
+			"append":   {"append"},
+			"override": {"overridden"},
+		}).
+		SetAPIKey("abc123xyz").
+		SetLanguage("de").
+		SetForm(form).
+		SetBody(body).
+		SetResult(result)
+
+	assert.Same(si, req.Interface)
+	assert.Same(sm, req.Method)
+	assert.Same(ctx, req.Context)
+	assert.Exactly(form, req.Form)
+	assert.Exactly(body, req.Body)
+	assert.Exactly(result, req.Result)
+
+	expectedHeader := http.Header{
+		"X-Keep":     {"keep"},
+		"X-Override": {"overridden"},
+		"X-Append":   {"append"},
 	}
 
-	resp, err := req.Execute()
-
-	assert.NoError(t, err)
-	assert.Nil(t, resp)
-
-	if assert.NotNil(t, c.creq) {
-		assert.Same(t, si, c.creq.Interface)
-		assert.Same(t, sm, c.creq.Method)
-		assert.Same(t, result, c.creq.Result)
+	expectedQuery := url.Values{
+		"keep":     {"keep"},
+		"override": {"overridden"},
+		"append":   {"append"},
+		"key":      {"abc123xyz"},
+		"language": {"de"},
 	}
+
+	assert.Exactly(expectedHeader, req.Header)
+	assert.Exactly(expectedQuery, req.Query)
 }

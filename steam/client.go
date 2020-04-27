@@ -12,12 +12,14 @@ const (
 )
 
 type Client struct {
-	*geyser.Client
+	geyser.Client
 }
+
+var _ geyser.Client = (*Client)(nil)
 
 // New creates a new Steam API client.
 func New(options ...geyser.ClientOption) (*Client, error) {
-	options = append(options, geyser.WithBaseURL(HostURL))
+	options = append(options, geyser.WithHostURL(HostURL))
 
 	baseClient, err := geyser.New(options...)
 
@@ -25,7 +27,7 @@ func New(options ...geyser.ClientOption) (*Client, error) {
 		return nil, err
 	}
 
-	client := &Client{baseClient}
+	client := &Client{Client: baseClient}
 
 	return client, nil
 }
