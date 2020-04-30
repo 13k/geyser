@@ -1,7 +1,7 @@
 # geyser
 
 [![MIT](https://img.shields.io/github/license/13k/geyser)](https://github.com/13k/geyser/blob/master/LICENSE)
-[![GoDoc](https://godoc.org/github.com/13k/geyser?status.svg)](https://godoc.org/github.com/13k/geyser)
+[![GoDoc](https://godoc.org/github.com/13k/geyser?status.svg)](https://pkg.go.dev/github.com/13k/geyser/v2)
 [![Travis](https://api.travis-ci.org/13k/geyser.svg?branch=master)](https://travis-ci.org/13k/geyser)
 [![GoReportCard](https://goreportcard.com/badge/github.com/13k/geyser)](https://goreportcard.com/report/github.com/13k/geyser)
 [![codecov](https://codecov.io/gh/13k/geyser/branch/master/graph/badge.svg)](https://codecov.io/gh/13k/geyser)
