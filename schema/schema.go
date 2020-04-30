@@ -11,7 +11,7 @@ type Schema struct {
 
 // Validate checks if all contained interfaces are valid.
 //
-// Returns errors described in `Interfaces.Validate`
+// Returns errors described in `Interfaces.Validate`.
 func (s *Schema) Validate() error {
 	return s.Interfaces.Validate()
 }

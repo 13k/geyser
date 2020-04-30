@@ -61,7 +61,7 @@ func (c Interfaces) Get(key InterfaceKey) (*Interface, error) {
 	return nil, &InterfaceNotFoundError{Key: key}
 }
 
-// GroupByName groups the interfaces by base name.
+// GroupByBaseName groups the interfaces by base name.
 //
 // The definition of base name is described in `Interface.Key`.
 //

@@ -18,41 +18,7 @@ type CleanCommand struct {
 
 func (cmd *CleanCommand) Run(schemas ...*Schema) error {
 	for _, s := range schemas {
-		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.InterfacesGroup) error {
-			baseFilename := s.Filename(group)
-
-			if baseFilename == "" {
-				return fmt.Errorf(errfUnknownInterfaceFilename, baseName)
-			}
-
-			outputDir := filepath.Join(cmd.OutputDir, s.relPath)
-
-			g, err := NewAPIGen(
-				group,
-				s.pkgPath,
-				s.pkgName,
-				outputDir,
-				baseFilename,
-			)
-
-			if err != nil {
-				return err
-			}
-
-			if err := cmd.clean(baseName, g.RemoveInterfaceFile); err != nil {
-				return err
-			}
-
-			if err := cmd.clean(baseName, g.RemoveResultsFile); err != nil {
-				return err
-			}
-
-			if err := cmd.clean(baseName, g.RemoveTestsFile); err != nil {
-				return err
-			}
-
-			return nil
-		})
+		err := s.eachSortedInterfaceGroup(cmd.cleaner(s))
 
 		if err != nil {
 			return err
@@ -60,6 +26,44 @@ func (cmd *CleanCommand) Run(schemas ...*Schema) error {
 	}
 
 	return nil
+}
+
+func (cmd *CleanCommand) cleaner(s *Schema) interfaceGroupIterator {
+	return func(baseName string, group schema.InterfacesGroup) error {
+		baseFilename := s.Filename(group)
+
+		if baseFilename == "" {
+			return fmt.Errorf(errfUnknownInterfaceFilename, baseName)
+		}
+
+		outputDir := filepath.Join(cmd.OutputDir, s.relPath)
+
+		g, err := NewAPIGen(
+			group,
+			s.pkgPath,
+			s.pkgName,
+			outputDir,
+			baseFilename,
+		)
+
+		if err != nil {
+			return err
+		}
+
+		if err := cmd.clean(baseName, g.RemoveInterfaceFile); err != nil {
+			return err
+		}
+
+		// if err := cmd.clean(baseName, g.RemoveResultsFile); err != nil {
+		// 	return err
+		// }
+
+		if err := cmd.clean(baseName, g.RemoveTestsFile); err != nil {
+			return err
+		}
+
+		return nil
+	}
 }
 
 type cleanFunc func() (string, EGenerated, error)

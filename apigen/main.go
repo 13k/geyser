@@ -128,6 +128,7 @@ func main() {
 	log.SetOutput(os.Stderr)
 
 	var cmd Command
+
 	cmdStr := flag.Arg(0)
 
 	switch cmdStr {

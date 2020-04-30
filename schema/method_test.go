@@ -13,6 +13,7 @@ import (
 func createMethod(name string, version int) (schema.MethodKey, *schema.Method) {
 	key := schema.MethodKey{Name: name, Version: version}
 	sm := &schema.Method{Name: name, Version: version, HTTPMethod: http.MethodGet}
+
 	return key, sm
 }
 

@@ -104,7 +104,7 @@ type MethodsGroup map[MethodKey]*Method
 
 // Versions collects the versions of all methods in the group.
 func (g MethodsGroup) Versions() []int {
-	var versions []int
+	versions := make([]int, 0, len(g))
 
 	for key := range g {
 		versions = append(versions, key.Version)

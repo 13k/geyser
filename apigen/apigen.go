@@ -63,8 +63,8 @@ const (
 	commentParams               = "Parameters"
 	commentfStructResult        = "%s holds the result of the method %s/%s."
 
-	errfUnknownInterfaceFilename = "Unknown filename for interface %q"
-	errfUnknownHTTPMethod        = "Unknown HTTP method %q of interface method %q/%q"
+	errfUnknownInterfaceFilename = "unknown filename for interface %q"
+	errfUnknownHTTPMethod        = "unknown HTTP method %q of interface method %q/%q"
 
 	testfInvalidErrorType = "invalid error type %T"
 	// 	testfInvalidResultType = "invalid result type %T"

@@ -8,9 +8,11 @@ import (
 )
 
 const (
+	// HostURL is the base URL for the Steam Web API client.
 	HostURL = "https://api.steampowered.com"
 )
 
+// Client is a thin wrapper around a base `geyser.Client` that automatically sets the base HostURL.
 type Client struct {
 	geyser.Client
 }

@@ -8,9 +8,11 @@ import (
 )
 
 const (
+	// HostURL is the base URL for the Dota 2 Web API client.
 	HostURL = "https://www.dota2.com/webapi"
 )
 
+// Client is a thin wrapper around a base `geyser.Client` that automatically sets the base HostURL.
 type Client struct {
 	geyser.Client
 }

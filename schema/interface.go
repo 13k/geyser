@@ -37,6 +37,7 @@ func (i *Interface) parse() error {
 	}
 
 	var appID uint32
+
 	baseName := i.Name
 
 	if matches := siNameAppIDRegexp.FindStringSubmatch(i.Name); matches != nil {

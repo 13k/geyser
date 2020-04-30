@@ -187,6 +187,7 @@ func (g *APIGen) genStructCtor() j.Code {
 
 	if g.requiredAppID {
 		appIDsComment := stringJoinUint32(g.appIDs, ", ")
+
 		params = append(params, j.Id("appID").Uint32())
 		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, appIDsComment))
 	}
@@ -246,6 +247,7 @@ func (g *APIGen) genStructGetter() j.Code {
 
 	if g.requiredAppID {
 		appIDsComment := stringJoinUint32(g.appIDs, ", ")
+
 		getterParams = append(getterParams, j.Id("appID").Uint32())
 		ctorParams = append(ctorParams, j.Id("appID"))
 		comments = append(comments, fmt.Sprintf(commentfSupportedAppIDs, appIDsComment))
@@ -312,6 +314,7 @@ func (g *APIGen) genMethod(methodName string, group schema.MethodsGroup) j.Code 
 
 	if requiredVersion {
 		versionsComment := stringJoinInt(versions, ", ")
+
 		comments = append(comments, "")
 		comments = append(comments, fmt.Sprintf(commentfSupportedVersions, versionsComment))
 	}

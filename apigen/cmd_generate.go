@@ -18,41 +18,7 @@ type GenerateCommand struct {
 
 func (cmd *GenerateCommand) Run(schemas ...*Schema) error {
 	for _, s := range schemas {
-		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.InterfacesGroup) error {
-			baseFilename := s.Filename(group)
-
-			if baseFilename == "" {
-				return fmt.Errorf(errfUnknownInterfaceFilename, baseName)
-			}
-
-			outputDir := filepath.Join(cmd.OutputDir, s.relPath)
-
-			g, err := NewAPIGen(
-				group,
-				s.pkgPath,
-				s.pkgName,
-				outputDir,
-				baseFilename,
-			)
-
-			if err != nil {
-				return err
-			}
-
-			if err := cmd.gen(baseName, g.GenerateInterfaceFile); err != nil {
-				return err
-			}
-
-			// if err := cmd.gen(baseName, g.GenerateResultsFile); err != nil {
-			// 	return err
-			// }
-
-			if err := cmd.gen(baseName, g.GenerateTestsFile); err != nil {
-				return err
-			}
-
-			return nil
-		})
+		err := s.eachSortedInterfaceGroup(cmd.generator(s))
 
 		if err != nil {
 			return err
@@ -60,6 +26,44 @@ func (cmd *GenerateCommand) Run(schemas ...*Schema) error {
 	}
 
 	return nil
+}
+
+func (cmd *GenerateCommand) generator(s *Schema) interfaceGroupIterator {
+	return func(baseName string, group schema.InterfacesGroup) error {
+		baseFilename := s.Filename(group)
+
+		if baseFilename == "" {
+			return fmt.Errorf(errfUnknownInterfaceFilename, baseName)
+		}
+
+		outputDir := filepath.Join(cmd.OutputDir, s.relPath)
+
+		g, err := NewAPIGen(
+			group,
+			s.pkgPath,
+			s.pkgName,
+			outputDir,
+			baseFilename,
+		)
+
+		if err != nil {
+			return err
+		}
+
+		if err := cmd.gen(baseName, g.GenerateInterfaceFile); err != nil {
+			return err
+		}
+
+		// if err := cmd.gen(baseName, g.GenerateResultsFile); err != nil {
+		// 	return err
+		// }
+
+		if err := cmd.gen(baseName, g.GenerateTestsFile); err != nil {
+			return err
+		}
+
+		return nil
+	}
 }
 
 type genFunc func() (string, EGenerated, error)

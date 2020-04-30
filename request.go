@@ -129,12 +129,12 @@ func (r *Request) SetBody(b interface{}) *Request {
 	return r
 }
 
-// SetKey sets the "key" request parameter.
+// SetAPIKey sets the "key" request parameter.
 func (r *Request) SetAPIKey(v string) *Request {
 	return r.SetQueryParam(queryParamKeyAPIKey, v)
 }
 
-// SetLang sets the "language" request parameter.
+// SetLanguage sets the "language" request parameter.
 func (r *Request) SetLanguage(v string) *Request {
 	return r.SetQueryParam(queryParamKeyLanguage, v)
 }

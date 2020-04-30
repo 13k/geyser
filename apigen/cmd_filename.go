@@ -24,24 +24,7 @@ func (cmd *FilenamesCommand) Run(schemas ...*Schema) error {
 	for _, s := range schemas {
 		fmt.Printf("%s\n%s\n", path.Join("geyser", s.relPath), sep)
 
-		err := s.eachSortedInterfaceGroup(func(baseName string, group schema.InterfacesGroup) error {
-			var comment string
-			var missing bool
-
-			filename := s.Filename(group)
-
-			if filename == "" {
-				missing = true
-				filename = strcase.ToSnake(strings.TrimPrefix(baseName, "I"))
-				comment = " // suggested"
-			}
-
-			if !cmd.OnlyMissing || missing {
-				fmt.Printf("%q: %q,%s\n", baseName, filename, comment)
-			}
-
-			return nil
-		})
+		err := s.eachSortedInterfaceGroup(cmd.filenamePrinter(s))
 
 		if err != nil {
 			return err
@@ -51,4 +34,27 @@ func (cmd *FilenamesCommand) Run(schemas ...*Schema) error {
 	}
 
 	return nil
+}
+
+func (cmd *FilenamesCommand) filenamePrinter(s *Schema) interfaceGroupIterator {
+	return func(baseName string, group schema.InterfacesGroup) error {
+		var (
+			comment string
+			missing bool
+		)
+
+		filename := s.Filename(group)
+
+		if filename == "" {
+			missing = true
+			filename = strcase.ToSnake(strings.TrimPrefix(baseName, "I"))
+			comment = " // suggested"
+		}
+
+		if !cmd.OnlyMissing || missing {
+			fmt.Printf("%q: %q,%s\n", baseName, filename, comment)
+		}
+
+		return nil
+	}
 }

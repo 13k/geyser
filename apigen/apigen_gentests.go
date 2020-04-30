@@ -172,7 +172,6 @@ func (g *APIGen) genTestMethod(appIDs []uint32, name string, group schema.Method
 
 			if err == nil {
 				// vars.Declare("ok", j.Var().Id("ok").Bool())
-
 				body = append(
 					body,
 					jTestifyRequire("NoError", "t", j.Err()),

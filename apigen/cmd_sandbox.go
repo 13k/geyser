@@ -15,10 +15,10 @@ type SandboxCommand struct {
 	Log       logrus.FieldLogger
 }
 
-func (cmd *SandboxCommand) Run() error {
+func (cmd *SandboxCommand) listFiles() ([]*GeneratedFile, bool, error) {
 	var files []*GeneratedFile
 
-	goMod := false
+	gomod := false
 
 	err := filepath.Walk(cwd, func(p string, i os.FileInfo, err error) error {
 		if err != nil {
@@ -26,7 +26,7 @@ func (cmd *SandboxCommand) Run() error {
 		}
 
 		if !i.IsDir() && i.Name() == "go.mod" {
-			goMod = true
+			gomod = true
 			return nil
 		}
 
@@ -41,24 +41,42 @@ func (cmd *SandboxCommand) Run() error {
 		return nil
 	})
 
+	return files, gomod, err
+}
+
+func (cmd *SandboxCommand) createDir() (string, error) {
+	var err error
+
+	dir := cmd.Directory
+
+	if dir == "" {
+		dir, err = ioutil.TempDir(os.TempDir(), "geyser.")
+	} else {
+		err = os.MkdirAll(dir, 0750)
+	}
+
+	if err != nil {
+		return "", err
+	}
+
+	return dir, nil
+}
+
+func (cmd *SandboxCommand) Run() error {
+	files, gomod, err := cmd.listFiles()
+
 	if err != nil {
 		return err
 	}
 
-	if !goMod {
+	if !gomod {
 		return fmt.Errorf("could not find go.mod file in current directory %s", cwd)
 	}
 
-	sandboxDir := cmd.Directory
+	sandboxDir, err := cmd.createDir()
 
-	if sandboxDir == "" {
-		if sandboxDir, err = ioutil.TempDir(os.TempDir(), "geyser."); err != nil {
-			return err
-		}
-	} else {
-		if err := os.MkdirAll(sandboxDir, 0755); err != nil {
-			return err
-		}
+	if err != nil {
+		return err
 	}
 
 	for _, f := range files {
@@ -78,7 +96,7 @@ func (cmd *SandboxCommand) Run() error {
 			dest := filepath.Join(sandboxDir, rp)
 			destDir := filepath.Dir(dest)
 
-			if err := os.MkdirAll(destDir, 0755); err != nil {
+			if err := os.MkdirAll(destDir, 0750); err != nil {
 				return err
 			}
 

@@ -20,9 +20,9 @@ const (
 	schemaURLUndocSteam = "https://raw.githubusercontent.com/SteamDatabase/UndocumentedAPI/master/api.json"
 	schemaURLUndocDota  = "https://raw.githubusercontent.com/SteamDatabase/UndocumentedAPI/master/dota2.json"
 
-	errfSchemaDuplicateInterfaces  = "Schema contains duplicate interfaces (%q)"
-	errfRemoteSchemaResponse       = "Error fetching remote schema: %s"
-	warnfSchemaMergeMethodConflict = "[WARN] Schema.Merge(): method %s/%s/%d already exists on destination schema"
+	errfSchemaDuplicateInterfaces  = "schema contains duplicate interfaces (%q)"
+	errfRemoteSchemaResponse       = "error fetching remote schema: %s"
+	warnfSchemaMergeMethodConflict = "warning: Schema.Merge(): method %s/%s/%d already exists on destination schema"
 )
 
 var (
@@ -68,9 +68,40 @@ type Schema struct {
 	keyedByName map[string]*schema.Interface
 }
 
+func mergeRemoteSchemas(remotes ...*RemoteSchemaRequest) (*Schema, error) {
+	var (
+		schema *Schema
+		remote *Schema
+		err    error
+	)
+
+	for _, req := range remotes {
+		remote, err = NewRemoteSchema(req)
+
+		if err != nil {
+			return nil, err
+		}
+
+		remote.Normalize(req.Undoc)
+
+		if schema == nil {
+			schema = remote
+			continue
+		}
+
+		if err = schema.Merge(remote); err != nil {
+			return nil, err
+		}
+	}
+
+	return schema, nil
+}
+
 func NewSchema(cacheFile string, remotes ...*RemoteSchemaRequest) (*Schema, error) {
-	var schema *Schema
-	var err error
+	var (
+		schema *Schema
+		err    error
+	)
 
 	if cacheFile != "" {
 		schema, err = NewCachedSchema(cacheFile)
@@ -81,25 +112,10 @@ func NewSchema(cacheFile string, remotes ...*RemoteSchemaRequest) (*Schema, erro
 	}
 
 	if schema == nil {
-		var mergeSchema *Schema
+		schema, err = mergeRemoteSchemas(remotes...)
 
-		for _, req := range remotes {
-			mergeSchema, err = NewRemoteSchema(req)
-
-			if err != nil {
-				return nil, err
-			}
-
-			mergeSchema.Normalize(req.Undoc)
-
-			if schema == nil {
-				schema = mergeSchema
-				continue
-			}
-
-			if err = schema.Merge(mergeSchema); err != nil {
-				return nil, err
-			}
+		if err != nil {
+			return nil, err
 		}
 
 		if cacheFile != "" {
