@@ -3,9 +3,9 @@
 package steam_test
 
 import (
-	"github.com/13k/geyser"
-	"github.com/13k/geyser/schema"
-	"github.com/13k/geyser/steam"
+	"github.com/13k/geyser/v2"
+	"github.com/13k/geyser/v2/schema"
+	"github.com/13k/geyser/v2/steam"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"

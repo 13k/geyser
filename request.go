@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/13k/geyser/schema"
+	"github.com/13k/geyser/v2/schema"
 )
 
 // Request represents an HTTP request to an Interface Method.

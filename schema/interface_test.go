@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/13k/geyser/schema"
+	"github.com/13k/geyser/v2/schema"
 )
 
 func createInterface(name string, appID uint32) (schema.InterfaceKey, *schema.Interface) {

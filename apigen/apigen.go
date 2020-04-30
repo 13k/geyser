@@ -7,16 +7,16 @@ import (
 
 	"github.com/iancoleman/strcase"
 
-	"github.com/13k/geyser/schema"
+	"github.com/13k/geyser/v2/schema"
 )
 
 const (
 	pkgPathNetHTTP        = "net/http"
 	pkgPathTesting        = "testing"
-	pkgPathGeyser         = "github.com/13k/geyser"
-	pkgPathGeyserSchema   = "github.com/13k/geyser/schema"
-	pkgPathGeyserSteam    = "github.com/13k/geyser/steam"
-	pkgPathGeyserDota2    = "github.com/13k/geyser/dota2"
+	pkgPathGeyser         = "github.com/13k/geyser/v2"
+	pkgPathGeyserSchema   = "github.com/13k/geyser/v2/schema"
+	pkgPathGeyserSteam    = "github.com/13k/geyser/v2/steam"
+	pkgPathGeyserDota2    = "github.com/13k/geyser/v2/dota2"
 	pkgPathTestifyAssert  = "github.com/stretchr/testify/assert"
 	pkgPathTestifyRequire = "github.com/stretchr/testify/require"
 

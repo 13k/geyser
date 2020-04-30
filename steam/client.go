@@ -4,7 +4,7 @@
 package steam
 
 import (
-	"github.com/13k/geyser"
+	"github.com/13k/geyser/v2"
 )
 
 const (

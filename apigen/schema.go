@@ -12,7 +12,7 @@ import (
 
 	"github.com/go-resty/resty/v2"
 
-	"github.com/13k/geyser/schema"
+	"github.com/13k/geyser/v2/schema"
 )
 
 const (

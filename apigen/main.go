@@ -8,7 +8,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/13k/geyser/schema"
+	"github.com/13k/geyser/v2/schema"
 )
 
 const (

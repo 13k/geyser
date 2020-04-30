@@ -3,8 +3,8 @@
 package dota2_test
 
 import (
-	"github.com/13k/geyser"
-	"github.com/13k/geyser/dota2"
+	"github.com/13k/geyser/v2"
+	"github.com/13k/geyser/v2/dota2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"

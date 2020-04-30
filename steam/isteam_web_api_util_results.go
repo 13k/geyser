@@ -1,7 +1,7 @@
 package steam
 
 import (
-	"github.com/13k/geyser/schema"
+	"github.com/13k/geyser/v2/schema"
 )
 
 // ISteamWebAPIUtilGetServerInfo can be used as result of method ISteamWebAPIUtil/GetServerInfo.

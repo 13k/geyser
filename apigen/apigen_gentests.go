@@ -6,7 +6,7 @@ import (
 
 	j "github.com/dave/jennifer/jen"
 
-	"github.com/13k/geyser/schema"
+	"github.com/13k/geyser/v2/schema"
 )
 
 func (g *APIGen) GenerateTestsFile() (string, EGenerated, error) {

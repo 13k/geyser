@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/13k/geyser"
+	"github.com/13k/geyser/v2"
 )
 
 type NoopClient struct {

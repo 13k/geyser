@@ -1,7 +1,7 @@
 package geyser_test
 
 import (
-	"github.com/13k/geyser"
+	"github.com/13k/geyser/v2"
 )
 
 type NoopLogger struct{}

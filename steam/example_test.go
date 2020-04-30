@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/13k/geyser"
-	"github.com/13k/geyser/steam"
+	"github.com/13k/geyser/v2"
+	"github.com/13k/geyser/v2/steam"
 )
 
 func Example_result() {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/13k/geyser/steam"
+	"github.com/13k/geyser/v2/steam"
 )
 
 func TestNew(t *testing.T) {

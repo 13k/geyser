@@ -7,7 +7,7 @@ import (
 
 	"github.com/iancoleman/strcase"
 
-	"github.com/13k/geyser/schema"
+	"github.com/13k/geyser/v2/schema"
 )
 
 var _ Command = (*FilenamesCommand)(nil)

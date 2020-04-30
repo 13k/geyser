@@ -4,8 +4,8 @@
 package steam
 
 import (
-	"github.com/13k/geyser"
-	"github.com/13k/geyser/schema"
+	"github.com/13k/geyser/v2"
+	"github.com/13k/geyser/v2/schema"
 	"net/http"
 )
 

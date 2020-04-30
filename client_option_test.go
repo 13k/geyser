@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/13k/geyser"
+	"github.com/13k/geyser/v2"
 )
 
 func TestClientOption_WithCookieJar(t *testing.T) {

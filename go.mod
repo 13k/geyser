@@ -1,4 +1,4 @@
-module github.com/13k/geyser
+module github.com/13k/geyser/v2
 
 go 1.13
 

@@ -7,8 +7,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/13k/geyser"
-	"github.com/13k/geyser/schema"
+	"github.com/13k/geyser/v2"
+	"github.com/13k/geyser/v2/schema"
 )
 
 func TestResponse_Getters(t *testing.T) {
