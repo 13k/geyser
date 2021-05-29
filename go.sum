@@ -1,4 +1,5 @@
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
+github.com/13k/geyser v0.2.0 h1:91Ky1RyI/VYvfAjVijHioRT60IkhMDwgZqr2gibjfmg=
 github.com/13k/go-steam v0.1.0 h1:Yug2mdIwF7sZOuDvJWx0YscPJbHFzy9dS5x/xgRM6CM=
 github.com/13k/go-steam v0.1.0/go.mod h1:W9NZt9RVxMXUNRPbM3Px1QbH/XKU7PKDBC6D4yce4Ls=
 github.com/13k/go-steam-resources v1.2.3 h1:K0RPeYIyjAD5E+DyO+gyTW6h40/PR24dxfnK0yG/Ea8=
@@ -14,6 +15,11 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fsnotify/fsevents v0.1.1 h1:/125uxJvvoSDDBPen6yUZbil8J9ydKZnnl3TWWmvnkw=
 github.com/fsnotify/fsevents v0.1.1/go.mod h1:+d+hS27T6k5J8CRaPLKFgwKYcpS7GwW3Ule9+SC2ZRc=
+github.com/go-playground/assert/v2 v2.0.1/go.mod h1:VDjEfimB/XKnb+ZQfWdccd7VUvScMdVu0Titje2rxJ4=
+github.com/go-playground/form v1.10.0 h1:0ybRwhsCPQzo8dC09q8XAVn+peG7Ld927Gbe9twmgv8=
+github.com/go-playground/form v3.1.4+incompatible h1:lvKiHVxE2WvzDIoyMnWcjyiBxKt2+uFJyZcPYWsLnjI=
+github.com/go-playground/form/v4 v4.1.1 h1:1T9lGt3WRHuDwT5uwx7RYQZfxVwWZhF0DC1ovKyNnWY=
+github.com/go-playground/form/v4 v4.1.1/go.mod h1:q1a2BY+AQUUzhl6xA/6hBetay6dEIhMHjgvJiGo6K7U=
 github.com/go-resty/resty/v2 v2.2.0 h1:vgZ1cdblp8Aw4jZj3ZsKh6yKAlMg3CHMrqFSFFd+jgY=
 github.com/go-resty/resty/v2 v2.2.0/go.mod h1:nYW/8rxqQCmI3bPz9Fsmjbr2FBjGuR2Mzt6kDh3zZ7w=
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
